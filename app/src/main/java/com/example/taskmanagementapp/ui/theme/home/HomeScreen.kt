@@ -10,7 +10,9 @@ fun HomeScreen(){
         topBar = {
              HomeAppBar()
         },
-        content = {},
+        content = {
+                  
+        },
         bottomBar = {}
     )
 }

@@ -1,23 +1,18 @@
 package com.example.taskmanagementapp.ui.theme.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.taskmanagementapp.ui.theme.P5
 import com.example.taskmanagementapp.ui.theme.PrimaryButton
-import com.example.taskmanagementapp.ui.theme.visbyFontFamily
+import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
 @Composable
 fun HomeContent() {
@@ -39,9 +34,9 @@ fun MainTask() {
             ) {
                 Text(
                     text = "In progress",
-                    color = P5
+                    color = PrimaryButton
                 )
-                deadline()
+                Deadline()
             }
             Row()
             {
@@ -49,7 +44,7 @@ fun MainTask() {
                     text = "Todo App Mobile Design with Android Kotlin",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = visbyFontFamily,
+                    fontFamily = VisbyFontFamily,
                     maxLines = 2
                 )
             }
@@ -79,7 +74,7 @@ fun MainTask() {
 }
 
 @Composable
-fun deadline() {
+fun Deadline() {
     Row() {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "")
         Text(text = "9:00 AM")

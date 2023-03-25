@@ -1,13 +1,10 @@
 package com.example.taskmanagementapp.ui.theme.home
 
-import android.app.Notification
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -19,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.visbyFontFamily
+import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
 @Composable
 fun HomeTopAppBar() {
@@ -48,7 +45,7 @@ fun HomeAppBar() {
         title = {
             Text(
                 text = "Văn Vuong",
-                fontFamily = visbyFontFamily,
+                fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,
             )

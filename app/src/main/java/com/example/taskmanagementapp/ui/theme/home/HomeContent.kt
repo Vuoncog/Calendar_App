@@ -1,33 +1,70 @@
 package com.example.taskmanagementapp.ui.theme.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomEnd
+import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun HomeContent() {
-    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row {
+            Text(
+                text = "Monday",
+                style = VisbyTypography.h6,
+                color = Primary4
+            )
+            Text(
+                text = ", 30 Nov",
+                style = VisbyTypography.h6,
+                color = Neutral1
+            )
+        }
         MainTask()
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Other tasks",
+                style = VisbyTypography.h6,
+                color = Neutral1
+            )
+            Text(
+                text = ("1/4 DONE").uppercase(),
+                style = VisbyTypography.button,
+                modifier = Modifier.align(CenterVertically),
+                color = Neutral5
+            )
+        }
     }
 }
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -35,8 +72,10 @@ fun MainTask() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(size = 12.dp)),
-        backgroundColor = BackgroundColorTask, elevation = 0.dp
+        backgroundColor = BackgroundColorTask,
+        elevation = 0.dp
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -133,7 +172,22 @@ fun MainTask() {
                 }
             }
         }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = BottomEnd
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(100.dp)
+                    .rotate(-12.59f)
+                    .offset(x = 18.dp, y = 16.dp),
+                painter = painterResource(id = R.drawable.hop),
+                contentDescription = "Hop Image",
+            )
+        }
     }
+
 }
 
 @Composable
@@ -157,5 +211,5 @@ fun Deadline() {
 @Preview
 @Composable
 fun HomeContentPreview() {
-    MainTask()
+    HomeContent()
 }

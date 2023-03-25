@@ -40,7 +40,7 @@ fun TaskManagementAppTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = VisbyTypography,
         shapes = Shapes,
         content = content
     )

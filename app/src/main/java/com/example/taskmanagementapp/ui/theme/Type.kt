@@ -47,7 +47,7 @@ val VisbyTypography = Typography(
     h5 = TextStyle(
         fontSize = 24.sp,
         fontFamily = VisbyFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.SemiBold,
         letterSpacing = (0).sp
     ),
     h6 = TextStyle(
@@ -78,7 +78,7 @@ val VisbyTypography = Typography(
         fontSize = 14.sp,
         fontFamily = VisbyFontFamily,
         fontWeight = FontWeight.Light,
-        letterSpacing = (2.5).sp
+        letterSpacing = (0.35).sp
     ),
     button = TextStyle(
         fontSize = 14.sp,
@@ -89,8 +89,8 @@ val VisbyTypography = Typography(
     caption = TextStyle(
         fontSize = 12.sp,
         fontFamily = VisbyFontFamily,
-        fontWeight = FontWeight.Normal,
-        letterSpacing = (0.4).sp
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = (0.2).sp
     ),
     overline = TextStyle(
         fontSize = 10.sp,

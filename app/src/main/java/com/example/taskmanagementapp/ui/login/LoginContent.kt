@@ -26,7 +26,7 @@ import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 
 @Composable
-fun ListContent() {
+fun LoginContent() {
     Image(
         modifier = Modifier.fillMaxSize(),
         painter = painterResource(id = R.drawable.login_background),
@@ -140,6 +140,6 @@ fun Login() {
 
 @Preview
 @Composable
-fun ListContentPreview() {
-    ListContent()
+fun LoginContentPreview() {
+    LoginContent()
 }

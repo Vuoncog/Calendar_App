@@ -1,16 +1,17 @@
-package com.example.taskmanagementapp.ui.theme.home
+package com.example.taskmanagementapp.ui.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomEnd
@@ -28,9 +29,14 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.ui.theme.*
+import com.example.taskmanagementapp.ui.component.Due
 
 @Composable
 fun HomeContent() {
+    val list = mutableListOf<Note>()
+    list.add(Note("Title 1", "Description 1", false))
+    list.add(Note("Title 2", "Description 2", false))
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -68,8 +74,8 @@ fun HomeContent() {
             )
         }
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)){
-            items(getListNotes()){
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            items(list) {
                 OtherTaskItem(note = it)
             }
         }
@@ -220,50 +226,54 @@ fun Deadline() {
 }
 
 @Composable
-fun OtherTaskItem(note : Note) {
-        Column(modifier = Modifier
-            .border(
-                1.dp,
-                color = Primary4,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .fillMaxWidth()) {
-            Text(
-                text = note.title,
-                maxLines = 1,
-                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp),
-                style = VisbyTypography.h6
-            )
-            Text(
-                text = note.description,
-                modifier = Modifier.padding(start = 12.dp, top = 4.dp),
-                maxLines = 1,
-                style = VisbyTypography.body2
-            )
-            Row(modifier = Modifier.padding(start = 12.dp, top = 12.dp, bottom = 12.dp))
-            {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_flag_solid),
-                    contentDescription = "",
-                    tint = Primary4
-                )
-                Text(
-                    text = "Today, 8:00 AM - 9:00 AM",
-                    modifier = Modifier.padding(start = 8.dp),
-                    style = VisbyTypography.subtitle2
-                )
+fun OtherTaskItem(note: Note) {
+    CompositionLocalProvider(
+        LocalIndication provides rememberRipple(color = Primary2)
+    ) {
+        Box(modifier = Modifier
+            .clickable(
+                indication = rememberRipple(color = Primary2),
+                interactionSource = remember { MutableInteractionSource() }) {
+
+            }
+            .clip(RoundedCornerShape(12.dp))) {
+            Column(
+                modifier = Modifier
+                    .clickable {
+
+                    }
+                    .border(
+                        1.dp,
+                        color = Primary4,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text(
+                        text = note.title,
+                        maxLines = 1,
+                        style = VisbyTypography.h6,
+                        color = Neutral1
+                    )
+                    Text(
+                        text = note.description,
+                        maxLines = 1,
+                        style = VisbyTypography.body2,
+                        color = Neutral5
+                    )
+                }
+                Due(Primary4)
             }
         }
+    }
+
 }
-fun getListNotes() : List<Note>
-{
-    val list = mutableListOf<Note>()
-    list.add(Note("Title 1", "Description 1", false))
-    list.add(Note("Title 2", "Description 2", false))
-    return list
-}
-@Preview
+
 @Composable
+@Preview
 fun HomeContentPreview() {
     HomeContent()
 }

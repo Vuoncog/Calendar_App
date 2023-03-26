@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.component
+package com.example.taskmanagementapp.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

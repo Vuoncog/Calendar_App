@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.profile
+package com.example.taskmanagementapp.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

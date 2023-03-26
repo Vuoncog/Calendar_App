@@ -1,18 +1,12 @@
 package com.example.taskmanagementapp.database
 
-import android.app.Application
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class Repository(app : Application) {
-    private val noteDAO : NoteDAO
-    init {
-        val noteDatabase : NoteDatabase = NoteDatabase.getNoteDatabase(app)
-        noteDAO = noteDatabase.getNoteDAO()
-    }
+class Repository @Inject constructor(private val noteDAO: NoteDAO) {
 
     suspend fun insert(note : Note) = noteDAO.insert(note)
     suspend fun update(note : Note) = noteDAO.update(note)
     suspend fun delete(note : Note) = noteDAO.delete(note)
-    fun getAllNotes() : LiveData<List<Note>> = noteDAO.getAllNotes()
-
+    val getAllNotes: LiveData<List<Note>> = noteDAO.getAllNotes()
 }

@@ -9,16 +9,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 
-@Database(version = 1, entities = [Note::class])
+@Database(entities = [Note::class],version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
-    abstract fun getNoteDAO() : NoteDAO
-    companion object{
-        @Volatile
-        var instance : NoteDatabase? = null
-        fun getNoteDatabase(context: Context) : NoteDatabase{
-            if(instance == null)
-                instance = Room.databaseBuilder(context, NoteDatabase::class.java, "notes_database").build()
-            return instance as NoteDatabase
-        }
-    }
+    abstract fun noteDAO() : NoteDAO
 }

@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.login
+package com.example.taskmanagementapp.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.*
-import com.example.taskmanagementapp.ui.theme.component.CustomButton
-import com.example.taskmanagementapp.ui.theme.component.CustomOutlinedButton
-import com.example.taskmanagementapp.ui.theme.component.CustomTextField
+import com.example.taskmanagementapp.ui.component.CustomButton
+import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
+import com.example.taskmanagementapp.ui.component.CustomTextField
 
 @Composable
 fun ListContent() {

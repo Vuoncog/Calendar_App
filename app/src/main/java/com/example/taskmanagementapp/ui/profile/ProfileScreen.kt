@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.profile
+package com.example.taskmanagementapp.ui.profile
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable

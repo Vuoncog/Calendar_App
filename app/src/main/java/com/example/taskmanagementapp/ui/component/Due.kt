@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.component
+package com.example.taskmanagementapp.ui.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.Primary4
+import com.example.taskmanagementapp.ui.theme.Primary5
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable

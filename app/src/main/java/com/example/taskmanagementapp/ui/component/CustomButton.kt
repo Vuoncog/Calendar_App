@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.theme.component
+package com.example.taskmanagementapp.ui.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

@@ -65,8 +65,8 @@ val VisbyTypography = Typography(
     subtitle2 = TextStyle(
         fontSize = 14.sp,
         fontFamily = VisbyFontFamily,
-        fontWeight = FontWeight.Medium,
-        letterSpacing = (0.1).sp
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = (0.56).sp
     ),
     body1 = TextStyle(
         fontSize = 16.sp,
@@ -84,7 +84,7 @@ val VisbyTypography = Typography(
         fontSize = 14.sp,
         fontFamily = VisbyFontFamily,
         fontWeight = FontWeight.SemiBold,
-        letterSpacing = (2).sp,
+        letterSpacing = (0.28).sp,
     ),
     caption = TextStyle(
         fontSize = 12.sp,

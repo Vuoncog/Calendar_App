@@ -26,7 +26,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
@@ -68,11 +67,7 @@ fun HomeContent() {
             )
         }
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)){
-            items(getListNotes()){
-                OtherTaskItem(note = it)
-            }
-        }
+
     }
 }
 
@@ -219,49 +214,6 @@ fun Deadline() {
     }
 }
 
-@Composable
-fun OtherTaskItem(note : Note) {
-        Column(modifier = Modifier
-            .border(
-                1.dp,
-                color = Primary4,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .fillMaxWidth()) {
-            Text(
-                text = note.title,
-                maxLines = 1,
-                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp),
-                style = VisbyTypography.h6
-            )
-            Text(
-                text = note.description,
-                modifier = Modifier.padding(start = 12.dp, top = 4.dp),
-                maxLines = 1,
-                style = VisbyTypography.body2
-            )
-            Row(modifier = Modifier.padding(start = 12.dp, top = 12.dp, bottom = 12.dp))
-            {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_flag_solid),
-                    contentDescription = "",
-                    tint = Primary4
-                )
-                Text(
-                    text = "Today, 8:00 AM - 9:00 AM",
-                    modifier = Modifier.padding(start = 8.dp),
-                    style = VisbyTypography.subtitle2
-                )
-            }
-        }
-}
-fun getListNotes() : List<Note>
-{
-    val list = mutableListOf<Note>()
-    list.add(Note("Title 1", "Description 1", false))
-    list.add(Note("Title 2", "Description 2", false))
-    return list
-}
 @Preview
 @Composable
 fun HomeContentPreview() {

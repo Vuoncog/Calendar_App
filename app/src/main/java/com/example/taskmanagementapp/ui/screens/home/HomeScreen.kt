@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.home
+package com.example.taskmanagementapp.ui.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding

@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.home
+package com.example.taskmanagementapp.ui.screens.home
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource

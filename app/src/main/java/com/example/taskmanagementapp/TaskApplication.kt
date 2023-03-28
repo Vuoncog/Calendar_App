@@ -1,9 +1,9 @@
-package com.example.taskmanagementapp.di
+package com.example.taskmanagementapp
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class NoteApplication : Application() {
+class TaskApplication : Application(){
 
 }

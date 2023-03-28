@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">TaskManagementApp</string>
+    <string name="create_account">Create your account</string>
+    <string name="register_subsciption">Register to manage your first task</string>
+    <string name="login_now">Login now</string>
+    <string name="haved_account">Already have an account?</string>
+    <string name="register">Register</string>
+    <string name="gmail">Gmail</string>
+    <string name="full_name">Full name</string>
+    <string name="recover_password">Recover password</string>
+    <string name="login">Log in</string>
+    <string name="not_a_member">Not a member?</string>
+    <string name="register_now">Register now</string>
 </resources>

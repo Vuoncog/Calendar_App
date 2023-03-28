@@ -1,11 +1,8 @@
 package com.example.taskmanagementapp.ui.screens.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
@@ -15,7 +12,7 @@ import com.example.taskmanagementapp.ui.component.BottomBar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun MainScreen() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -34,5 +31,5 @@ fun HomeScreen() {
 @Composable
 @Preview
 fun Preview(){
-    HomeScreen()
+    MainScreen()
 }

@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -19,7 +20,9 @@ import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun CustomTextField(
-    isPassword: Boolean = true
+    isPassword: Boolean = true,
+    @DrawableRes leadingIcon: Int = R.drawable.ic_password,
+    title: String = "Password"
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
@@ -37,19 +40,11 @@ fun CustomTextField(
             text = it
         },
         leadingIcon = {
-            if (!isPassword) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_user_circle),
-                    contentDescription = "User Circle Icon",
+                    imageVector = ImageVector.vectorResource(id = leadingIcon),
+                    contentDescription = "Leading Icon",
                     tint = Primary5
                 )
-            } else {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_password),
-                    contentDescription = "Password",
-                    tint = Primary5
-                )
-            }
         },
         trailingIcon = {
             if (isPassword)
@@ -76,8 +71,8 @@ fun CustomTextField(
         textStyle = VisbyTypography.subtitle1,
         placeholder = {
             Text(
-                modifier = Modifier.alpha(0.4f),
-                text = if (isPassword) "Password" else "Gmail",
+                modifier = Modifier.alpha(0.8f),
+                text = title,
                 style = VisbyTypography.subtitle1,
                 color = Neutral5
             )

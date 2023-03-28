@@ -1,13 +1,17 @@
 package com.example.taskmanagementapp.ui.component
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,6 +37,9 @@ fun BottomBar(
         contentColor = contentColorFor(backgroundColor = Primary5),
         backgroundColor = Neutral8,
         elevation = 4.dp,
+        modifier = Modifier.border(
+            border = BorderStroke(1.dp, NeutralBorder)
+        )
     ) {
         screens.forEach { screen ->
             BottomItem(
@@ -57,7 +64,12 @@ fun RowScope.BottomItem(
     BottomNavigationItem(
         selected = isSelected,
         onClick = {
-            navController.navigate(route = screen.route)
+            if (!isSelected) {
+                navController.navigate(route = screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
+            }
         },
         label = {
             Text(
@@ -66,19 +78,15 @@ fun RowScope.BottomItem(
             )
         },
         icon = {
-            if (isSelected) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(screen.iconSelected),
-                    contentDescription = "Bottom Item Icon Selected",
-                    tint = Primary4
-                )
-            } else {
-                Icon(
-                    imageVector = ImageVector.vectorResource(screen.icon),
-                    contentDescription = "Bottom Item Icon",
-                    tint = Neutral1
-                )
-            }
-        }, alwaysShowLabel = false
+            Icon(
+                imageVector = ImageVector.vectorResource(
+                    id = if (isSelected) screen.iconSelected else screen.icon
+                ),
+                contentDescription = "Bottom Item Icon",
+                tint = if (isSelected) Primary4 else Neutral1
+            )
+
+        },
+        alwaysShowLabel = false,
     )
 }

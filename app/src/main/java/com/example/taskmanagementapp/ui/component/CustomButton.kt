@@ -16,6 +16,7 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomButton(
+    navigateToHome: () -> Unit,
     buttonText: String = "button"
 ) {
     Button(
@@ -24,7 +25,7 @@ fun CustomButton(
             .fillMaxWidth()
             .height(48.dp),
         onClick = {
-
+            navigateToHome()
         },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Primary4,
@@ -51,5 +52,5 @@ fun CustomButton(
 @Preview
 @Composable
 fun CustomButtonPreview() {
-    CustomButton()
+    CustomButton({})
 }

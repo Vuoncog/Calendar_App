@@ -43,7 +43,7 @@ fun CustomTextField(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = leadingIcon),
                     contentDescription = "Leading Icon",
-                    tint = Primary5
+                    tint = SystemColor
                 )
         },
         trailingIcon = {

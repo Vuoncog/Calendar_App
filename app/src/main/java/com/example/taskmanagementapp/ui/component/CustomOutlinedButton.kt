@@ -16,8 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.Neutral2
-import com.example.taskmanagementapp.ui.theme.Primary4
-import com.example.taskmanagementapp.ui.theme.Primary5
+import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
@@ -33,11 +32,11 @@ fun CustomOutlinedButton(
                 navigateToHome()
         },
         shape = RoundedCornerShape(40.dp),
-        border = BorderStroke(1.dp, Primary4),
+        border = BorderStroke(1.dp, SystemColor),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = Neutral2,
             backgroundColor = Color.Transparent,
-            disabledContentColor = Primary5.copy(alpha = 0.4f)
+            disabledContentColor = SystemColor.copy(alpha = 0.4f)
         ),
         elevation = ButtonDefaults.elevation(
             defaultElevation = 0.dp,

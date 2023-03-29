@@ -13,6 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.taskmanagementapp.navigation.RootNavigationGraph
+import com.example.taskmanagementapp.ui.theme.ChangeLightness
+import com.example.taskmanagementapp.ui.theme.Primary4
 import com.example.taskmanagementapp.ui.theme.TaskManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

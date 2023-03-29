@@ -5,17 +5,13 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.BottomEnd
-import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,7 +43,7 @@ fun HomeContent() {
             Text(
                 text = "Monday",
                 style = VisbyTypography.h6,
-                color = Primary4
+                color = SystemColor
             )
             Text(
                 text = ", 30 Nov",
@@ -109,7 +105,7 @@ fun MainTask() {
                 ) {
                     Text(
                         text = "In progress",
-                        color = Primary5,
+                        color = SystemColor,
                         style = VisbyTypography.caption,
                         modifier = Modifier.padding(8.dp)
                     )
@@ -149,7 +145,7 @@ fun MainTask() {
                                 .padding(12.dp)
                                 .align(CenterVertically),
                             colors = CheckboxDefaults.colors(
-                                checkedColor = Primary5,
+                                checkedColor = SystemColor,
                                 uncheckedColor = Purple700,
                                 checkmarkColor = Neutral8,
                                 disabledColor = Purple700,
@@ -243,7 +239,7 @@ fun OtherTaskItem(note: Note) {
                     }
                     .border(
                         1.dp,
-                        color = Primary4,
+                        color = SystemColor,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .fillMaxWidth()
@@ -264,7 +260,7 @@ fun OtherTaskItem(note: Note) {
                         color = Neutral5
                     )
                 }
-                Due(Primary4)
+                Due(SystemColor)
             }
         }
     }

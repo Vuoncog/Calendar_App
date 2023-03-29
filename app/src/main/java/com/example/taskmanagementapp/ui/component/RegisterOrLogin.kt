@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.ui.theme.Neutral7
-import com.example.taskmanagementapp.ui.theme.Primary4
+import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
@@ -43,7 +43,7 @@ fun RegisterOrLogin(
             ClickableText(
                 AnnotatedString(stringResource(title)),
                 style = TextStyle(
-                    color = Primary4,
+                    color = SystemColor,
                     fontStyle = VisbyTypography.subtitle1.fontStyle,
                     fontFamily = VisbyFontFamily,
                     fontWeight = FontWeight.Medium,

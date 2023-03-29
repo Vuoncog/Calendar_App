@@ -13,7 +13,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.ui.theme.*
@@ -34,7 +33,7 @@ fun BottomBar(
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation(
-        contentColor = contentColorFor(backgroundColor = Primary5),
+        contentColor = contentColorFor(backgroundColor = SystemColor),
         backgroundColor = Neutral8,
         elevation = 4.dp,
         modifier = Modifier.border(
@@ -83,7 +82,7 @@ fun RowScope.BottomItem(
                     id = if (isSelected) screen.iconSelected else screen.icon
                 ),
                 contentDescription = "Bottom Item Icon",
-                tint = if (isSelected) Primary4 else Neutral1
+                tint = if (isSelected) SystemColor else Neutral1
             )
 
         },

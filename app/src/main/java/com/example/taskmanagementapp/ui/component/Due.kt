@@ -13,8 +13,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.Primary4
-import com.example.taskmanagementapp.ui.theme.Primary5
+import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
@@ -40,5 +39,5 @@ fun Due(
 @Preview
 @Composable
 fun DuePreview() {
-    Due(Primary4)
+    Due(SystemColor)
 }

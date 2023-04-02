@@ -1,15 +1,20 @@
 package com.example.taskmanagementapp.navigation
 
+import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.ui.screens.auth.LoginContent
 import com.example.taskmanagementapp.ui.screens.auth.RecoverPasswordContent
 import com.example.taskmanagementapp.ui.screens.auth.RegisterContent
 
-fun NavGraphBuilder.authNavigation(navController: NavHostController) {
+fun NavGraphBuilder.authNavigation(
+    navController: NavHostController,
+    logInViewModel: LogInViewModel? = null
+) {
     navigation(
         route = Graph.AUTHENTICATION,
         startDestination = AuthScreen.Login.route
@@ -25,14 +30,16 @@ fun NavGraphBuilder.authNavigation(navController: NavHostController) {
                 },
                 navigateToRegister = {
                     navController.navigate(AuthScreen.Register.route)
-                }
+                },
+                logInViewModel = logInViewModel
             )
         }
         composable(route = AuthScreen.Register.route) {
             RegisterContent(
                 navigateToLogin = {
                     navController.navigate(AuthScreen.Login.route)
-                }
+                },
+                logInViewModel = logInViewModel
             )
         }
         composable(route = AuthScreen.RecoverPassword.route) {

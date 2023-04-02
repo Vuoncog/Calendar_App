@@ -16,4 +16,10 @@
     <string name="view_all">VIEW ALL</string>
     <string name="next_events">Next events</string>
     <string name="upcoming_events">Upcoming events</string>
+    <string name="invalidate_mail">Email is invalidate</string>
+    <string name="invalidate_password">Password is invalidate</string>
+    <string name="input_all_field">Input all fields</string>
+    <string name="sign_up_successfully">Sign Up Successfully</string>
+    <string name="network_unavailable">Network is disconnected</string>
+    <string name="sign_in_successfully">Sign In Successfully</string>
 </resources>

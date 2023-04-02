@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,20 +15,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.ui.theme.*
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
-import com.example.taskmanagementapp.ui.theme.Neutral4
-import com.example.taskmanagementapp.ui.theme.Neutral7
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginContent(
     navigateToHome: () -> Unit,
     navigateToRecoverPassword: () -> Unit,
-    navigateToRegister: () -> Unit
+    navigateToRegister: () -> Unit,
+    logInViewModel: LogInViewModel? = null
 ) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    val currentUser = logInViewModel?.getCurrentUser()
+
     Image(
         modifier = Modifier.fillMaxSize(),
         painter = painterResource(id = R.drawable.login_background),
@@ -36,7 +42,7 @@ fun LoginContent(
         contentScale = ContentScale.FillHeight
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(
             top = 72.dp,
             start = 16.dp,
@@ -48,29 +54,29 @@ fun LoginContent(
         Login()
 
         //Text field
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CustomTextField(
-                isPassword = false,
-                leadingIcon = R.drawable.ic_user_circle,
-                title = "Gmail"
-            )
-            CustomTextField(isPassword = true)
-            ClickableText(
-                modifier = Modifier.fillMaxWidth(),
-                text = AnnotatedString(stringResource(R.string.recover_password)),
-                onClick = {
-                    navigateToRecoverPassword()
-                },
-                style = VisbyTypography.subtitle1
-            )
-        }
+        email = CustomTextField(
+            isPassword = false,
+            leadingIcon = R.drawable.ic_user_circle,
+            title = "Gmail",
+            currentEmail = if (currentUser != null) currentUser.email.toString() else ""
+        )
+        password = CustomTextField(isPassword = true)
+        ClickableText(
+            modifier = Modifier.fillMaxWidth(),
+            text = AnnotatedString(stringResource(R.string.recover_password)),
+            onClick = {
+                navigateToRecoverPassword()
+            },
+            style = VisbyTypography.subtitle1
+        )
 
         //button LOG IN
         CustomButton(
             navigateToHome = navigateToHome,
-            buttonText = stringResource(R.string.login)
+            buttonText = stringResource(R.string.login),
+            onClickEvent = {logInViewModel?.signIn(email, password)},
+            logInViewModel = logInViewModel
+
         )
 
         Text(
@@ -84,18 +90,14 @@ fun LoginContent(
         )
 
         // Other platform
-        Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CustomOutlinedButton(
-                navigateToHome,
-                whichPlatform = "Google"
-            )
-            CustomOutlinedButton(
-                navigateToHome,
-                whichPlatform = "Facebook"
-            )
-        }
+        CustomOutlinedButton(
+            navigateToHome,
+            whichPlatform = "Google"
+        )
+        CustomOutlinedButton(
+            navigateToHome,
+            whichPlatform = "Facebook"
+        )
 
         //Register
         RegisterOrLogin (
@@ -104,6 +106,8 @@ fun LoginContent(
             title = R.string.register_now
         )
     }
+
+    logInViewModel?.signOut()
 }
 
 @Composable

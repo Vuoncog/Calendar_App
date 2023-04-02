@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.screens.home
+package com.example.taskmanagementapp.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.navigation.BottomNavGraph
 import com.example.taskmanagementapp.navigation.TopNavGraph
 import com.example.taskmanagementapp.ui.component.BottomBar
@@ -13,7 +14,7 @@ import java.time.LocalDate
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(logInViewModel: LogInViewModel? = null) {
     val navController = rememberNavController()
     var currentDay by remember { mutableStateOf(LocalDate.now()) }
 
@@ -40,7 +41,8 @@ fun MainScreen() {
             currentDay = currentDay,
             calendarDaySelected = { selectedDay ->
                 currentDay = selectedDay
-            }
+            },
+            logInViewModel =  logInViewModel
         )
     }
 }

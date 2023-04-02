@@ -4,19 +4,26 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.Graph
-import com.example.taskmanagementapp.ui.screens.home.MainScreen
+import com.example.taskmanagementapp.ui.screens.MainScreen
 
 @Composable
-fun RootNavigationGraph(navController: NavHostController) {
+fun RootNavigationGraph(
+    navController: NavHostController,
+    logInViewModel: LogInViewModel? = null
+) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
         startDestination = Graph.AUTHENTICATION
     ) {
-        authNavigation(navController = navController)
+        authNavigation(
+            navController = navController,
+            logInViewModel = logInViewModel
+        )
         composable(route = Graph.MAIN) {
-            MainScreen()
+            MainScreen(logInViewModel = logInViewModel)
         }
     }
 }

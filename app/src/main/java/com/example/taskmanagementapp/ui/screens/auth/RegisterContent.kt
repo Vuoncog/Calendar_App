@@ -1,12 +1,13 @@
 package com.example.taskmanagementapp.ui.screens.auth
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -18,17 +19,23 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
 import com.example.taskmanagementapp.ui.theme.Neutral6
 import com.example.taskmanagementapp.ui.theme.Neutral7
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import kotlin.math.log
 
 @Composable
 fun RegisterContent(
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    logInViewModel: LogInViewModel? = null
 ) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
     Image(
         modifier = Modifier.fillMaxSize(),
         painter = painterResource(id = R.drawable.login_background),
@@ -49,17 +56,17 @@ fun RegisterContent(
 
         //Text field
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            CustomTextField(
+            name = CustomTextField(
                 isPassword = false,
                 leadingIcon = R.drawable.ic_person_solid,
                 title = stringResource(R.string.full_name)
             )
-            CustomTextField(
+            email = CustomTextField(
                 isPassword = false,
                 leadingIcon = R.drawable.ic_user_circle,
                 title = stringResource(R.string.gmail)
             )
-            CustomTextField(isPassword = true)
+            password = CustomTextField(isPassword = true)
         }
 
         Attention()
@@ -67,7 +74,9 @@ fun RegisterContent(
         //button REGISTER
         CustomButton(
             buttonText = stringResource(R.string.register),
-            navigateToHome = {})
+            logInViewModel = logInViewModel,
+            navigateToHome = navigateToLogin,
+            onClickEvent = {logInViewModel?.signUp(email, password, name)})
 
         //Login
         RegisterOrLogin(

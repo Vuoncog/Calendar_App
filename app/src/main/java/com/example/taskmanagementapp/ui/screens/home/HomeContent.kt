@@ -19,12 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.ui.component.IconType
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
-fun HomeContent() {
+fun HomeContent(logInViewModel: LogInViewModel? = null) {
     val listTask = listOf(
         TaskType.Running,
         TaskType.Shopping,
@@ -67,6 +68,8 @@ fun HomeContent() {
         }
 
     }
+
+    logInViewModel?.signOut()
 }
 
 

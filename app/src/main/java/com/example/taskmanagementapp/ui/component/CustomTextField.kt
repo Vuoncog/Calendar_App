@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.component
 
+import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,14 +19,16 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.*
 
+@SuppressLint("ComposableNaming")
 @Composable
 fun CustomTextField(
     isPassword: Boolean = true,
     @DrawableRes leadingIcon: Int = R.drawable.ic_password,
-    title: String = "Password"
-) {
+    title: String = "Password",
+    currentEmail : String = ""
+) : String{
     var passwordVisibility by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(currentEmail) }
     TextField(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +39,7 @@ fun CustomTextField(
             PasswordVisualTransformation()
         },
         value = text,
-        onValueChange = { it ->
+        onValueChange = {
             text = it
         },
         leadingIcon = {
@@ -86,6 +89,11 @@ fun CustomTextField(
             disabledIndicatorColor = Color.Transparent
         ),
     )
+
+    fun setText(arg : String){
+        text = arg
+    }
+    return text
 }
 
 @Preview

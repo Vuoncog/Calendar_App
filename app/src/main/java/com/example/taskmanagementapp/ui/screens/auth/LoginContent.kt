@@ -21,6 +21,8 @@ import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginContent(
@@ -72,8 +74,8 @@ fun LoginContent(
         CustomButton(
             navigateToHome = navigateToHome,
             buttonText = stringResource(R.string.login),
-            onClickEvent = {logInViewModel?.signIn(email, password, navigateToHome)},
-            logInViewModel = logInViewModel,
+            onClickEvent = {logInViewModel?.signIn(email, password)},
+            logInViewModel = logInViewModel
 
         )
 

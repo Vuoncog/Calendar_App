@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.auth
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,9 +26,8 @@ import com.example.taskmanagementapp.ui.component.RegisterOrLogin
 import com.example.taskmanagementapp.ui.theme.Neutral6
 import com.example.taskmanagementapp.ui.theme.Neutral7
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlin.math.log
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun RegisterContent(
     navigateToLogin: () -> Unit,
@@ -76,8 +76,7 @@ fun RegisterContent(
             buttonText = stringResource(R.string.register),
             logInViewModel = logInViewModel,
             navigateToHome = navigateToLogin,
-            onClickEvent = {logInViewModel?.signUp(email, password, name, navigateToLogin)}
-        )
+            onClickEvent = {logInViewModel?.signUp(email, password, name)})
 
         //Login
         RegisterOrLogin(

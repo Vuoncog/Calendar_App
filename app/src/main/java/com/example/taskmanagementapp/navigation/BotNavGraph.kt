@@ -4,9 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.BottomBarItems
-import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import com.example.taskmanagementapp.ui.screens.management.ManagementContent
@@ -17,22 +15,17 @@ import java.time.LocalDate
 fun BottomNavGraph(
     navController: NavHostController,
     currentDay: LocalDate,
-    calendarDaySelected: (LocalDate) -> Unit,
-    logInViewModel: LogInViewModel? = null,
-    onExpandIconClicked: (ProfileSettingItem) -> Unit
+    calendarDaySelected: (LocalDate) -> Unit
 ) {
     NavHost(
         navController = navController,
         startDestination = BottomBarItems.Home.route
     ) {
         composable(BottomBarItems.Home.route) {
-            HomeContent(logInViewModel = logInViewModel)
+            HomeContent()
         }
         composable(BottomBarItems.Calendar.route) {
-            CalendarContent(
-                currentDay = currentDay,
-                calendarDaySelected = calendarDaySelected
-            )
+            CalendarContent()
         }
         composable(BottomBarItems.Management.route) {
             ManagementContent(
@@ -41,7 +34,7 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarItems.Profile.route) {
-            ProfileContent(onExpandIconClicked = onExpandIconClicked)
+            ProfileContent()
         }
 
     }

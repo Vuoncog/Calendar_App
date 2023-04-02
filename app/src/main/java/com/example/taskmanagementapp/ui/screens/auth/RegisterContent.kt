@@ -21,7 +21,9 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
-import com.example.taskmanagementapp.ui.theme.*
+import com.example.taskmanagementapp.ui.theme.Neutral6
+import com.example.taskmanagementapp.ui.theme.Neutral7
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun RegisterContent(
@@ -34,7 +36,7 @@ fun RegisterContent(
         contentScale = ContentScale.FillHeight
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.padding(
             top = 72.dp,
             start = 16.dp,
@@ -46,17 +48,19 @@ fun RegisterContent(
         Register()
 
         //Text field
-        CustomTextField(
-            isPassword = false,
-            leadingIcon = R.drawable.ic_person_solid,
-            title = stringResource(R.string.full_name)
-        )
-        CustomTextField(
-            isPassword = false,
-            leadingIcon = R.drawable.ic_user_circle,
-            title = stringResource(R.string.gmail)
-        )
-        CustomTextField(isPassword = true)
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            CustomTextField(
+                isPassword = false,
+                leadingIcon = R.drawable.ic_person_solid,
+                title = stringResource(R.string.full_name)
+            )
+            CustomTextField(
+                isPassword = false,
+                leadingIcon = R.drawable.ic_user_circle,
+                title = stringResource(R.string.gmail)
+            )
+            CustomTextField(isPassword = true)
+        }
 
         Attention()
 

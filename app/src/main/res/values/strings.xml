@@ -11,4 +11,9 @@
     <string name="login">Log in</string>
     <string name="not_a_member">Not a member?</string>
     <string name="register_now">Register now</string>
+    <string name="home">Home</string>
+    <string name="home_first_title">Today, you\'ve got</string>
+    <string name="view_all">VIEW ALL</string>
+    <string name="next_events">Next events</string>
+    <string name="upcoming_events">Upcoming events</string>
 </resources>

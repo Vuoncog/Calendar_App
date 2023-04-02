@@ -7,12 +7,15 @@ import androidx.navigation.compose.composable
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
-import com.example.taskmanagementapp.ui.screens.memo.MemoContent
+import com.example.taskmanagementapp.ui.screens.management.ManagementContent
 import com.example.taskmanagementapp.ui.screens.profile.ProfileContent
+import java.time.LocalDate
 
 @Composable
 fun BottomNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    currentDay: LocalDate,
+    calendarDaySelected: (LocalDate) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -24,8 +27,11 @@ fun BottomNavGraph(
         composable(BottomBarItems.Calendar.route) {
             CalendarContent()
         }
-        composable(BottomBarItems.Memo.route) {
-            MemoContent()
+        composable(BottomBarItems.Management.route) {
+            ManagementContent(
+                currentDay = currentDay,
+                calendarDaySelected = calendarDaySelected
+            )
         }
         composable(BottomBarItems.Profile.route) {
             ProfileContent()

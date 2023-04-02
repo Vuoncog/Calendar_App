@@ -1,12 +1,6 @@
 package com.example.taskmanagementapp.constant
 
 import androidx.annotation.DrawableRes
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import com.example.taskmanagementapp.R
 
 sealed class BottomBarItems(
@@ -28,7 +22,7 @@ sealed class BottomBarItems(
         icon = R.drawable.ic_calendar,
         iconSelected = R.drawable.ic_calendar_solid
     )
-    object Memo: BottomBarItems(
+    object Management: BottomBarItems(
         title = "Memo",
         route = "memo",
         icon = R.drawable.ic_notepad,

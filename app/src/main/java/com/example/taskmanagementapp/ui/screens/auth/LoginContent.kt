@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -15,11 +15,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.*
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
+import com.example.taskmanagementapp.ui.theme.Neutral4
+import com.example.taskmanagementapp.ui.theme.Neutral7
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun LoginContent(
@@ -34,7 +36,7 @@ fun LoginContent(
         contentScale = ContentScale.FillHeight
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.padding(
             top = 72.dp,
             start = 16.dp,
@@ -46,20 +48,24 @@ fun LoginContent(
         Login()
 
         //Text field
-        CustomTextField(
-            isPassword = false,
-            leadingIcon = R.drawable.ic_user_circle,
-            title = "Gmail"
-        )
-        CustomTextField(isPassword = true)
-        ClickableText(
-            modifier = Modifier.fillMaxWidth(),
-            text = AnnotatedString(stringResource(R.string.recover_password)),
-            onClick = {
-                navigateToRecoverPassword()
-            },
-            style = VisbyTypography.subtitle1
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            CustomTextField(
+                isPassword = false,
+                leadingIcon = R.drawable.ic_user_circle,
+                title = "Gmail"
+            )
+            CustomTextField(isPassword = true)
+            ClickableText(
+                modifier = Modifier.fillMaxWidth(),
+                text = AnnotatedString(stringResource(R.string.recover_password)),
+                onClick = {
+                    navigateToRecoverPassword()
+                },
+                style = VisbyTypography.subtitle1
+            )
+        }
 
         //button LOG IN
         CustomButton(
@@ -78,14 +84,18 @@ fun LoginContent(
         )
 
         // Other platform
-        CustomOutlinedButton(
-            navigateToHome,
-            whichPlatform = "Google"
-        )
-        CustomOutlinedButton(
-            navigateToHome,
-            whichPlatform = "Facebook"
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            CustomOutlinedButton(
+                navigateToHome,
+                whichPlatform = "Google"
+            )
+            CustomOutlinedButton(
+                navigateToHome,
+                whichPlatform = "Facebook"
+            )
+        }
 
         //Register
         RegisterOrLogin (

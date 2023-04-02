@@ -4,7 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -24,7 +25,7 @@ fun BottomBar(
     val screens = listOf(
         BottomBarItems.Home,
         BottomBarItems.Calendar,
-        BottomBarItems.Memo,
+        BottomBarItems.Management,
         BottomBarItems.Profile,
 
         )

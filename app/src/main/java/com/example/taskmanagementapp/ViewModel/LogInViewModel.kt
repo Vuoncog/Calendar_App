@@ -6,10 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
 import android.widget.Toast
-<<<<<<< HEAD
-import androidx.lifecycle.ViewModel
-=======
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
 import com.example.taskmanagementapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -17,11 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
-<<<<<<< HEAD
-class LogInViewModel(val mainActivity: Activity?){
-=======
 class LogInViewModel(val mainActivity: Activity?) {
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
 
     // Check network connection, used for Sign In and Sign Up
     fun isNetworkAvailable(): Boolean {
@@ -60,22 +52,14 @@ class LogInViewModel(val mainActivity: Activity?) {
         return result
     }
 
-<<<<<<< HEAD
-    fun signUp(email: String, password: String, name: String, resultJob : (()-> Unit)? = null): FirebaseUser? {
-=======
     fun signUp(email: String, password: String, name: String){
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
                 if (name.isNotBlank()) {
                     // After checking network connection and validate user's information, sign up user
                     // with Firebase using email and password
-<<<<<<< HEAD
-                    val startTime = System.currentTimeMillis()
-=======
                     var startTime = System.currentTimeMillis()
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(mainActivity!!) { task ->
                             if (task.isSuccessful) {
@@ -85,20 +69,12 @@ class LogInViewModel(val mainActivity: Activity?) {
                                 // Sign up success, return user just created and update User's full name
                                 Firebase.auth.currentUser!!.updateProfile(nameUpdate)
                                 Log.e("RESULT", "createUserWithEmail:success")
-<<<<<<< HEAD
-                                val endTime = System.currentTimeMillis()
-=======
                                 var endTime = System.currentTimeMillis()
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
                                 Log.e("TIME", (endTime - startTime).toString())
                                 Toast.makeText(
                                     mainActivity, R.string.sign_up_successfully,
                                     Toast.LENGTH_SHORT
                                 ).show()
-<<<<<<< HEAD
-                                resultJob?.let {resultJob()}
-=======
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
                             } else {
                                 // If sign up fails, display a message to the user.
                                 Log.e("RESULT", "createUserWithEmail:failure", task.exception)
@@ -120,10 +96,6 @@ class LogInViewModel(val mainActivity: Activity?) {
                 ).show()
             }
         }
-<<<<<<< HEAD
-        return Firebase.auth.currentUser
-=======
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
     }
 
     fun getCurrentUser(): FirebaseUser? {
@@ -134,11 +106,7 @@ class LogInViewModel(val mainActivity: Activity?) {
         return user
     }
 
-<<<<<<< HEAD
-    fun signIn(email: String, password: String, resultJob : (()-> Unit)? = null){
-=======
     fun signIn(email: String, password: String){
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
@@ -149,19 +117,11 @@ class LogInViewModel(val mainActivity: Activity?) {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.e("RESULT", "signInWithEmail:success")
-<<<<<<< HEAD
-
-=======
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
                             Toast.makeText(
                                 mainActivity,
                                 R.string.sign_in_successfully,
                                 Toast.LENGTH_SHORT
                             ).show()
-<<<<<<< HEAD
-                            resultJob?.let { resultJob() }
-=======
->>>>>>> 9318657 (Sign In and Sign Up by Custom Email)
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("RESULT", "signInWithEmail:failure", task.exception)

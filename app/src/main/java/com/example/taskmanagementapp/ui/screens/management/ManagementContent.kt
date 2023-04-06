@@ -117,5 +117,5 @@ fun DisplayDate(
 @Preview
 @Composable
 fun ManagementPreView() {
-    ManagementContent(LocalDate.now(), {})
+    ManagementContent(LocalDate.now(),{})
 }

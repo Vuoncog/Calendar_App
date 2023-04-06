@@ -111,6 +111,9 @@ dependencies {
     //Firebase SDK
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    //Google SDK
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 }
 kapt {
     correctErrorTypes = true

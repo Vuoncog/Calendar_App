@@ -22,7 +22,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @Composable
 fun CustomOutlinedButton(
     navigateToHome: () -> Unit,
-    whichPlatform: String
+    whichPlatform: String,
+    onClickEvent : (() -> Unit)? = null
 ) {
     Button(
         modifier = Modifier

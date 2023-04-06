@@ -1,7 +1,5 @@
 package com.example.taskmanagementapp.ui.component
 
-import android.icu.text.RelativeDateTimeFormatter.RelativeUnit
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,16 +11,17 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
-import java.util.logging.Handler
-import kotlinx.coroutines.delay as delay1
+import kotlinx.coroutines.*
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, DelicateCoroutinesApi::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 fun CustomButton(
     navigateToHome: () -> Unit,
     buttonText: String = "button",
-    onClickEvent: (() -> Unit)? = null,
-    logInViewModel: LogInViewModel? = null
+    onClickEvent: (()->Unit)? = null,
+    logInViewModel: LogInViewModel? = null,
 ) {
     Button(
         modifier = Modifier
@@ -30,15 +29,7 @@ fun CustomButton(
             .fillMaxWidth()
             .height(48.dp),
         onClick = {
-            onClickEvent?.let {
-                onClickEvent()
-                logInViewModel?.let {
-                    val handler : android.os.Handler = android.os.Handler()
-                    handler.postDelayed({ it.getCurrentUser()?.let {
-                        navigateToHome()
-                    } },2900)
-                }
-            }
+                  onClickEvent?.let {onClickEvent()}
         },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = SystemColor,

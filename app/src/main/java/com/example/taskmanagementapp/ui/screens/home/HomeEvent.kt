@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.BackgroundColorTask
-import com.example.taskmanagementapp.ui.theme.SystemColor
+import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
@@ -37,7 +37,7 @@ fun HomeEvent() {
                 text = "Develop app mobile with Kotlin",
                 style = VisbyTypography.h5,
                 maxLines = 2,
-                color = SystemColor
+                color = Neutral2
             )
 
             Column(

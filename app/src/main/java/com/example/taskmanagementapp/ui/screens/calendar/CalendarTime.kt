@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -18,7 +17,10 @@ fun TimeGrid(
     Column(
         modifier = Modifier
             .then(modifier)
-            .padding(vertical = 12.dp),
+            .padding(
+                top = 12.dp,
+                bottom = 20.dp
+            ),
         verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
         for (time in listTime) {

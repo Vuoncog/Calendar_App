@@ -13,15 +13,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.EventInfo
-import com.example.taskmanagementapp.ui.component.DisplayDate
 import com.example.taskmanagementapp.ui.theme.*
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
+
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CalendarContent(
-    currentDay: LocalDate,
-    calendarDaySelected: (LocalDate) -> Unit
+    date: Date,
+    calendar: Calendar,
+    selectedDate: Date,
+    onSelectDay: (Date) -> Unit
 ) {
     val eventList = listOf(
         EventInfo(
@@ -42,12 +46,6 @@ fun CalendarContent(
             startTime = 6f,
             timeRange = 3f
         ),
-        EventInfo(
-            color = Primary2,
-            eventName = "Asss",
-            startTime = 11f,
-            timeRange = 2f
-        ),
     )
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
@@ -61,11 +59,6 @@ fun CalendarContent(
             event.timeRange + event.startTime
         )
     }
-//    for (index in 1 until eventList.size) {
-//        listSpace.add(
-//            eventList[index].startTime + eventList[index].timeRange
-//        )
-//    }
     val scrollState by mutableStateOf(rememberScrollState())
     val localDensity = LocalDensity.current
     var columnHeightDp by remember {
@@ -76,19 +69,22 @@ fun CalendarContent(
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
             .padding(
                 horizontal = 16.dp,
-                vertical = 8.dp
+                vertical = 20.dp
             )
             .onGloballyPositioned { coordinates ->
                 columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
             }
     ) {
-        DisplayDate(
-            date = currentDay,
-            calendarDaySelected = calendarDaySelected
+        WeeklyCalendar(
+            onSelectedDayChange = {},
+            currentDate = date,
+            calendar = calendar,
+            selectedDate = selectedDate,
+            onSelectDay = onSelectDay
         )
 
         Divider(
@@ -130,8 +126,12 @@ fun CalendarContent(
 @Preview
 @Composable
 fun CalendarPreview() {
+    val date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
+    val calendar = Calendar.getInstance()
     CalendarContent(
-        currentDay = LocalDate.now(),
-        calendarDaySelected = {}
+        date = date,
+        calendar = calendar,
+        selectedDate = date,
+        onSelectDay = {}
     )
 }

@@ -11,16 +11,21 @@ import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import com.example.taskmanagementapp.ui.screens.management.ManagementContent
 import com.example.taskmanagementapp.ui.screens.profile.ProfileContent
-import java.time.LocalDate
+import java.util.*
 
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
-    currentDay: LocalDate,
-    calendarDaySelected: (LocalDate) -> Unit,
     logInViewModel: LogInViewModel? = null,
-    onExpandIconClicked: (ProfileSettingItem) -> Unit
+    onExpandIconClicked: (ProfileSettingItem) -> Unit,
+    date: Date,
+    calendar: Calendar,
+    selectedDate: Date,
+    onSelectDay: (Date) -> Unit,
 ) {
+    val resetCalendar = Calendar.getInstance()
+    resetCalendar.time = selectedDate
+
     NavHost(
         navController = navController,
         startDestination = BottomBarItems.Home.route
@@ -30,14 +35,18 @@ fun BottomNavGraph(
         }
         composable(BottomBarItems.Calendar.route) {
             CalendarContent(
-                currentDay = currentDay,
-                calendarDaySelected = calendarDaySelected
+                date = date,
+                calendar = calendar,
+                selectedDate = selectedDate,
+                onSelectDay = onSelectDay
             )
         }
         composable(BottomBarItems.Management.route) {
             ManagementContent(
-                currentDay = currentDay,
-                calendarDaySelected = calendarDaySelected
+                date = date,
+                calendar = calendar,
+                selectedDate = selectedDate,
+                onSelectDay = onSelectDay
             )
         }
         composable(BottomBarItems.Profile.route) {

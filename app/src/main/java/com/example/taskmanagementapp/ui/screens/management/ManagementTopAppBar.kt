@@ -1,41 +1,45 @@
 package com.example.taskmanagementapp.ui.screens.management
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.Neutral1
+import com.example.taskmanagementapp.ui.screens.calendar.NextWeekIcon
+import com.example.taskmanagementapp.ui.screens.calendar.PreviousWeekIcon
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
-import java.time.LocalDate
+import java.util.*
 
 @Composable
 fun ManagementTopAppBar(
-    currentDay: LocalDate,
-    previousDayClicked: (LocalDate) -> Unit,
-    nextDayClicked: (LocalDate) -> Unit,
+    onPrevWeekClicked: (Date) -> Unit,
+    onNextWeekClicked: (Date) -> Unit,
+    currentDay: Date
 ) {
     ManagementAppBar(
-        currentDay = currentDay,
-        previousDayClicked = previousDayClicked,
-        nextDayClicked = nextDayClicked,
+        onPrevWeekClicked = onPrevWeekClicked,
+        onNextWeekClicked = onNextWeekClicked,
+        currentDay = currentDay
     )
 }
 
 @Composable
 fun ManagementAppBar(
-    currentDay: LocalDate,
-    previousDayClicked: (LocalDate) -> Unit,
-    nextDayClicked: (LocalDate) -> Unit,
+    onPrevWeekClicked: (Date) -> Unit,
+    onNextWeekClicked: (Date) -> Unit,
+    currentDay: Date
 ) {
     Box(
         modifier = Modifier
@@ -62,64 +66,26 @@ fun ManagementAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         actions = {
-            NextDayIcon(
-                nextDayClicked = nextDayClicked,
+            NextWeekIcon(
+                nextDayClicked = onNextWeekClicked,
                 currentDay = currentDay
             )
         },
         navigationIcon = {
-            PreviousDayIcon(
-                previousDayClicked = previousDayClicked,
+            PreviousWeekIcon(
+                previousDayClicked = onPrevWeekClicked,
                 currentDay = currentDay
             )
         }
     )
 }
 
-@Composable
-fun PreviousDayIcon(
-    previousDayClicked: (LocalDate) -> Unit,
-    currentDay: LocalDate
-) {
-    IconButton(
-        onClick = {
-            previousDayClicked(currentDay)
-        }
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_chevron_left),
-            contentDescription = "Previous day",
-            tint = Neutral1
-        )
-    }
-}
-
-@Composable
-fun NextDayIcon(
-    nextDayClicked: (LocalDate) -> Unit,
-    currentDay: LocalDate
-) {
-    IconButton(
-        onClick = {
-            nextDayClicked(currentDay)
-        }
-    ) {
-        Icon(
-            modifier = Modifier.size(24.dp),
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_chevron_right),
-            contentDescription = "Next day",
-            tint = Neutral1
-        )
-    }
-}
-
 @Preview
 @Composable
 fun ManagementTopAppBarPreview() {
     ManagementTopAppBar(
-        currentDay = LocalDate.now(),
-        previousDayClicked = {},
-        nextDayClicked = {}
+        currentDay = Date(),
+        onNextWeekClicked = {},
+        onPrevWeekClicked = {}
     )
 }

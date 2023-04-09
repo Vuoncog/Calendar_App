@@ -1,24 +1,28 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.taskmanagementapp.ui.screens.management
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.TaskType
-import com.example.taskmanagementapp.ui.component.DisplayDate
+import com.example.taskmanagementapp.ui.screens.calendar.WeeklyCalendar
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 @Composable
 fun ManagementContent(
-    currentDay: LocalDate,
-    calendarDaySelected: (LocalDate) -> Unit
+    date: Date,
+    calendar: Calendar,
+    selectedDate: Date,
+    onSelectDay: (Date) -> Unit
 ) {
 
     val listTask = listOf(
@@ -40,8 +44,15 @@ fun ManagementContent(
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            DisplayDate(date = currentDay,
-            calendarDaySelected = calendarDaySelected)
+//            DisplayDate(date = currentDay,
+//            calendarDaySelected = calendarDaySelected)
+            WeeklyCalendar(
+                onSelectedDayChange = {},
+                currentDate = date,
+                calendar = calendar,
+                selectedDate = selectedDate,
+                onSelectDay = onSelectDay
+            )
 
             TaskInfoCard()
 
@@ -55,5 +66,12 @@ fun ManagementContent(
 @Preview
 @Composable
 fun ManagementPreView() {
-    ManagementContent(LocalDate.now(),{})
+    val date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
+    val calendar = Calendar.getInstance()
+    ManagementContent(
+        date = date,
+        calendar = calendar,
+        selectedDate = date,
+        onSelectDay = {}
+    )
 }

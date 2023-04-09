@@ -17,10 +17,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.ui.theme.*
+import java.util.*
 
 @Composable
 fun BottomBar(
-    navController: NavHostController
+    navController: NavHostController,
+    resetDay: (Date) -> Unit
 ) {
     val screens = listOf(
         BottomBarItems.Home,
@@ -45,7 +47,8 @@ fun BottomBar(
             BottomItem(
                 screen = screen,
                 navController = navController,
-                currentDestination = currentDestination
+                currentDestination = currentDestination,
+                resetDay = resetDay
             )
         }
     }
@@ -55,7 +58,8 @@ fun BottomBar(
 fun RowScope.BottomItem(
     screen: BottomBarItems,
     navController: NavHostController,
-    currentDestination: NavDestination?
+    currentDestination: NavDestination?,
+    resetDay: (Date) -> Unit
 ) {
     val isSelected = currentDestination?.hierarchy?.any {
         it.route == screen.route
@@ -65,6 +69,8 @@ fun RowScope.BottomItem(
         selected = isSelected,
         onClick = {
             if (!isSelected) {
+                val resetCalendar = Calendar.getInstance()
+                resetDay(resetCalendar.time)
                 navController.navigate(route = screen.route) {
                     popUpTo(navController.graph.findStartDestination().id)
                     launchSingleTop = true

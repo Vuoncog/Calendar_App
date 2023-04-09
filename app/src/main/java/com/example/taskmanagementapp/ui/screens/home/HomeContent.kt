@@ -121,7 +121,7 @@ fun TodoTaskItem(
             Text(
                 text = taskType.description,
                 style = VisbyTypography.subtitle2,
-                color = SystemColor
+                color = Neutral2
             )
             Text(
                 text = "8:00 AM",
@@ -137,7 +137,8 @@ fun TodoTaskItem(
                 }
                 .align(CenterVertically),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_vertical_menu),
-            contentDescription = "More information"
+            contentDescription = "More information",
+            tint = SystemColor
         )
 
     }

@@ -42,7 +42,10 @@ fun MainScreen(logInViewModel: LogInViewModel? = null) {
             calendarDaySelected = { selectedDay ->
                 currentDay = selectedDay
             },
-            logInViewModel =  logInViewModel
+            logInViewModel = logInViewModel,
+            onExpandIconClicked = {
+
+            }
         )
     }
 }

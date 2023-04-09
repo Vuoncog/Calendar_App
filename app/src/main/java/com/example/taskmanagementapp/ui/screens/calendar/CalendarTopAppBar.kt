@@ -43,7 +43,7 @@ fun CalendarAppBar() {
     TopAppBar(
         title = {
             Text(
-                text = "Memo / Diary",
+                text = "Calendar",
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,

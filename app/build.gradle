@@ -114,6 +114,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    //Google Sign In SDK
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+
     //Third Plugin
     implementation("io.github.ahmednader65:ComposeSingleRowCalender:1.0.1")
 

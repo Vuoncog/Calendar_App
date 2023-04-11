@@ -42,7 +42,7 @@ fun LoginContent(
         contentScale = ContentScale.FillHeight
     )
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.padding(
             top = 72.dp,
             start = 16.dp,
@@ -92,7 +92,8 @@ fun LoginContent(
         // Other platform
         CustomOutlinedButton(
             navigateToHome,
-            whichPlatform = "Google"
+            whichPlatform = "Google",
+            onClickEvent = {logInViewModel?.signInGoogle(navigateToHome)}
         )
         CustomOutlinedButton(
             navigateToHome,

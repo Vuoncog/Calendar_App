@@ -30,7 +30,7 @@ fun CustomOutlinedButton(
             .height(48.dp)
             .fillMaxWidth(),
         onClick = {
-                navigateToHome()
+                  onClickEvent?.let { onClickEvent()}
         },
         shape = RoundedCornerShape(40.dp),
         border = BorderStroke(1.dp, SystemColor),

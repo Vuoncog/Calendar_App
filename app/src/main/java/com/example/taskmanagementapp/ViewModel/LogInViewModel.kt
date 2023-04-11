@@ -1,32 +1,40 @@
 package com.example.taskmanagementapp.ViewModel
 
-import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.content.IntentSender
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
+import com.example.taskmanagementapp.MainActivity
 import com.example.taskmanagementapp.R
+import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
-class LogInViewModel(val mainActivity: Activity?) {
+class LogInViewModel(private val mainActivity: MainActivity){
+    private val signInClient by lazy {Identity.getSignInClient(mainActivity) }
+    private val auth = Firebase.auth
+    private var mResultJob : ()->Unit = {}
 
     // Check network connection, used for Sign In and Sign Up
-    fun isNetworkAvailable(): Boolean {
-        mainActivity?.let {
-            val connectivityManager: ConnectivityManager =
-                it.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetworkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
-            return (activeNetworkInfo != null) && (activeNetworkInfo.isConnected)
-        }
-        return false
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager: ConnectivityManager =
+            mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return (activeNetworkInfo != null) && (activeNetworkInfo.isConnected)
     }
 
-    fun isUserInfoValidate(email: String, password: String): Boolean {
+    private fun isUserInfoValidate(email: String, password: String): Boolean {
         var result = true
         if (email.isNotBlank() && password.isNotBlank()) {
 
@@ -52,16 +60,16 @@ class LogInViewModel(val mainActivity: Activity?) {
         return result
     }
 
-    fun signUp(email: String, password: String, name: String){
+    fun signUp(email: String, password: String, name: String, resultJob : (()-> Unit)? = null): FirebaseUser? {
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
                 if (name.isNotBlank()) {
                     // After checking network connection and validate user's information, sign up user
                     // with Firebase using email and password
-                    var startTime = System.currentTimeMillis()
+                    val startTime = System.currentTimeMillis()
                     auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(mainActivity!!) { task ->
+                        .addOnCompleteListener(mainActivity) { task ->
                             if (task.isSuccessful) {
                                 val nameUpdate = userProfileChangeRequest {
                                     displayName = name
@@ -69,12 +77,13 @@ class LogInViewModel(val mainActivity: Activity?) {
                                 // Sign up success, return user just created and update User's full name
                                 Firebase.auth.currentUser!!.updateProfile(nameUpdate)
                                 Log.e("RESULT", "createUserWithEmail:success")
-                                var endTime = System.currentTimeMillis()
+                                val endTime = System.currentTimeMillis()
                                 Log.e("TIME", (endTime - startTime).toString())
                                 Toast.makeText(
                                     mainActivity, R.string.sign_up_successfully,
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                resultJob?.let {resultJob()}
                             } else {
                                 // If sign up fails, display a message to the user.
                                 Log.e("RESULT", "createUserWithEmail:failure", task.exception)
@@ -96,6 +105,7 @@ class LogInViewModel(val mainActivity: Activity?) {
                 ).show()
             }
         }
+        return Firebase.auth.currentUser
     }
 
     fun getCurrentUser(): FirebaseUser? {
@@ -106,22 +116,24 @@ class LogInViewModel(val mainActivity: Activity?) {
         return user
     }
 
-    fun signIn(email: String, password: String){
+    fun signIn(email: String, password: String, resultJob : (()-> Unit)? = null){
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
                 // After checking network connection and validate user's information, authenticate
                 // with Firebase using email and password
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(mainActivity!!) { task ->
+                    .addOnCompleteListener(mainActivity) { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.e("RESULT", "signInWithEmail:success")
+
                             Toast.makeText(
                                 mainActivity,
                                 R.string.sign_in_successfully,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            resultJob?.let { resultJob() }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("RESULT", "signInWithEmail:failure", task.exception)
@@ -143,5 +155,78 @@ class LogInViewModel(val mainActivity: Activity?) {
 
     fun signOut() {
         Firebase.auth.signOut()
+    }
+
+    fun signInGoogle(resultJob : ()->Unit){
+        mResultJob = resultJob
+        if(isNetworkAvailable())
+        {
+            val signInRequest = GetSignInIntentRequest.builder()
+                .setServerClientId(mainActivity.getString(R.string.web_client_id))
+                .build()
+
+            signInClient.getSignInIntent(signInRequest)
+                .addOnSuccessListener { pendingIntent ->
+                    launchSignIn(pendingIntent)
+                }
+                .addOnFailureListener { e ->
+                    Log.e("INTENT_ERROR", "Google Sign-in failed", e)
+                }
+        }
+        else
+            Toast.makeText(mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun launchSignIn(pendingIntent: PendingIntent) {
+        try {
+            val intentSenderRequest = IntentSenderRequest.Builder(pendingIntent)
+                .build()
+           mainActivity.getSignInLauncher().launch(intentSenderRequest)
+        } catch (e: IntentSender.SendIntentException) {
+            Log.e("SIGNIN_ERROR", "Couldn't start Sign In: ${e.localizedMessage}")
+        }
+    }
+
+    fun handleSignInResult(data: Intent?) {
+        // Result returned from launching the Sign In PendingIntent
+        try {
+            // Google Sign In was successful, authenticate with Firebase
+            val credential = signInClient.getSignInCredentialFromIntent(data)
+            val idToken = credential.googleIdToken
+            if (idToken != null) {
+                Log.e("CREDENTIAL_ID", "firebaseAuthWithGoogle: ${credential.id}")
+                firebaseAuthWithGoogle(idToken)
+            } else {
+                // Shouldn't happen.
+                Log.e("NO_ID", "No ID token!")
+            }
+        } catch (e: ApiException) {
+            // Google Sign In failed, update UI appropriately
+            Log.e("GOOGLE_SIGNIN_FAILED", "Google sign in failed", e)
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(mainActivity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:success")
+                    Toast.makeText(
+                        mainActivity,
+                        R.string.sign_in_successfully,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    mResultJob()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(
+                        mainActivity, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:failure", task.exception)
+                }
+            }
     }
 }

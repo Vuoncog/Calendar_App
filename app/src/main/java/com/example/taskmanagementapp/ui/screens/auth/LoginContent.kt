@@ -16,13 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
-import com.example.taskmanagementapp.ui.theme.*
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.taskmanagementapp.ui.theme.Neutral4
+import com.example.taskmanagementapp.ui.theme.Neutral7
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun LoginContent(
@@ -97,7 +97,8 @@ fun LoginContent(
         )
         CustomOutlinedButton(
             navigateToHome,
-            whichPlatform = "Facebook"
+            whichPlatform = "Facebook",
+            onClickEvent = navigateToHome
         )
 
         //Register

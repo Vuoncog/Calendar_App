@@ -13,6 +13,8 @@ import com.example.taskmanagementapp.ui.screens.management.ManagementContent
 import com.example.taskmanagementapp.ui.screens.profile.ProfileContent
 import java.util.*
 
+
+
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
@@ -50,8 +52,7 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarItems.Profile.route) {
-            ProfileContent(onExpandIconClicked = onExpandIconClicked)
+            ProfileContent()
         }
-
     }
 }

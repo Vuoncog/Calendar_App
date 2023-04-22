@@ -14,11 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.ui.theme.Primary4
+import com.example.taskmanagementapp.ui.theme.SystemColor
 
 @Composable
 fun IconType(
-    @DrawableRes icon: Int
+    @DrawableRes icon: Int,
+    systemColor: Color = SystemColor
 ) {
     Box(
         modifier = Modifier
@@ -32,7 +33,7 @@ fun IconType(
             modifier = Modifier
                 .size(16.dp)
                 .align(Alignment.Center),
-            tint = Primary4
+            tint = systemColor
         )
     }
 }

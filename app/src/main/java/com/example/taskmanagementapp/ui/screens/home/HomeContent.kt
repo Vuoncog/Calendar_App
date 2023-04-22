@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -55,8 +56,10 @@ fun HomeContent(logInViewModel: LogInViewModel? = null) {
 
         TodoTask(list = listTask)
 
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)
-        , modifier = Modifier.padding(top = 12.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(top = 12.dp)
+        ) {
             Text(
                 text = stringResource(R.string.upcoming_events),
                 style = VisbyTypography.subtitle1,
@@ -71,7 +74,6 @@ fun HomeContent(logInViewModel: LogInViewModel? = null) {
 
     logInViewModel?.signOut()
 }
-
 
 
 @Composable
@@ -100,7 +102,8 @@ fun MiniDetail(
 
 @Composable
 fun TodoTaskItem(
-    taskType: TaskType
+    taskType: TaskType,
+    systemColor: Color = SystemColor
 ) {
     Row(
         modifier = Modifier
@@ -111,7 +114,10 @@ fun TodoTaskItem(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = CenterVertically
     ) {
-        IconType(icon = taskType.icon)
+        IconType(
+            icon = taskType.icon,
+            systemColor = systemColor
+        )
         Column(
             modifier = Modifier
                 .align(CenterVertically)
@@ -138,7 +144,7 @@ fun TodoTaskItem(
                 .align(CenterVertically),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_vertical_menu),
             contentDescription = "More information",
-            tint = SystemColor
+            tint = systemColor
         )
 
     }

@@ -1,135 +1,97 @@
 package com.example.taskmanagementapp.ui.screens.profile
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.ProfileAreaSettingName
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.constant.ProfileSettingItem
-import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.Neutral4
-import com.example.taskmanagementapp.ui.theme.Neutral6
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
+import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.SettingsBottomSheet
+import com.example.taskmanagementapp.ui.theme.Primary4
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.bottomSheet
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
+import kotlinx.coroutines.launch
+import java.util.*
 
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun ProfileContent(
-    onExpandIconClicked: (ProfileSettingItem) -> Unit
-) {
-    val listGeneralSettingItems = listOf(
-        ProfileSettingItem.NotificationAndAlerts,
-        ProfileSettingItem.Color,
-        ProfileSettingItem.Settings,
-    )
-    val listAccountSettingItems = listOf(
-        ProfileSettingItem.MoreInformation,
-        ProfileSettingItem.Logout,
-    )
+fun ProfileContent() {
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberNavController(bottomSheetNavigator)
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(vertical = 8.dp)
-    ) {
-        AvatarInfo()
-        ProfileSettings(
-            listSettingItems = listGeneralSettingItems,
-            title = ProfileAreaSettingName.GENERAL,
-            onExpandIconClicked = onExpandIconClicked
-        )
-        ProfileSettings(
-            listSettingItems = listAccountSettingItems,
-            title = ProfileAreaSettingName.ACCOUNT,
-            onExpandIconClicked = onExpandIconClicked
-        )
-    }
-}
-
-@Composable
-fun ProfileSettings(
-    listSettingItems: List<ProfileSettingItem>,
-    title: ProfileAreaSettingName,
-    onExpandIconClicked: (ProfileSettingItem) -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = title.areaName,
-            style = VisbyTypography.subtitle1,
-            color = Neutral4,
-            modifier = Modifier.padding(start = 16.dp)
-        )
-
-        when (title) {
-            ProfileAreaSettingName.GENERAL -> {
-                ProfileAreaSetting(
-                    listSettingItems = listSettingItems,
-                    onExpandIconClicked = onExpandIconClicked
-                )
-            }
-            ProfileAreaSettingName.ACCOUNT -> {
-                ProfileAreaSetting(
-                    listSettingItems = listSettingItems,
-                    onExpandIconClicked = onExpandIconClicked
-                )
-            }
+    val openBottomSheet: (ProfileSettingItem) -> Unit = { profileSettingItem ->
+        coroutineScope.launch {
+            navController.navigate("profile/${profileSettingItem.title}")
         }
     }
-}
 
-@Composable
-fun AvatarInfo() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = Modifier.padding(
-            start = 16.dp,
-            end = 16.dp,
-            bottom = 8.dp
+    val closeBottomSheet: () -> Unit = {
+        coroutineScope.launch {
+            navController.popBackStack()
+        }
+    }
+
+    var systemColor by remember { mutableStateOf(Primary4) }
+    var systemColorPreview by remember { mutableStateOf(systemColor) }
+
+    ModalBottomSheetLayout(
+        bottomSheetNavigator = bottomSheetNavigator,
+        sheetShape = RoundedCornerShape(
+            topStart = 24.dp,
+            topEnd = 24.dp
         ),
-        verticalAlignment = Alignment.CenterVertically
+        sheetElevation = 4.dp
     ) {
-        Box(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape),
+        NavHost(
+            navController = navController,
+            startDestination = BottomBarItems.Profile.route
         ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(1f,1f),
-                painter = painterResource(id = R.drawable.avatar),
-                contentDescription = "Avatar",
-                contentScale = ContentScale.Crop
-            )
-        }
+            composable(BottomBarItems.Profile.route) {
+                ProfileContentUI(
+                    onExpandIconClicked = {
+                        openBottomSheet(it)
+                    },
+                    systemColor = systemColor
+                )
+            }
+            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Color.route}") {
+                ColorBottomSheet(
+                    systemColor = systemColorPreview,
+                    onColorChange = {
+                        systemColorPreview = it
+                    },
+                    onCheckClicked = {
+                        systemColor = it
+                        closeBottomSheet()
+                    },
+                    onCloseClicked = {
+                        closeBottomSheet()
+                    }
+                )
+            }
 
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                text = "Van Vuong",
-                style = VisbyTypography.h6,
-                color = Neutral1
-            )
-
-            Text(
-                text = "vuon.co.g@gmail.com",
-                style = VisbyTypography.body1,
-                color = Neutral6
-            )
+            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Settings.route}") {
+                SettingsBottomSheet(
+                    systemColor = systemColor,
+                    onBackupClicked = {},
+                    onCloseClicked = {
+                        closeBottomSheet()
+                    }
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun ProfilePreview() {
-    ProfileContent({})
+fun ProfileContentPreview() {
+    ProfileContent()
 }

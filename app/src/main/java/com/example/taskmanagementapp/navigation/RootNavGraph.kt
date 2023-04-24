@@ -16,7 +16,7 @@ fun RootNavigationGraph(
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.AUTHENTICATION
+        startDestination = if(logInViewModel?.getCurrentUser() != null){Graph.MAIN}else{Graph.AUTHENTICATION}
     ) {
         authNavigation(
             navController = navController,

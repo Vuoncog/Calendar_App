@@ -16,13 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.ui.theme.*
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
-import com.example.taskmanagementapp.ui.theme.Neutral4
-import com.example.taskmanagementapp.ui.theme.Neutral7
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun LoginContent(
@@ -31,10 +29,9 @@ fun LoginContent(
     navigateToRegister: () -> Unit,
     logInViewModel: LogInViewModel? = null
 ) {
+    val currentUser = logInViewModel?.getCurrentUser()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val currentUser = logInViewModel?.getCurrentUser()
-
     Image(
         modifier = Modifier.fillMaxSize(),
         painter = painterResource(id = R.drawable.login_background),
@@ -58,7 +55,7 @@ fun LoginContent(
             isPassword = false,
             leadingIcon = R.drawable.ic_user_circle,
             title = "Gmail",
-            currentEmail = if (currentUser != null) currentUser.email.toString() else ""
+            currentEmail = currentUser?.email ?: ""
         )
         password = CustomTextField(isPassword = true)
         ClickableText(
@@ -91,14 +88,12 @@ fun LoginContent(
 
         // Other platform
         CustomOutlinedButton(
-            navigateToHome,
             whichPlatform = "Google",
             onClickEvent = {logInViewModel?.signInGoogle(navigateToHome)}
         )
         CustomOutlinedButton(
-            navigateToHome,
             whichPlatform = "Facebook",
-            onClickEvent = navigateToHome
+            onClickEvent = {logInViewModel?.signInFacebook()}
         )
 
         //Register
@@ -108,8 +103,6 @@ fun LoginContent(
             title = R.string.register_now
         )
     }
-
-    logInViewModel?.signOut()
 }
 
 @Composable

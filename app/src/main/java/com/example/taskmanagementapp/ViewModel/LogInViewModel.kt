@@ -9,6 +9,7 @@ import android.net.NetworkInfo
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
+import com.example.taskmanagementapp.FacebookActivity
 import com.example.taskmanagementapp.MainActivity
 import com.example.taskmanagementapp.R
 import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
@@ -25,6 +26,7 @@ class LogInViewModel(private val mainActivity: MainActivity){
     private val signInClient by lazy {Identity.getSignInClient(mainActivity) }
     private val auth = Firebase.auth
     private var mResultJob : ()->Unit = {}
+    var navigateToLogin : ()->Unit = {}
 
     // Check network connection, used for Sign In and Sign Up
     private fun isNetworkAvailable(): Boolean {
@@ -228,5 +230,15 @@ class LogInViewModel(private val mainActivity: MainActivity){
                     Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:failure", task.exception)
                 }
             }
+    }
+
+    fun signInFacebook(){
+        openFacebookActivity()
+    }
+
+    private fun openFacebookActivity(){
+        val intent = Intent(mainActivity, FacebookActivity::class.java)
+        mainActivity.startActivity(intent)
+        mainActivity.finish()
     }
 }

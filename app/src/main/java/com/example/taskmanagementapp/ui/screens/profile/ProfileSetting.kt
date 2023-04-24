@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.StateSettingItem
@@ -30,7 +31,8 @@ fun ProfileAreaSetting(
     listSettingItems: List<ProfileSettingItem>,
     title: ProfileAreaSettingName,
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    logInViewModel: LogInViewModel?
 ) {
     Text(
         text = title.areaName,
@@ -54,11 +56,25 @@ fun ProfileAreaSetting(
     ) {
         listSettingItems.forEach { item: ProfileSettingItem ->
             if (item.area.areaName == title.areaName) {
-                SettingItem(
-                    profileSettingItem = item,
-                    onExpandIconClicked = onExpandIconClicked,
-                    systemColor = systemColor
-                )
+                if(item.title == "Log Out")
+                {
+                    SettingItem(
+                        profileSettingItem = item,
+                        onExpandIconClicked = {
+                            logInViewModel?.navigateToLogin?.invoke()
+                            logInViewModel?.signOut()
+                        },
+                        systemColor = systemColor
+                    )
+                }
+                else
+                {
+                    SettingItem(
+                        profileSettingItem = item,
+                        onExpandIconClicked = onExpandIconClicked,
+                        systemColor = systemColor
+                    )
+                }
             }
         }
     }

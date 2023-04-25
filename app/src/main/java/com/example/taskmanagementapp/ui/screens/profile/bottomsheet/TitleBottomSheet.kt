@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,8 @@ fun TitleBottomSheet(
                     .align(CenterVertically)
                     .padding(end = if (onCheckClicked == null) 32.dp else 0.dp),
                 textAlign = TextAlign.Center,
-                color = Neutral1
+                color = Neutral1,
+                fontWeight = FontWeight.SemiBold
             )
             if (onCheckClicked != null) {
                 CheckIcon(
@@ -96,17 +98,20 @@ fun CheckIcon(
     }
 }
 
+fun <T> onCheckClicked(type: T): (T) -> T = { it }
+
 @Preview
 @Composable
 fun TitleBottomSheetPreview() {
     TitleBottomSheet(ProfileSettingItem.Color,
         onCheckClicked = null,
-    onCloseClicked = {})
+        onCloseClicked = {})
 }
+
 @Preview
 @Composable
 fun TitleBottomSheetPreview2() {
     TitleBottomSheet(ProfileSettingItem.Color,
         onCheckClicked = {},
-    onCloseClicked = {})
+        onCloseClicked = {})
 }

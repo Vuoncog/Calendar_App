@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.BottomBarItems
-import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import com.example.taskmanagementapp.ui.screens.management.ManagementContent
@@ -19,7 +18,6 @@ import java.util.*
 fun BottomNavGraph(
     navController: NavHostController,
     logInViewModel: LogInViewModel? = null,
-    onExpandIconClicked: (ProfileSettingItem) -> Unit,
     date: Date,
     calendar: Calendar,
     selectedDate: Date,

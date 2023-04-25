@@ -45,7 +45,8 @@ fun ColorBottomSheet(
             .padding(
                 horizontal = 16.dp,
                 vertical = 12.dp
-            ),
+            )
+            .padding(bottom = 56.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TitleBottomSheet(

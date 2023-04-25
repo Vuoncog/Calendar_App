@@ -97,8 +97,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     //Navigation
-    def nav_version = "2.5.3"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.navigation:navigation-compose:2.6.0-alpha09")
 
     //Material UI 3
     implementation("androidx.compose.material3:material3:1.0.1")

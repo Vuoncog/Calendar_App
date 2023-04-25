@@ -10,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
+import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.LogoutBottomSheet
+import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.NotificationBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.SettingsBottomSheet
 import com.example.taskmanagementapp.ui.theme.Primary4
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
@@ -28,7 +30,7 @@ fun ProfileContent() {
 
     val openBottomSheet: (ProfileSettingItem) -> Unit = { profileSettingItem ->
         coroutineScope.launch {
-            navController.navigate("profile/${profileSettingItem.title}")
+            navController.navigate("profile/${profileSettingItem.route}")
         }
     }
 
@@ -38,6 +40,7 @@ fun ProfileContent() {
         }
     }
 
+    var isNotificate by remember { mutableStateOf(false) }
     var systemColor by remember { mutableStateOf(Primary4) }
     var systemColorPreview by remember { mutableStateOf(systemColor) }
 
@@ -58,9 +61,24 @@ fun ProfileContent() {
                     onExpandIconClicked = {
                         openBottomSheet(it)
                     },
-                    systemColor = systemColor
+                    systemColor = systemColor,
+                    isNotificate = isNotificate
                 )
             }
+
+            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.NotificationAndAlerts.route}") {
+                NotificationBottomSheet(
+                    isNotificate = isNotificate,
+                    systemColor = systemColor,
+                    onSwitchClicked = {
+                        isNotificate = it
+                    },
+                    onCloseClicked = {
+                        closeBottomSheet()
+                    }
+                )
+            }
+
             bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Color.route}") {
                 ColorBottomSheet(
                     systemColor = systemColorPreview,
@@ -81,6 +99,16 @@ fun ProfileContent() {
                 SettingsBottomSheet(
                     systemColor = systemColor,
                     onBackupClicked = {},
+                    onCloseClicked = {
+                        closeBottomSheet()
+                    }
+                )
+            }
+
+            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Logout.route}") {
+                LogoutBottomSheet(
+                    systemColor = systemColor,
+                    onLogoutClicked = {},
                     onCloseClicked = {
                         closeBottomSheet()
                     }

@@ -55,9 +55,6 @@ fun MainScreen(logInViewModel: LogInViewModel? = null) {
         BottomNavGraph(
             navController = navController,
             logInViewModel = logInViewModel,
-            onExpandIconClicked = {
-
-            },
             date = currentDate,
             calendar = calendar,
             selectedDate = todayDate,

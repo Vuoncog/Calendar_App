@@ -18,6 +18,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
@@ -30,45 +32,50 @@ fun ProfileAreaSetting(
     listSettingItems: List<ProfileSettingItem>,
     title: ProfileAreaSettingName,
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    isNotificate: Boolean = false
 ) {
-    Text(
-        text = title.areaName,
-        style = VisbyTypography.subtitle1,
-        color = Neutral4,
-        modifier = Modifier.padding(start = 16.dp)
-    )
-
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = BackgroundColorTask)
-            .padding(
-                horizontal = 8.dp,
-                vertical = 12.dp
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        listSettingItems.forEach { item: ProfileSettingItem ->
-            if (item.area.areaName == title.areaName) {
-                SettingItem(
-                    profileSettingItem = item,
-                    onExpandIconClicked = onExpandIconClicked,
-                    systemColor = systemColor
-                )
+        Text(
+            text = title.areaName,
+            style = VisbyTypography.subtitle1,
+            color = Neutral4,
+            modifier = Modifier.padding(
+                start = 16.dp
+            )
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = BackgroundColorTask),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            listSettingItems.forEach { item: ProfileSettingItem ->
+                if (item.area.areaName == title.areaName) {
+                    SettingItem(
+                        profileSettingItem = item,
+                        onExpandIconClicked = onExpandIconClicked,
+                        systemColor = systemColor,
+                        isNotificate = isNotificate
+                    )
+                }
             }
         }
     }
+
 }
 
 @Composable
 fun SettingItem(
     profileSettingItem: ProfileSettingItem,
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    isNotificate: Boolean = false
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -89,19 +96,22 @@ fun SettingItem(
         Icon(
             imageVector = ImageVector.vectorResource(profileSettingItem.icon),
             contentDescription = "Setting icon",
-            tint = systemColor
+            tint = systemColor,
+            modifier = Modifier.padding(8.dp)
         )
 
         Text(
             text = profileSettingItem.title,
             style = VisbyTypography.body2,
             color = Neutral2,
+            fontWeight = FontWeight.Normal,
             modifier = Modifier.weight(1f)
         )
 
         StateIcon(
             state = profileSettingItem.stateSettingItem,
-            systemColor = systemColor
+            systemColor = systemColor,
+            isNotificate = isNotificate,
         )
 
         ExpandIcon(
@@ -121,7 +131,8 @@ fun ExpandIcon(
         contentDescription = "Expand Icon",
         tint = Neutral5,
         modifier = Modifier
-            .size(24.dp)
+            .padding(8.dp)
+            .size(16.dp)
             .clickable {
                 onExpandIconClicked(profileSettingItem)
             }
@@ -131,12 +142,13 @@ fun ExpandIcon(
 @Composable
 fun StateIcon(
     state: StateSettingItem,
+    isNotificate: Boolean = false,
     systemColor: Color = SystemColor
 ) {
     when (state) {
         StateSettingItem.SWITCH -> {
             Text(
-                text = "On",
+                text = if (isNotificate) "On" else "Off",
                 style = VisbyTypography.body2,
                 color = Neutral2
             )
@@ -155,4 +167,21 @@ fun StateIcon(
 
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewAreaProfile() {
+    val listSettingItems = listOf(
+        ProfileSettingItem.NotificationAndAlerts,
+        ProfileSettingItem.Color,
+        ProfileSettingItem.Settings,
+        ProfileSettingItem.MoreInformation,
+        ProfileSettingItem.Logout,
+    )
+    ProfileAreaSetting(
+        listSettingItems = listSettingItems,
+        title = ProfileAreaSettingName.GENERAL,
+        onExpandIconClicked = {}
+    )
 }

@@ -26,7 +26,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @Composable
 fun ProfileContentUI(
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    isNotificate: Boolean = false
 ) {
     val listSettingItems = listOf(
         ProfileSettingItem.NotificationAndAlerts,
@@ -48,7 +49,8 @@ fun ProfileContentUI(
             listSettingItems = listSettingItems,
             title = ProfileAreaSettingName.GENERAL,
             onExpandIconClicked = onExpandIconClicked,
-            systemColor = systemColor
+            systemColor = systemColor,
+            isNotificate = isNotificate
         )
         ProfileAreaSetting(
             listSettingItems = listSettingItems,

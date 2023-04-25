@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.navigation
 
-import android.content.Context
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -19,6 +18,7 @@ fun NavGraphBuilder.authNavigation(
         route = Graph.AUTHENTICATION,
         startDestination = AuthScreen.Login.route
     ) {
+        logInViewModel?.navigateToLogin = {navController.navigate(AuthScreen.Login.route)}
         composable(route = AuthScreen.Login.route) {
             LoginContent(
                 navigateToHome = {

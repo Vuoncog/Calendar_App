@@ -19,6 +19,7 @@ fun BottomNavGraph(
     navController: NavHostController,
     logInViewModel: LogInViewModel? = null,
     date: Date,
+    onExpandIconClicked:() -> Unit,
     calendar: Calendar,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
@@ -50,7 +51,7 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarItems.Profile.route) {
-            ProfileContent()
+            ProfileContent(logInViewModel = logInViewModel)
         }
     }
 }

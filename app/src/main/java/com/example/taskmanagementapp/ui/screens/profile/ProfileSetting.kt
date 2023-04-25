@@ -18,8 +18,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
@@ -33,7 +31,8 @@ fun ProfileAreaSetting(
     title: ProfileAreaSettingName,
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
-    isNotificate: Boolean = false
+    isNotificate: Boolean = false,
+    logInViewModel: LogInViewModel?
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -47,16 +46,30 @@ fun ProfileAreaSetting(
             )
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(color = BackgroundColorTask),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            listSettingItems.forEach { item: ProfileSettingItem ->
-                if (item.area.areaName == title.areaName) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(color = BackgroundColorTask),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        listSettingItems.forEach { item: ProfileSettingItem ->
+            if (item.area.areaName == title.areaName) {
+                if(item.title == "Log Out")
+                {
+                    SettingItem(
+                        profileSettingItem = item,
+                        onExpandIconClicked = {
+                            logInViewModel?.navigateToLogin?.invoke()
+                            logInViewModel?.signOut()
+                        },
+                        systemColor = systemColor,
+                        isNotificate = isNotificate
+                    )
+                }
+                else
+                {
                     SettingItem(
                         profileSettingItem = item,
                         onExpandIconClicked = onExpandIconClicked,
@@ -67,7 +80,6 @@ fun ProfileAreaSetting(
             }
         }
     }
-
 }
 
 @Composable

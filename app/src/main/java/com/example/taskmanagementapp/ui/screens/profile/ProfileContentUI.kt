@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.ui.theme.Neutral1
@@ -27,7 +28,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun ProfileContentUI(
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
-    isNotificate: Boolean = false
+    isNotificate: Boolean = false,
+    logInViewModel: LogInViewModel?
 ) {
     val listSettingItems = listOf(
         ProfileSettingItem.NotificationAndAlerts,
@@ -44,25 +46,29 @@ fun ProfileContentUI(
             .background(color = Color.White)
             .padding(vertical = 8.dp)
     ) {
-        AvatarInfo()
+        AvatarInfo(logInViewModel = logInViewModel)
         ProfileAreaSetting(
             listSettingItems = listSettingItems,
             title = ProfileAreaSettingName.GENERAL,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
             isNotificate = isNotificate
+            systemColor = systemColor,
+            logInViewModel = logInViewModel
         )
         ProfileAreaSetting(
             listSettingItems = listSettingItems,
             title = ProfileAreaSettingName.ACCOUNT,
             onExpandIconClicked = onExpandIconClicked,
-            systemColor = systemColor
+            systemColor = systemColor,
+            logInViewModel = logInViewModel
         )
     }
 }
 
 @Composable
-fun AvatarInfo() {
+fun AvatarInfo(logInViewModel: LogInViewModel?) {
+    val currentUser = logInViewModel?.getCurrentUser()
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier.padding(
@@ -89,13 +95,13 @@ fun AvatarInfo() {
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = "Van Vuong",
+                text = if(currentUser != null){currentUser.displayName!!}else{""},
                 style = VisbyTypography.h6,
                 color = Neutral1
             )
 
             Text(
-                text = "vuon.co.g@gmail.com",
+                text = if(currentUser != null){currentUser.email!!}else{""},
                 style = VisbyTypography.body1,
                 color = Neutral6
             )
@@ -106,5 +112,5 @@ fun AvatarInfo() {
 @Preview
 @Composable
 fun ProfilePreview() {
-    ProfileContentUI({})
+    ProfileContentUI({}, logInViewModel = null)
 }

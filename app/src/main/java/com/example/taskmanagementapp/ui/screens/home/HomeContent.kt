@@ -71,8 +71,6 @@ fun HomeContent(logInViewModel: LogInViewModel? = null) {
         }
 
     }
-
-    logInViewModel?.signOut()
 }
 
 

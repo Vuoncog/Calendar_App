@@ -21,7 +21,6 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun CustomOutlinedButton(
-    navigateToHome: () -> Unit,
     whichPlatform: String,
     onClickEvent : (() -> Unit)? = null
 ) {
@@ -72,5 +71,5 @@ fun CustomOutlinedButton(
 @Preview
 @Composable
 fun CustomOutlinedButtonPreview() {
-    CustomOutlinedButton({},"Google")
+    CustomOutlinedButton("Google")
 }

@@ -13,6 +13,7 @@ import com.example.taskmanagementapp.navigation.RootNavigationGraph
 import com.example.taskmanagementapp.ui.theme.TaskManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
@@ -32,4 +33,5 @@ class MainActivity : ComponentActivity() {
     }
 
     fun getSignInLauncher() : ActivityResultLauncher<IntentSenderRequest> = signInLauncher
+
 }

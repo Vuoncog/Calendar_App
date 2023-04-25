@@ -89,10 +89,6 @@ fun CustomTextField(
             disabledIndicatorColor = Color.Transparent
         ),
     )
-
-    fun setText(arg : String){
-        text = arg
-    }
     return text
 }
 

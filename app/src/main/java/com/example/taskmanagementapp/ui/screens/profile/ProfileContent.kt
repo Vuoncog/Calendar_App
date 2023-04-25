@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
@@ -61,6 +62,8 @@ fun ProfileContent() {
                     onExpandIconClicked = {
                         openBottomSheet(it)
                     },
+                    systemColor = systemColor,
+                    logInViewModel = logInViewModel
                     systemColor = systemColor,
                     isNotificate = isNotificate
                 )
@@ -121,5 +124,5 @@ fun ProfileContent() {
 @Preview
 @Composable
 fun ProfileContentPreview() {
-    ProfileContent()
+    ProfileContent(null)
 }

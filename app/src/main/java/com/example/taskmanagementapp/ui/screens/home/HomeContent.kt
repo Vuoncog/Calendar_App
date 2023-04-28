@@ -1,155 +1,122 @@
+@file:Suppress("SENSELESS_COMPARISON")
+
 package com.example.taskmanagementapp.ui.screens.home
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.constant.RequestState
 import com.example.taskmanagementapp.constant.TaskType
-import com.example.taskmanagementapp.ui.component.IconType
-import com.example.taskmanagementapp.ui.theme.*
+import com.example.taskmanagementapp.database.Note
+import com.example.taskmanagementapp.ui.theme.Neutral1
+import com.example.taskmanagementapp.ui.theme.Neutral3
+import com.example.taskmanagementapp.ui.theme.SystemColor
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import java.util.*
 
 @Composable
-fun HomeContent(logInViewModel: LogInViewModel? = null) {
-    val listTask = listOf(
-        TaskType.Running,
-        TaskType.Shopping,
-        TaskType.PetFood,
-        TaskType.WalkTheDog,
-    )
-
+fun HomeContent(
+    listAllTask: RequestState<Note>,
+    currentDate: Date,
+    systemColor: Color = SystemColor
+) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Column {
-            Text(
-                text = stringResource(R.string.home_first_title),
-                style = VisbyTypography.h6,
-                color = Neutral1
-            )
+        if (listAllTask is RequestState.Success) {
+            if (listAllTask.data.listToDoTask == null) {
+                NoToDoTask(systemColor = systemColor)
+            } else {
+                ExistTaskText(list = listAllTask.data.listToDoTask)
+                TodoTask(list = listAllTask.data.listToDoTask)
+            }
 
-            Text(
-                text = "4 todo tasks",
-                style = VisbyTypography.h6,
-                color = SystemColor
-            )
-        }
-
-        TodoTask(list = listTask)
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(top = 12.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.upcoming_events),
-                style = VisbyTypography.subtitle1,
-                color = Neutral3,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp
-            )
-            HomeEvent()
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(top = 12.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.upcoming_events),
+                    style = VisbyTypography.subtitle1,
+                    color = Neutral3,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.sp
+                )
+                if (listAllTask.data.listEvent.isEmpty()) {
+                    NoEventCard(currentDate = currentDate)
+                } else {
+                    listAllTask.data.listEvent.forEach { event ->
+                        HomeEvent(event = event)
+                    }
+                }
+            }
         }
 
     }
 }
 
-
 @Composable
-fun MiniDetail(
-    @DrawableRes icon: Int,
-    title: String
+fun ExistTaskText(
+    list: List<TaskType>
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(id = icon),
-            contentDescription = "Icon Detail",
-            tint = SystemColor
+    Column {
+        Text(
+            text = stringResource(R.string.home_first_title),
+            style = VisbyTypography.h6,
+            color = Neutral1
         )
 
         Text(
-            text = title,
-            style = VisbyTypography.subtitle2,
-            color = Neutral2
+            text = "${list.size} todo tasks",
+            style = VisbyTypography.h6,
+            color = SystemColor
         )
     }
 }
 
 @Composable
-fun TodoTaskItem(
-    taskType: TaskType,
-    systemColor: Color = SystemColor
-) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(color = BackgroundColorTask)
-            .padding(8.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = CenterVertically
-    ) {
-        IconType(
-            icon = taskType.icon,
-            systemColor = systemColor
-        )
-        Column(
-            modifier = Modifier
-                .align(CenterVertically)
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Text(
-                text = taskType.description,
-                style = VisbyTypography.subtitle2,
-                color = Neutral2
-            )
-            Text(
-                text = "8:00 AM",
-                style = VisbyTypography.overline,
-                color = Neutral6
-            )
-        }
-
-        Icon(
-            modifier = Modifier
-                .clickable {
-                    /*TODO*/
-                }
-                .align(CenterVertically),
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_vertical_menu),
-            contentDescription = "More information",
-            tint = systemColor
-        )
-
-    }
+fun NoToDoTask(systemColor: Color = SystemColor) {
+    NoTaskText(
+        systemColor = systemColor
+    )
+    NoTaskPlanned()
 }
 
-@Composable
 @Preview
-fun HomeContentPreview() {
-    HomeContent()
+@Composable
+fun HomePreview() {
+    val listEvent = listOf(
+        EventInfo(
+            color = SystemColor,
+            eventName = "UIT",
+            startTime = 9f,
+            timeRange = 2f,
+        )
+    )
+    val listToDoTask = listOf(TaskType.Running)
+    HomeContent(
+        listAllTask = RequestState.Success(
+            Note(
+                date = Calendar.getInstance().time,
+                listToDoTask = listToDoTask,
+                listEvent = emptyList()
+            )
+        ),
+        currentDate = Calendar.getInstance().time
+    )
 }

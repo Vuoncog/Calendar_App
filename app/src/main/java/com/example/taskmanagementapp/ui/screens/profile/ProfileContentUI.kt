@@ -52,8 +52,7 @@ fun ProfileContentUI(
             title = ProfileAreaSettingName.GENERAL,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
-            isNotificate = isNotificate
-            systemColor = systemColor,
+            isNotificate = isNotificate,
             logInViewModel = logInViewModel
         )
         ProfileAreaSetting(

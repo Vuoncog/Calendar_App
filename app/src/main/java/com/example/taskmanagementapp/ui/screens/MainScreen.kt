@@ -5,9 +5,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.navigation.BottomNavGraph
 import com.example.taskmanagementapp.navigation.TopNavGraph
 import com.example.taskmanagementapp.ui.component.BottomBar
@@ -16,7 +16,10 @@ import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(logInViewModel: LogInViewModel? = null) {
+fun MainScreen(
+    logInViewModel: LogInViewModel? = null,
+    sharedViewModel: SharedViewModel
+) {
     val calendar = Calendar.getInstance(Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
     var currentDate by rememberSaveable { mutableStateOf(calendar.time) }
@@ -54,6 +57,7 @@ fun MainScreen(logInViewModel: LogInViewModel? = null) {
     ) {
         BottomNavGraph(
             navController = navController,
+            sharedViewModel = sharedViewModel,
             logInViewModel = logInViewModel,
             date = currentDate,
             calendar = calendar,
@@ -64,10 +68,4 @@ fun MainScreen(logInViewModel: LogInViewModel? = null) {
             },
         )
     }
-}
-
-@Composable
-@Preview
-fun Preview() {
-    MainScreen()
 }

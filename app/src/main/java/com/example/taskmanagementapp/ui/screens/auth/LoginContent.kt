@@ -1,6 +1,7 @@
 package com.example.taskmanagementapp.ui.screens.auth
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
@@ -16,11 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
-import com.example.taskmanagementapp.ui.theme.*
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
+import com.example.taskmanagementapp.ui.theme.Neutral4
+import com.example.taskmanagementapp.ui.theme.Neutral7
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun LoginContent(
@@ -51,27 +54,31 @@ fun LoginContent(
         Login()
 
         //Text field
-        email = CustomTextField(
-            isPassword = false,
-            leadingIcon = R.drawable.ic_user_circle,
-            title = "Gmail",
-            currentEmail = currentUser?.email ?: ""
-        )
-        password = CustomTextField(isPassword = true)
-        ClickableText(
-            modifier = Modifier.fillMaxWidth(),
-            text = AnnotatedString(stringResource(R.string.recover_password)),
-            onClick = {
-                navigateToRecoverPassword()
-            },
-            style = VisbyTypography.subtitle1
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            email = CustomTextField(
+                isPassword = false,
+                leadingIcon = R.drawable.ic_user_circle,
+                title = "Gmail",
+                currentEmail = currentUser?.email ?: ""
+            )
+            password = CustomTextField(isPassword = true)
+            ClickableText(
+                modifier = Modifier.fillMaxWidth(),
+                text = AnnotatedString(stringResource(R.string.recover_password)),
+                onClick = {
+                    navigateToRecoverPassword()
+                },
+                style = VisbyTypography.subtitle1
+            )
+        }
 
         //button LOG IN
         CustomButton(
             navigateToHome = navigateToHome,
             buttonText = stringResource(R.string.login),
-            onClickEvent = {logInViewModel?.signIn(email, password)},
+            onClickEvent = { logInViewModel?.signIn(email, password) },
             logInViewModel = logInViewModel
 
         )
@@ -87,17 +94,26 @@ fun LoginContent(
         )
 
         // Other platform
-        CustomOutlinedButton(
-            whichPlatform = "Google",
-            onClickEvent = {logInViewModel?.signInGoogle(navigateToHome)}
-        )
-        CustomOutlinedButton(
-            whichPlatform = "Facebook",
-            onClickEvent = {logInViewModel?.signInFacebook()}
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            CustomOutlinedButton(
+                whichPlatform = "Google",
+                onClickEvent = { logInViewModel?.signInGoogle(navigateToHome) }
+            )
+            CustomOutlinedButton(
+                whichPlatform = "Facebook",
+                onClickEvent = { logInViewModel?.signInFacebook() }
+            )
+        }
+        Text(text = "Log as Administrator",
+            style = VisbyTypography.subtitle1,
+            modifier = Modifier.clickable {
+                navigateToHome()
+            })
 
         //Register
-        RegisterOrLogin (
+        RegisterOrLogin(
             navigateTo = navigateToRegister,
             subtitle = R.string.not_a_member,
             title = R.string.register_now

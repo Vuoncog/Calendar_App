@@ -1,12 +1,9 @@
 package com.example.taskmanagementapp.ui.screens.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,7 +26,7 @@ fun TodoTask(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "1 task completed".uppercase(),
+                text = "${list.size} task completed".uppercase(),
                 style = VisbyTypography.subtitle2,
                 color = Neutral5,
                 modifier = Modifier.weight(1f)
@@ -39,13 +36,17 @@ fun TodoTask(
                 color = SystemColor,
                 modifier = Modifier.clickable {
 
-                })
+                }
+                    .padding(end = 16.dp))
         }
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(list) {
-                TodoTaskItem(taskType = it)
-            }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.horizontalScroll(
+                state = rememberScrollState()
+            )
+        ) {
+            list.forEach { task -> HomeTodoTaskItem(taskType = task) }
         }
     }
 }

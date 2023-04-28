@@ -32,9 +32,9 @@ fun TaskInfoCard() {
         TaskInfo()
 
         Image(
-            painter = painterResource(id = R.drawable.hop),
+            painter = painterResource(id = R.drawable.cat_emoji_wink),
             contentDescription = "Hop Image",
-            modifier = Modifier.size(80.dp)
+            modifier = Modifier.size(64.dp)
         )
 
         CircularProgress()

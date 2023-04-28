@@ -24,7 +24,9 @@ import java.util.*
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
-fun ProfileContent() {
+fun ProfileContent(
+    logInViewModel: LogInViewModel?
+) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val coroutineScope = rememberCoroutineScope()
@@ -63,8 +65,7 @@ fun ProfileContent() {
                         openBottomSheet(it)
                     },
                     systemColor = systemColor,
-                    logInViewModel = logInViewModel
-                    systemColor = systemColor,
+                    logInViewModel = logInViewModel,
                     isNotificate = isNotificate
                 )
             }

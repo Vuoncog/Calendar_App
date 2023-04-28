@@ -21,7 +21,7 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.RecommendColor
 import com.example.taskmanagementapp.constant.TaskType
-import com.example.taskmanagementapp.ui.screens.home.TodoTaskItem
+import com.example.taskmanagementapp.ui.screens.home.HomeTodoTaskItem
 import com.example.taskmanagementapp.ui.theme.Primary4
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
@@ -64,7 +64,7 @@ fun ColorBottomSheet(
                 fontSize = 14.sp,
                 letterSpacing = 0.28.sp,
             )
-            TodoTaskItem(
+            HomeTodoTaskItem(
                 taskType = TaskType.Shopping,
                 systemColor = systemColor
             )

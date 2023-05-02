@@ -11,6 +11,6 @@ import java.util.*
 data class Note(
     @PrimaryKey
     val date: Date,
-    val listToDoTask: List<TaskType>,
-    val listEvent: List<EventInfo>
+    val listToDoTask: List<TaskType> = emptyList(),
+    val listEvent: List<EventInfo> = emptyList()
     )

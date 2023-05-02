@@ -55,7 +55,7 @@ fun HomeExistTask(
             )
         }
 
-        TodoTask(list = listTask.listToDoTask)
+        listTask.listToDoTask?.let { TodoTask(list = it) }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -68,7 +68,7 @@ fun HomeExistTask(
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp
             )
-            listTask.listEvent.forEach { eventInfo ->
+            listTask.listEvent?.forEach { eventInfo ->
                 HomeEvent(eventInfo)
             }
 

@@ -39,7 +39,7 @@ fun HomeContent(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         if (listAllTask is RequestState.Success) {
-            if (listAllTask.data.listToDoTask == null) {
+            if (listAllTask.data.listToDoTask.isEmpty()) {
                 NoToDoTask(systemColor = systemColor)
             } else {
                 ExistTaskText(list = listAllTask.data.listToDoTask)

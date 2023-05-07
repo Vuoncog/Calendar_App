@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
@@ -52,6 +49,16 @@ class FacebookActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    /*val accessToken = AccessToken.getCurrentAccessToken()
+                    val request = GraphRequest.newMeRequest(accessToken){ obj, _ ->
+                        obj?.getString("email")?.let{
+                            Firebase.auth.currentUser?.updateEmail(it)
+                        }
+                    }
+                    val parameters = Bundle()
+                    parameters.putString("field", "link,type(large),email")
+                    request.parameters = parameters
+                    request.executeAsync()*/
                     openMainActivity()
                     Toast.makeText(this, getString(R.string.sign_in_successfully), Toast.LENGTH_SHORT).show()
                 } else {

@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.RequestState
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.database.Note
@@ -66,7 +65,6 @@ fun HomeContent(
                 }
             }
         }
-
     }
 }
 
@@ -100,14 +98,14 @@ fun NoToDoTask(systemColor: Color = SystemColor) {
 @Preview
 @Composable
 fun HomePreview() {
-    val listEvent = listOf(
+    /*val listEvent = listOf(
         EventInfo(
             color = SystemColor,
             eventName = "UIT",
             startTime = 9f,
             timeRange = 2f,
         )
-    )
+    )*/
     val listToDoTask = listOf(TaskType.Running)
     HomeContent(
         listAllTask = RequestState.Success(

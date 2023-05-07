@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.loadImage
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral6
 import com.example.taskmanagementapp.ui.theme.SystemColor
@@ -68,6 +68,7 @@ fun ProfileContentUI(
 @Composable
 fun AvatarInfo(logInViewModel: LogInViewModel?) {
     val currentUser = logInViewModel?.getCurrentUser()
+    val imageUser = loadImage(url = currentUser?.photoUrl.toString(), activity = logInViewModel?.mainActivity).value
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier.padding(
@@ -82,25 +83,25 @@ fun AvatarInfo(logInViewModel: LogInViewModel?) {
                 .size(80.dp)
                 .clip(CircleShape),
         ) {
-            Image(
+            imageUser?.let {Image(
                 modifier = Modifier
                     .fillMaxSize()
-                    .scale(1f,1f),
-                painter = painterResource(id = R.drawable.avatar),
+                    .scale(1f, 1f),
+                bitmap = imageUser.asImageBitmap(),
                 contentDescription = "Avatar",
                 contentScale = ContentScale.Crop
-            )
+            ) }
         }
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = if(currentUser != null){currentUser.displayName!!}else{""},
+                text = currentUser?.displayName ?: "No Display Name",
                 style = VisbyTypography.h6,
                 color = Neutral1
             )
 
             Text(
-                text = if(currentUser != null){currentUser.email!!}else{""},
+                text = currentUser?.email ?: "No Email",
                 style = VisbyTypography.body1,
                 color = Neutral6
             )

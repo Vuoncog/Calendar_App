@@ -127,6 +127,9 @@ dependencies {
 
     //Facebook Sign In SDK
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 }
 kapt {
     correctErrorTypes = true

@@ -22,7 +22,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
-class LogInViewModel(private val mainActivity: MainActivity){
+class LogInViewModel( val mainActivity: MainActivity){
     private val signInClient by lazy {Identity.getSignInClient(mainActivity) }
     private val auth = Firebase.auth
     private var mResultJob : ()->Unit = {}
@@ -114,7 +114,7 @@ class LogInViewModel(private val mainActivity: MainActivity){
 
         // Return the current user
         val user = Firebase.auth.currentUser
-        user?.let { Log.e("UID", it.uid) }
+        user?.let { it.email?.let { it1 -> Log.e("EMAIL", it1) } }
         return user
     }
 

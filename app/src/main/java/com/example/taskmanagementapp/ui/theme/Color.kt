@@ -1,13 +1,21 @@
 package com.example.taskmanagementapp.ui.theme
 
 import androidx.annotation.ColorInt
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.ColorUtils
+
+val md_theme_light_primary = Color(0xFF476810)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFC7F089)
+// ..
+// ..
+
+val md_theme_dark_primary = Color(0xFFACD370)
+val md_theme_dark_onPrimary = Color(0xFF213600)
+val md_theme_dark_primaryContainer = Color(0xFF324F00)
+// ..
+// ..
 
 val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)
@@ -18,7 +26,7 @@ val Primary1 = Color(0xFFFEE6DF)
 val Primary2 = Color(0xFFFEC7A6)
 val Primary3 = Color(0xFFFAA36A)
 val Primary4 = Color(0xFF964908)
-//val Primary4 = Color(0xFF6B3811)
+val Primary5 = Color(0xFF6B3811)
 val BackgroundColorTask = Color(0xFFF8F2F3)
 val Neutral1 = Color(0xFF1F1A17)
 val Neutral2 = Color(0xFF352F2B)

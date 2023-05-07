@@ -13,7 +13,6 @@ import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.navigation.RootNavigationGraph
 import com.example.taskmanagementapp.ui.theme.TaskManagementAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint

@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
@@ -22,7 +21,6 @@ import java.util.*
 fun BottomNavGraph(
     navController: NavHostController,
     sharedViewModel: SharedViewModel,
-    logInViewModel: LogInViewModel? = null,
     date: Date,
     calendar: Calendar,
     selectedDate: Date,
@@ -64,7 +62,7 @@ fun BottomNavGraph(
             )
         }
         composable(BottomBarItems.Profile.route) {
-            ProfileContent(logInViewModel = logInViewModel)
+            ProfileContent(sharedViewModel = sharedViewModel)
         }
     }
 }

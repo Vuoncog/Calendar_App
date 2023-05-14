@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
@@ -21,7 +21,7 @@ fun CustomButton(
     navigateToHome: () -> Unit,
     buttonText: String = "button",
     onClickEvent: (() -> Unit)? = null,
-    logInViewModel: LogInViewModel? = null
+    sharedViewModel: SharedViewModel
 ) {
     Button(
         modifier = Modifier
@@ -31,7 +31,7 @@ fun CustomButton(
         onClick = {
             onClickEvent?.let {
                 onClickEvent()
-                logInViewModel?.let {
+                sharedViewModel.let {
                     val handler : android.os.Handler = android.os.Handler()
                     handler.postDelayed({ it.getCurrentUser()?.let {
                         navigateToHome()
@@ -64,5 +64,5 @@ fun CustomButton(
 @Preview
 @Composable
 fun CustomButtonPreview() {
-    CustomButton({})
+
 }

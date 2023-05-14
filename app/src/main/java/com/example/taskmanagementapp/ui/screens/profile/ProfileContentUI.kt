@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.loadImage
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral6
 import com.example.taskmanagementapp.ui.theme.SystemColor
@@ -29,7 +29,7 @@ fun ProfileContentUI(
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
     isNotificate: Boolean = false,
-    logInViewModel: LogInViewModel?
+    sharedViewModel: SharedViewModel
 ) {
     val listSettingItems = listOf(
         ProfileSettingItem.NotificationAndAlerts,
@@ -46,29 +46,29 @@ fun ProfileContentUI(
             .background(color = Color.White)
             .padding(vertical = 8.dp)
     ) {
-        AvatarInfo(logInViewModel = logInViewModel)
+        AvatarInfo(sharedViewModel = sharedViewModel)
         ProfileAreaSetting(
             listSettingItems = listSettingItems,
             title = ProfileAreaSettingName.GENERAL,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
             isNotificate = isNotificate,
-            logInViewModel = logInViewModel
+            sharedViewModel = sharedViewModel
         )
         ProfileAreaSetting(
             listSettingItems = listSettingItems,
             title = ProfileAreaSettingName.ACCOUNT,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
-            logInViewModel = logInViewModel
+            sharedViewModel = sharedViewModel
         )
     }
 }
 
 @Composable
-fun AvatarInfo(logInViewModel: LogInViewModel?) {
-    val currentUser = logInViewModel?.getCurrentUser()
-    val imageUser = loadImage(url = currentUser?.photoUrl.toString(), activity = logInViewModel?.mainActivity).value
+fun AvatarInfo(sharedViewModel: SharedViewModel) {
+    val currentUser = sharedViewModel.getCurrentUser()
+    val imageUser = loadImage(url = currentUser?.photoUrl.toString(), activity = sharedViewModel.mainActivity).value
     Row(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier.padding(
@@ -112,5 +112,5 @@ fun AvatarInfo(logInViewModel: LogInViewModel?) {
 @Preview
 @Composable
 fun ProfilePreview() {
-    ProfileContentUI({}, logInViewModel = null)
+
 }

@@ -22,10 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.StateSettingItem
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
@@ -35,7 +35,7 @@ fun ProfileAreaSetting(
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
     isNotificate: Boolean = false,
-    logInViewModel: LogInViewModel?
+    sharedViewModel: SharedViewModel
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -63,8 +63,8 @@ fun ProfileAreaSetting(
                         SettingItem(
                             profileSettingItem = item,
                             onExpandIconClicked = {
-                                logInViewModel?.navigateToLogin?.invoke()
-                                logInViewModel?.signOut()
+                                sharedViewModel.navigateToLogin.invoke()
+                                sharedViewModel.signOut()
                             },
                             systemColor = systemColor,
                             isNotificate = isNotificate
@@ -185,17 +185,5 @@ fun StateIcon(
 @Preview
 @Composable
 fun PreviewAreaProfile() {
-    val listSettingItems = listOf(
-        ProfileSettingItem.NotificationAndAlerts,
-        ProfileSettingItem.Color,
-        ProfileSettingItem.Settings,
-        ProfileSettingItem.MoreInformation,
-        ProfileSettingItem.Logout,
-    )
-    ProfileAreaSetting(
-        listSettingItems = listSettingItems,
-        title = ProfileAreaSettingName.GENERAL,
-        onExpandIconClicked = {},
-        logInViewModel = null
-    )
+
 }

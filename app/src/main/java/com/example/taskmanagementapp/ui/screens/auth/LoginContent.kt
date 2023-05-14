@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomOutlinedButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
@@ -30,9 +30,9 @@ fun LoginContent(
     navigateToHome: () -> Unit,
     navigateToRecoverPassword: () -> Unit,
     navigateToRegister: () -> Unit,
-    logInViewModel: LogInViewModel? = null
+    sharedViewModel: SharedViewModel
 ) {
-    val currentUser = logInViewModel?.getCurrentUser()
+    val currentUser = sharedViewModel.getCurrentUser()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     Image(
@@ -78,9 +78,8 @@ fun LoginContent(
         CustomButton(
             navigateToHome = navigateToHome,
             buttonText = stringResource(R.string.login),
-            onClickEvent = { logInViewModel?.signIn(email, password) },
-            logInViewModel = logInViewModel
-
+            onClickEvent = { sharedViewModel.signIn(email, password) },
+            sharedViewModel = sharedViewModel
         )
 
         Text(
@@ -99,11 +98,11 @@ fun LoginContent(
         ) {
             CustomOutlinedButton(
                 whichPlatform = "Google",
-                onClickEvent = { logInViewModel?.signInGoogle(navigateToHome) }
+                onClickEvent = { sharedViewModel.signInGoogle(navigateToHome) }
             )
             CustomOutlinedButton(
                 whichPlatform = "Facebook",
-                onClickEvent = { logInViewModel?.signInFacebook() }
+                onClickEvent = { sharedViewModel.signInFacebook() }
             )
         }
         Text(text = "Log as Administrator",
@@ -153,5 +152,5 @@ fun Login() {
 @Preview
 @Composable
 fun LoginContentPreview() {
-    LoginContent({}, {}, {})
+
 }

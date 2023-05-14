@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.navigation.BottomNavGraph
 import com.example.taskmanagementapp.navigation.TopNavGraph
@@ -17,7 +16,6 @@ import java.util.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    logInViewModel: LogInViewModel? = null,
     sharedViewModel: SharedViewModel
 ) {
     val calendar = Calendar.getInstance(Locale.getDefault())
@@ -58,7 +56,6 @@ fun MainScreen(
         BottomNavGraph(
             navController = navController,
             sharedViewModel = sharedViewModel,
-            logInViewModel = logInViewModel,
             date = currentDate,
             calendar = calendar,
             selectedDate = todayDate,

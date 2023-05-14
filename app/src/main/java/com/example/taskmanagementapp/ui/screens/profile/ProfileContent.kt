@@ -7,9 +7,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.LogoutBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.NotificationBottomSheet
@@ -25,7 +25,7 @@ import java.util.*
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun ProfileContent(
-    logInViewModel: LogInViewModel?
+    sharedViewModel: SharedViewModel
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
@@ -65,8 +65,9 @@ fun ProfileContent(
                         openBottomSheet(it)
                     },
                     systemColor = systemColor,
-                    logInViewModel = logInViewModel,
-                    isNotificate = isNotificate
+
+                    isNotificate = isNotificate,
+                    sharedViewModel = sharedViewModel
                 )
             }
 
@@ -125,5 +126,5 @@ fun ProfileContent(
 @Preview
 @Composable
 fun ProfileContentPreview() {
-    ProfileContent(null)
+
 }

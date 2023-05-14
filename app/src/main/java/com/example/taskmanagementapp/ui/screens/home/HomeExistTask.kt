@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.database.Note
@@ -27,7 +26,6 @@ import java.util.*
 
 @Composable
 fun HomeExistTask(
-    logInViewModel: LogInViewModel? = null,
     listTask: Note
 ) {
     Column(
@@ -55,7 +53,7 @@ fun HomeExistTask(
             )
         }
 
-        listTask.listToDoTask?.let { TodoTask(list = it) }
+        listTask.listToDoTask.let { TodoTask(list = it) }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -68,7 +66,7 @@ fun HomeExistTask(
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp
             )
-            listTask.listEvent?.forEach { eventInfo ->
+            listTask.listEvent.forEach { eventInfo ->
                 HomeEvent(eventInfo)
             }
 

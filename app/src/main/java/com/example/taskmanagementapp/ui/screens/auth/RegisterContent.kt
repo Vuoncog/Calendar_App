@@ -18,7 +18,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.component.CustomButton
 import com.example.taskmanagementapp.ui.component.CustomTextField
 import com.example.taskmanagementapp.ui.component.RegisterOrLogin
@@ -29,7 +29,7 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @Composable
 fun RegisterContent(
     navigateToLogin: () -> Unit,
-    logInViewModel: LogInViewModel? = null
+    sharedViewModel: SharedViewModel
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -72,9 +72,9 @@ fun RegisterContent(
         //button REGISTER
         CustomButton(
             buttonText = stringResource(R.string.register),
-            logInViewModel = logInViewModel,
+            sharedViewModel = sharedViewModel,
             navigateToHome = navigateToLogin,
-            onClickEvent = {logInViewModel?.signUp(email, password, name)})
+            onClickEvent = {sharedViewModel.signUp(email, password, name)})
 
         //Login
         RegisterOrLogin(
@@ -100,7 +100,7 @@ fun Register() {
             Image(
                 modifier = Modifier
                     .size(24.dp)
-                    .align(Alignment.CenterVertically),
+                    .align(CenterVertically),
                 painter = painterResource(id = R.drawable.star),
                 contentDescription = "Star"
             )
@@ -154,5 +154,5 @@ fun AttentionItem(title: String) {
 @Composable
 @Preview
 fun RegisterContentPreview() {
-    RegisterContent({})
+
 }

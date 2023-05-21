@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.constant.TaskType
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.component.IconType
 import com.example.taskmanagementapp.ui.component.Tick
 import com.example.taskmanagementapp.ui.theme.BackgroundColorTask
@@ -24,8 +24,9 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun TaskState(
-    listTask: List<TaskType>,
-    isCompleted: Boolean
+    listTask: List<ToDoTask>,
+    isCompleted: Boolean,
+    changeTaskState: (ToDoTask, ToDoTask) -> Unit,
 ) {
     val statusTitle = if (isCompleted) "Completed" else "Not started"
 
@@ -41,11 +42,13 @@ fun TaskState(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = listTask) { item ->
-                TaskDisplay(
-                    taskType = item,
-                    isCompleted = isCompleted
-                )
+            items(items = listTask) { toDoTask ->
+                if (toDoTask.isDone == isCompleted) {
+                    TaskDisplay(
+                        toDoTask = toDoTask,
+                        onChangeStateClicked = changeTaskState,
+                    )
+                }
             }
         }
     }
@@ -53,8 +56,8 @@ fun TaskState(
 
 @Composable
 fun TaskDisplay(
-    taskType: TaskType,
-    isCompleted: Boolean
+    toDoTask: ToDoTask,
+    onChangeStateClicked: (ToDoTask, ToDoTask) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -64,16 +67,19 @@ fun TaskDisplay(
             .padding(8.dp),
         verticalAlignment = CenterVertically
     ) {
-        IconType(icon = taskType.icon)
+        IconType(icon = toDoTask.taskType.icon)
 
         Text(
-            text = taskType.description,
+            text = toDoTask.taskName,
             style = VisbyTypography.subtitle1,
             color = SystemColor,
             modifier = Modifier.weight(1f)
         )
 
-        Tick(isCompleted)
+        Tick(
+            toDoTask = toDoTask,
+            onChangeStateClicked = onChangeStateClicked,
+        )
     }
 
 }

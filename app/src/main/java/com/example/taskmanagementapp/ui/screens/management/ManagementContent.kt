@@ -1,39 +1,46 @@
 package com.example.taskmanagementapp.ui.screens.management
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.TaskType
+import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.screens.calendar.WeeklyCalendar
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun ManagementContent(
     date: Date,
     calendar: Calendar,
     selectedDate: Date,
-    onSelectDay: (Date) -> Unit
+    onSelectDay: (Date) -> Unit,
+    navigateToAddTask: () -> Unit
 ) {
 
     val listTask = listOf(
-        TaskType.Running,
-        TaskType.Shopping,
-        TaskType.PetFood,
+        ToDoTask(TaskType.Running, "Walking", true),
+        ToDoTask(TaskType.Shopping, "Go shopping", true),
+        ToDoTask(TaskType.PetFood, "Pet Food", false)
     )
 
-    val listCompletedTask = listOf(
-        TaskType.WalkTheDog
-    )
+    var _listTask by remember { mutableStateOf(listTask) }
+    val changeTaskState: (ToDoTask, ToDoTask) -> Unit = { removeTask, addTask ->
+        _listTask = _listTask - removeTask
+        _listTask = _listTask + addTask
+        Log.d("list task: ", _listTask.toString())
+    }
 
     Surface(
         modifier = Modifier
@@ -44,8 +51,6 @@ fun ManagementContent(
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-//            DisplayDate(date = currentDay,
-//            calendarDaySelected = calendarDaySelected)
             WeeklyCalendar(
                 onSelectedDayChange = {},
                 currentDate = date,
@@ -54,12 +59,29 @@ fun ManagementContent(
                 onSelectDay = onSelectDay
             )
 
-            TaskInfoCard()
+            TaskInfoCard(listTask = _listTask)
 
-            TaskState(listTask = listTask, isCompleted = false)
-            TaskState(listTask = listCompletedTask, isCompleted = true)
+            TaskState(
+                listTask = _listTask,
+                isCompleted = false,
+                changeTaskState = changeTaskState,
+            )
+            TaskState(
+                listTask = _listTask,
+                isCompleted = true,
+                changeTaskState = changeTaskState,
+            )
         }
 
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .offset(
+                    y = (-56).dp
+                ),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Fab(onFabClicked = navigateToAddTask)
+        }
     }
 }
 
@@ -72,6 +94,7 @@ fun ManagementPreView() {
         date = date,
         calendar = calendar,
         selectedDate = date,
-        onSelectDay = {}
+        onSelectDay = {},
+        navigateToAddTask = {}
     )
 }

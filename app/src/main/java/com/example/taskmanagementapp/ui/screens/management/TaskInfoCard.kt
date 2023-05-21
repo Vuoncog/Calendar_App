@@ -16,10 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.TaskType
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
-fun TaskInfoCard() {
+fun TaskInfoCard(
+    listTask: List<ToDoTask>
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -29,7 +33,9 @@ fun TaskInfoCard() {
             .padding(12.dp)
             .fillMaxWidth()
     ) {
-        TaskInfo()
+        TaskInfo(
+            listTask = listTask,
+        )
 
         Image(
             painter = painterResource(id = R.drawable.cat_emoji_wink),
@@ -37,26 +43,36 @@ fun TaskInfoCard() {
             modifier = Modifier.size(64.dp)
         )
 
-        CircularProgress()
+        CircularProgress(listTask = listTask)
     }
 }
 
 @Composable
-fun CircularProgress() {
+fun CircularProgress(
+    listTask: List<ToDoTask>
+) {
+    val percentProgress: (List<ToDoTask>) -> Float = { it ->
+        var percentProgress = 0f
+        it.forEach {
+            if (it.isDone) percentProgress++
+        }
+        percentProgress / it.size
+    }
+
     Box(
         modifier = Modifier.size(56.dp)
     ) {
         CircularProgressIndicator(
             modifier = Modifier
                 .size(56.dp),
-            progress = 0.25f,
+            progress = percentProgress(listTask),
             backgroundColor = Neutral7,
             color = SystemColor,
             strokeCap = StrokeCap.Round
         )
 
         Text(
-            text = "25%",
+            text = "${(percentProgress(listTask) * 100).toInt()}%",
             style = VisbyTypography.subtitle1,
             color = Primary4,
             modifier = Modifier.align(Center)
@@ -67,19 +83,26 @@ fun CircularProgress() {
 
 @Composable
 fun TaskInfo(
-
+    listTask: List<ToDoTask>,
 ) {
+    val tasksCompleted: (List<ToDoTask>) -> Int = { it ->
+        var taskCompleted: Int = 0
+        it.forEach {
+            if (it.isDone) taskCompleted++
+        }
+        taskCompleted
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "4 tasks",
+            text = "${listTask.size} tasks",
             style = VisbyTypography.h6,
             color = SystemColor
         )
 
         Text(
-            text = "Completed: 1",
+            text = "Completed: ${tasksCompleted(listTask)}",
             style = VisbyTypography.subtitle1,
             color = Neutral2
         )
@@ -89,5 +112,11 @@ fun TaskInfo(
 @Preview
 @Composable
 fun TaskInfoCardPreview() {
-    TaskInfoCard()
+    TaskInfoCard(
+        listTask = listOf(
+            ToDoTask(TaskType.Running, "Walking", false),
+            ToDoTask(TaskType.Shopping, "Go shopping", true),
+            ToDoTask(TaskType.Running, "Walking", true)
+        )
+    )
 }

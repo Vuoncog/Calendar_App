@@ -25,8 +25,8 @@ fun CustomTextField(
     isPassword: Boolean = true,
     @DrawableRes leadingIcon: Int = R.drawable.ic_password,
     title: String = "Password",
-    currentEmail : String = ""
-) : String{
+    currentEmail: String = ""
+): String {
     var passwordVisibility by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf(currentEmail) }
     TextField(
@@ -43,11 +43,11 @@ fun CustomTextField(
             text = it
         },
         leadingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = leadingIcon),
-                    contentDescription = "Leading Icon",
-                    tint = SystemColor
-                )
+            Icon(
+                imageVector = ImageVector.vectorResource(id = leadingIcon),
+                contentDescription = "Leading Icon",
+                tint = SystemColor
+            )
         },
         trailingIcon = {
             if (isPassword)
@@ -56,19 +56,14 @@ fun CustomTextField(
                         passwordVisibility = !passwordVisibility
                     },
                 ) {
-                    if (passwordVisibility) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_show_password),
-                            contentDescription = "Eye Icon",
-                            tint = Neutral5,
-                        )
-                    } else {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_hide_password),
-                            contentDescription = "Hided Eye Icon",
-                            tint = Neutral5,
-                        )
-                    }
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            id = if (passwordVisibility) R.drawable.ic_show_password
+                            else R.drawable.ic_hide_password
+                        ),
+                        contentDescription = "Eye Icon",
+                        tint = Neutral5,
+                    )
                 }
         },
         textStyle = VisbyTypography.subtitle1,

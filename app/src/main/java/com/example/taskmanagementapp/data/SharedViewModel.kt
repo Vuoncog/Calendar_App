@@ -48,14 +48,14 @@ class SharedViewModel @Inject constructor(
     var navigateToLogin : ()->Unit = {}
 
     @Suppress("SENSELESS_COMPARISON")
-    fun getAllTask() {
+    fun getSelectedDate(date: Date) {
         _allTaskInDate.value = RequestState.Loading
         try {
             viewModelScope.launch {
-                repository.getSelectedRow(Calendar.getInstance().time).collect(
+                repository.getSelectedRow(dateSelected = date).collect(
                     collector = {
                         val noteValue = if (it != null) it
-                        else Note(date = Calendar.getInstance().time)
+                        else Note(date = date)
                         _allTaskInDate.value = RequestState.Success(noteValue)
                     }
                 )

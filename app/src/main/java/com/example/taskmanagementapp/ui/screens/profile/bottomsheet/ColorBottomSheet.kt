@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
@@ -91,12 +92,12 @@ fun ColorBottomSheet(
                         horizontal = 16.dp
                     )
             ) {
-                recommendColor.forEach { color ->
+                recommendColor.forEach { displayColor ->
                     ColorCircle(
                         onColorCircleClicked = {
                             /* TODO */
                         },
-                        color = color,
+                        color = displayColor,
                         systemColor = systemColor,
                         onColorChange = onColorChange
                     )
@@ -138,7 +139,8 @@ fun ColorCircle(
     onColorCircleClicked: (Color) -> Unit,
     color: Color,
     systemColor: Color,
-    onColorChange: (Color) -> Unit
+    onColorChange: (Color) -> Unit,
+    circleSize: Dp = 20.dp
 ) {
     val isSelected = color == systemColor
 
@@ -155,7 +157,7 @@ fun ColorCircle(
     )
     Canvas(
         modifier = Modifier
-            .size(20.dp)
+            .size(circleSize)
             .clip(CircleShape)
             .then(if (isSelected) borderModifier else noBorder)
             .clickable {

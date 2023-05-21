@@ -1,12 +1,10 @@
 package com.example.taskmanagementapp.ui.theme
 
-import android.text.InputFilter.AllCaps
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 
@@ -65,7 +63,7 @@ val VisbyTypography = Typography(
     subtitle2 = TextStyle(
         fontSize = 14.sp,
         fontFamily = VisbyFontFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
         letterSpacing = (0.56).sp
     ),
     body1 = TextStyle(
@@ -77,7 +75,7 @@ val VisbyTypography = Typography(
     body2 = TextStyle(
         fontSize = 14.sp,
         fontFamily = VisbyFontFamily,
-        fontWeight = FontWeight.Light,
+        fontWeight = FontWeight.Normal,
         letterSpacing = (0.35).sp
     ),
     button = TextStyle(

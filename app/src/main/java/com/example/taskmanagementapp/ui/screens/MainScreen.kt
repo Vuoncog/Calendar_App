@@ -24,6 +24,7 @@ fun MainScreen(
 
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
+    var showBottomBar by remember { mutableStateOf(true) }
 
     Scaffold(
         backgroundColor = Color.White,
@@ -42,27 +43,32 @@ fun MainScreen(
             )
         },
         bottomBar = {
-            BottomBar(
-                navController = navController,
-                resetDay = { day ->
-                    calendar.time = day
-                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                    currentDate = calendar.time
-                    todayDate = day
-                }
-            )
-        }
+            if(showBottomBar){
+                BottomBar(
+                    navController = navController,
+                    resetDay = { day ->
+                        calendar.time = day
+                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                        currentDate = calendar.time
+                        todayDate = day
+                    }
+                )
+            }
+        },
     ) {
         BottomNavGraph(
             navController = navController,
             sharedViewModel = sharedViewModel,
-            date = currentDate,
+            currentDate = currentDate,
             calendar = calendar,
             selectedDate = todayDate,
             onSelectDay = { day ->
                 calendar.time = day
                 todayDate = day
             },
+            isShowBottomBarItems = {
+                showBottomBar = it
+            }
         )
     }
 }

@@ -29,7 +29,6 @@ fun BottomBar(
         BottomBarItems.Calendar,
         BottomBarItems.Management,
         BottomBarItems.Profile,
-
         )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

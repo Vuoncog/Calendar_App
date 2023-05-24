@@ -85,7 +85,7 @@ fun HomeContentPreview() {
             listEvent = listOf(
                 EventInfo(
                     color = SystemColor,
-                    eventName = "UIT",
+                    title = "UIT",
                     startTime = 9f,
                     timeRange = 2f,
                 )

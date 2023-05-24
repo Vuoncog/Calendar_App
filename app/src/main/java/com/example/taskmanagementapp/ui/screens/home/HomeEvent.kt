@@ -42,7 +42,7 @@ fun HomeEvent(
         )
         {
             Text(
-                text = event.eventName,
+                text = event.title,
                 style = VisbyTypography.h5,
                 maxLines = 2,
                 color = Neutral2
@@ -52,7 +52,7 @@ fun HomeEvent(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 MiniDetail(icon = R.drawable.ic_clock, title = event.startTime.toString())
-                MiniDetail(icon = R.drawable.ic_note, title = event.subscription.toString())
+                MiniDetail(icon = R.drawable.ic_note, title = event.detail.toString())
             }
 
         }

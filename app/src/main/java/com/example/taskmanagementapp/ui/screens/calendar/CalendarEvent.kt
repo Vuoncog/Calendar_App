@@ -101,7 +101,7 @@ fun EventCard(
     ) {
         Row {
             Text(
-                text = eventInfo.eventName,
+                text = eventInfo.title,
                 style = VisbyTypography.subtitle1,
                 color = Neutral2,
                 fontWeight = FontWeight.SemiBold,

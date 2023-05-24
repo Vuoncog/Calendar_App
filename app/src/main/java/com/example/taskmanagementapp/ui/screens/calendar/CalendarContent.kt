@@ -30,19 +30,19 @@ fun CalendarContent(
     val eventList = listOf(
         EventInfo(
             color = BackgroundColorTask,
-            eventName = "Sleep",
+            title = "Sleep",
             startTime = 3.7f,
             timeRange = 2.6f
         ),
         EventInfo(
             color = Primary1,
-            eventName = "Running",
+            title = "Running",
             startTime = 5f,
             timeRange = 2.8f
         ),
         EventInfo(
             color = Primary3,
-            eventName = "Running",
+            title = "Running",
             startTime = 6f,
             timeRange = 3f
         ),

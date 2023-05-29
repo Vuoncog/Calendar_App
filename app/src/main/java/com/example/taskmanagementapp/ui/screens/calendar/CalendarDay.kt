@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.calendar
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -12,8 +13,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 import com.mrerror.singleRowCalendar.DateUtils
+import java.time.ZoneId
 import java.util.*
 
 @Composable
@@ -23,7 +26,9 @@ fun WeeklyCalendar(
     currentDate: Date,
     calendar: Calendar,
     selectedDate: Date,
-    onSelectDay: (Date) -> Unit
+    onSelectDay: (Date) -> Unit,
+    sharedViewModel: SharedViewModel,
+    isCalendarContent : Boolean
 ) {
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
     Column(modifier) {
@@ -31,7 +36,9 @@ fun WeeklyCalendar(
             firstDayDate = currentDate,
             selectedDate = selectedDate,
             onSelectDay = onSelectDay,
-            onSelectedDayChange = onSelectedDayChange
+            onSelectedDayChange = onSelectedDayChange,
+            sharedViewModel = sharedViewModel,
+            isCalendarContent = isCalendarContent
         )
     }
 }
@@ -43,6 +50,8 @@ fun WeeklyHeader(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     onSelectedDayChange: (Date) -> Unit,
+    sharedViewModel: SharedViewModel,
+    isCalendarContent: Boolean
 ) {
     val weekFinalDays =
         DateUtils.getFutureDates(6, Calendar.getInstance().apply { time = firstDayDate })
@@ -88,6 +97,9 @@ fun WeeklyHeader(
                     ) {
                         onSelectDay(day)
                         onSelectedDayChange(day)
+                        val mLocalDate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        Log.e("LOCALDATE", mLocalDate.toEpochDay().toString())
+                        sharedViewModel.getEventInfo(mLocalDate.toEpochDay(), isCalendarContent = isCalendarContent)
                     },
                     textAlign = TextAlign.Center
                 )

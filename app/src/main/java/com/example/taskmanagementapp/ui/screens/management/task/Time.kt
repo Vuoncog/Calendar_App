@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral2
@@ -23,14 +24,22 @@ import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.clock.ClockDialog
+import com.maxkeppeler.sheets.clock.models.ClockConfig
+import com.maxkeppeler.sheets.clock.models.ClockSelection
 import com.mrerror.singleRowCalendar.DateUtils
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
 @Composable
 fun Time(
     systemColor: Color = SystemColor
-) {
+) : Pair<Long,Long>{
+    var startTime by remember { mutableStateOf(0L) }
+    var endTime by remember { mutableStateOf(0L) }
     Column(
         modifier = Modifier.padding(
             top = 8.dp,
@@ -59,10 +68,11 @@ fun Time(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(vertical = 12.dp)
         ) {
-            TimeSetup(isStart = true)
-            TimeSetup(isStart = false)
+            startTime = TimeSetup(isStart = true)
+            endTime = TimeSetup(isStart = false)
         }
     }
+    return Pair(startTime, endTime)
 }
 
 @SuppressLint("UnrememberedMutableState")
@@ -71,11 +81,18 @@ fun Time(
 fun TimeSetup(
     systemColor: Color = SystemColor,
     isStart: Boolean
-) {
+) : Long{
     val currentDay = Calendar.getInstance().time
     var dateFormatter by remember { mutableStateOf(dateFormatter(currentDay))}
     var timeFormatter by remember { mutableStateOf(timeFormatter(currentDay))}
+    var timestamp by remember { mutableStateOf(LocalDateTime.now()) }
+    var mHour  by remember { mutableStateOf(LocalDateTime.now().hour) }
+    var mMinute by remember { mutableStateOf(LocalDateTime.now().minute) }
+    var mDay by remember { mutableStateOf(LocalDate.now().dayOfMonth) }
+    var mMonth by remember { mutableStateOf(LocalDate.now().monthValue) }
+    var mYear by remember { mutableStateOf(LocalDate.now().year) }
 
+    val timeState = rememberSheetState()
     val calendarState = rememberSheetState()
     CalendarDialog(
         state = calendarState,
@@ -83,7 +100,19 @@ fun TimeSetup(
         selection = CalendarSelection.Date { date ->
             val _date = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())
             dateFormatter = dateFormatter(_date)
+            mDay = date.dayOfMonth
+            mMonth = date.monthValue
+            mYear = date.year
         },
+    )
+    ClockDialog(
+        state = timeState,
+        selection = ClockSelection.HoursMinutes { hours, minutes ->
+            mHour = hours
+            mMinute = minutes
+            timeFormatter = "${mHour}:${mMinute}"
+        },
+        config = ClockConfig(is24HourFormat = true),
     )
 
     Row(
@@ -119,10 +148,19 @@ fun TimeSetup(
             style = VisbyTypography.body2,
             color = Neutral2,
             modifier = Modifier.clickable {
-
+                timeState.show()
             }
         )
     }
+    return timestamp.
+    withDayOfMonth(mDay).
+    withMonth(mMonth).
+    withYear(mYear).
+    withHour(mHour).
+    withMinute(mMinute).
+    atZone(ZoneId.systemDefault()).
+    toInstant().
+    epochSecond
 }
 
 fun weekday(date: Date): String = DateUtils.getDay3LettersName(date)

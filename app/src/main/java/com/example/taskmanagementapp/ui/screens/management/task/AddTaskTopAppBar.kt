@@ -11,24 +11,30 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
 @Composable
 fun AddTaskTopAppBar(
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    sharedViewModel: SharedViewModel,
+    onFinished: () -> Unit
 ) {
     AddTaskAppBar(
-        onBackClicked = onBackClicked
+        onBackClicked = onBackClicked,
+        sharedViewModel = sharedViewModel,
+        onFinished = onFinished
     )
 }
 
 @Composable
 fun AddTaskAppBar(
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    sharedViewModel: SharedViewModel,
+    onFinished: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -46,7 +52,7 @@ fun AddTaskAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "Add Task",
+                text = "Add Event",
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -55,7 +61,10 @@ fun AddTaskAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         actions = {
-            AddTaskCheckIcon(onCheckClicked = {})
+            AddTaskCheckIcon(onClicked = {
+                sharedViewModel.addEventInfo(onFinished)
+            }
+            )
         },
         navigationIcon = {
             AddTaskBackIcon(onBackClicked = onBackClicked)
@@ -83,10 +92,10 @@ fun AddTaskBackIcon(
 @Composable
 fun AddTaskCheckIcon(
     systemColor: Color = SystemColor,
-    onCheckClicked: () -> Unit
+    onClicked: () -> Unit
 ) {
     IconButton(onClick = {
-        onCheckClicked()
+        onClicked()
     }) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_tick),
@@ -97,10 +106,11 @@ fun AddTaskCheckIcon(
     }
 }
 
+/*
 @Preview
 @Composable
 fun AddTaskTopAppBarPreview() {
     AddTaskTopAppBar(
         onBackClicked = {}
     )
-}
+}*/

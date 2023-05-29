@@ -84,10 +84,10 @@ fun HomeContentPreview() {
             listToDoTask = listOf(TaskType.Running),
             listEvent = listOf(
                 EventInfo(
-                    color = SystemColor,
+                    color = 0xFF964908,
                     title = "UIT",
                     startTime = 9f,
-                    timeRange = 2f,
+                    endTime = 2f,
                 )
             )
         )

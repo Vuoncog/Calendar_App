@@ -8,19 +8,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 
 @Composable
-fun AddTask() {
+fun AddTask(sharedViewModel: SharedViewModel){
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
-        Title()
+        sharedViewModel.titleAndDetailEvent.value = Title()
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Time()
+        sharedViewModel.startAndEndEvent.value = Time()
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
@@ -38,8 +40,9 @@ fun AddTask() {
     }
 }
 
+/*
 @Preview
 @Composable
 fun AddTaskPreview() {
     AddTask()
-}
+}*/

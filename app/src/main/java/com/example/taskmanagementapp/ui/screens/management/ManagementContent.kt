@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.screens.calendar.WeeklyCalendar
 import java.time.LocalDate
@@ -26,7 +27,8 @@ fun ManagementContent(
     calendar: Calendar,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
-    navigateToAddTask: () -> Unit
+    navigateToAddTask: () -> Unit,
+    sharedViewModel: SharedViewModel? = null
 ) {
 
     val listTask = listOf(
@@ -56,7 +58,9 @@ fun ManagementContent(
                 currentDate = date,
                 calendar = calendar,
                 selectedDate = selectedDate,
-                onSelectDay = onSelectDay
+                onSelectDay = onSelectDay,
+                sharedViewModel = sharedViewModel!!,
+                isCalendarContent = false
             )
 
             TaskInfoCard(listTask = _listTask)

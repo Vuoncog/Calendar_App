@@ -39,7 +39,8 @@ fun MainScreen(
                     calendar.time = it
                     currentDate = it
                 },
-                date = currentDate
+                date = currentDate,
+                sharedViewModel = sharedViewModel
             )
         },
         bottomBar = {

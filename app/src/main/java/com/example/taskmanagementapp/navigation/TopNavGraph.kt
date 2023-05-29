@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.taskmanagementapp.constant.BottomBarItems
 import com.example.taskmanagementapp.constant.Screen
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarTopAppBar
 import com.example.taskmanagementapp.ui.screens.home.HomeAppBar
 import com.example.taskmanagementapp.ui.screens.management.ManagementTopAppBar
@@ -21,11 +22,17 @@ fun TopNavGraph(
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
     date: Date,
+    sharedViewModel: SharedViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     val onBackClicked: () -> Unit = {
         coroutineScope.launch {
             navController.popBackStack()
+        }
+    }
+    val onFinished : () -> Unit = {
+        coroutineScope.launch {
+            navController.navigate(BottomBarItems.Calendar.route)
         }
     }
 
@@ -53,7 +60,16 @@ fun TopNavGraph(
 
         composable("${BottomBarItems.Management.route}/${Screen.AddTask.route}") {
             AddTaskTopAppBar(
-                onBackClicked = onBackClicked
+                onBackClicked = onBackClicked,
+                sharedViewModel = sharedViewModel,
+                onFinished = onFinished
+            )
+        }
+        composable("${BottomBarItems.Calendar.route}/${Screen.AddTask.route}") {
+            AddTaskTopAppBar(
+                onBackClicked = onBackClicked,
+                sharedViewModel = sharedViewModel,
+                onFinished = onFinished
             )
         }
 

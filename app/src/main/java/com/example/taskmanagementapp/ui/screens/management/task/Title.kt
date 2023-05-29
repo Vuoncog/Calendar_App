@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,21 +16,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.Neutral8
-import com.example.taskmanagementapp.ui.theme.SystemColor
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.example.taskmanagementapp.ui.theme.*
 
 
 @Composable
 fun Title(
     systemColor: Color = SystemColor
 ): Pair<String, String> {
-    var title by remember { mutableStateOf("Title") }
-    var detail by remember { mutableStateOf("Add detail") }
+    var title by remember { mutableStateOf("") }
+    var detail by remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier
@@ -55,14 +54,25 @@ fun Title(
         ) {
             BasicTextField(
                 value = title,
-                onValueChange = {
-                    title = if (it == "") "Title"
-                    else it
-                },
+                onValueChange = {title = it},
                 modifier = Modifier
                     .fillMaxWidth(),
                 textStyle = VisbyTypography.subtitle1,
                 maxLines = 1,
+                decorationBox = {
+                        innerTextField ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        if (title.isEmpty()) {
+                            Text(
+                                text = "Title",
+                                color = Neutral4,
+                                style = VisbyTypography.subtitle1,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+                    innerTextField()
+                }
             )
             BasicTextField(
                 value = detail,
@@ -72,6 +82,20 @@ fun Title(
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = VisbyTypography.overline,
                 maxLines = 3,
+                decorationBox = {
+                        innerTextField ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        if (detail.isEmpty()) {
+                            Text(
+                                text = "Add detail",
+                                color = Neutral4,
+                                style = VisbyTypography.overline,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                    }
+                    innerTextField()
+                }
             )
         }
 

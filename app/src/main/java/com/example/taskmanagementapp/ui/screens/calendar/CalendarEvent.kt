@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
@@ -32,7 +33,8 @@ fun CalendarEvent(
     listSpace: List<Float>,
     state: ScrollState,
     height: Dp,
-    offset: Dp
+    offset: Dp,
+    sharedViewModel: SharedViewModel
 ) {
     Box(
         modifier = Modifier
@@ -56,8 +58,11 @@ fun CalendarEvent(
             var paddingSpace = 0
             for (index in listEvent.indices) {
                 sumOffset += listOffset[index]
-                if (listEvent[index].startTime < listSpace[index]
-                    && listSpace[index] < listEvent[index].startTime + listEvent[index].timeRange
+                var startTime = sharedViewModel.getHourAndMinute(listEvent[index].startTime)
+                val endTime  = sharedViewModel.getHourAndMinute(listEvent[index].endTime)
+                if(startTime > endTime) startTime -= 24
+                if (startTime < listSpace[index]
+                    && listSpace[index] < endTime
                 ) {
                     paddingSpace += 12
                 } else {
@@ -66,7 +71,8 @@ fun CalendarEvent(
                 EventCard(
                     eventInfo = listEvent[index],
                     offset = sumOffset.dp,
-                    paddingSpace = paddingSpace.dp
+                    paddingSpace = paddingSpace.dp,
+                    sharedViewModel = sharedViewModel
                 )
             }
             Box(
@@ -82,15 +88,19 @@ fun CalendarEvent(
 fun EventCard(
     eventInfo: EventInfo,
     offset: Dp,
-    paddingSpace: Dp
+    paddingSpace: Dp,
+    sharedViewModel: SharedViewModel
 ) {
-    val heightEvent = heightEvent(eventInfo.timeRange)
-    val offsetEvent = offsetEvent(eventInfo.startTime)
-
+    var startTime = sharedViewModel.getHourAndMinute(eventInfo.startTime)
+    val endTime  = sharedViewModel.getHourAndMinute(eventInfo.endTime)
+    if(startTime > endTime) startTime -= 24
+    val timeRange = endTime - startTime
+    val heightEvent = heightEvent(timeRange)
+    val offsetEvent = offsetEvent(startTime)
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = eventInfo.color
+            containerColor = Color(eventInfo.color)
         ),
         modifier = Modifier
             .offset(y = -(offset))
@@ -105,21 +115,21 @@ fun EventCard(
                 style = VisbyTypography.subtitle1,
                 color = Neutral2,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = if (eventInfo.timeRange >= 1f)
+                fontSize = if (timeRange >= 1f)
                     VisbyTypography.subtitle1.fontSize
-                else (24 * eventInfo.timeRange).sp,
+                else (24 * timeRange).sp,
                 modifier = Modifier
                     .padding(
                         horizontal = 16.dp,
-                        vertical = if (eventInfo.timeRange >= 1f) 12.dp
-                        else (4 * eventInfo.timeRange).dp
+                        vertical = if (timeRange >= 1f) 12.dp
+                        else (4 * timeRange).dp
                     )
             )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                if (eventInfo.timeRange > 1.5f) {
+                if (timeRange > 1.5f) {
                     Image(
                         painter = painterResource(id = R.drawable.hop),
                         contentDescription = "Hop Image",

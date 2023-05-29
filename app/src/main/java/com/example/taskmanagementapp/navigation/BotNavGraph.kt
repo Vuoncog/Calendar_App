@@ -55,7 +55,11 @@ fun BottomNavGraph(
                 date = currentDate,
                 calendar = calendar,
                 selectedDate = selectedDate,
-                onSelectDay = onSelectDay
+                onSelectDay = onSelectDay,
+                navigateToAddTask = {
+                    navController.navigate("${BottomBarItems.Management.route}/${Screen.AddTask.route}")
+                },
+                sharedViewModel = sharedViewModel
             )
         }
         composable(BottomBarItems.Management.route) {
@@ -67,7 +71,8 @@ fun BottomNavGraph(
                 onSelectDay = onSelectDay,
                 navigateToAddTask = {
                     navController.navigate("${BottomBarItems.Management.route}/${Screen.AddTask.route}")
-                }
+                },
+                sharedViewModel = sharedViewModel
             )
         }
         composable(BottomBarItems.Profile.route) {
@@ -77,7 +82,11 @@ fun BottomNavGraph(
 
         composable("${BottomBarItems.Management.route}/${Screen.AddTask.route}") {
             isShowBottomBarItems(false)
-            AddTask()
+            AddTask(sharedViewModel)
+        }
+        composable("${BottomBarItems.Calendar.route}/${Screen.AddTask.route}") {
+            isShowBottomBarItems(false)
+            AddTask(sharedViewModel)
         }
     }
 }

@@ -10,11 +10,14 @@ import android.net.NetworkInfo
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskmanagementapp.FacebookActivity
 import com.example.taskmanagementapp.MainActivity
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.RequestState
 import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.database.Repository
@@ -26,13 +29,26 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.math.RoundingMode
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
@@ -44,21 +60,24 @@ class SharedViewModel @Inject constructor(
     val allTaskInDate: StateFlow<RequestState<Note>> = _allTaskInDate
     private val signInClient by lazy { Identity.getSignInClient(mainActivity) }
     private val auth = Firebase.auth
-    private var mResultJob : ()->Unit = {}
-    var navigateToLogin : ()->Unit = {}
+    private var mResultJob: () -> Unit = {}
+    var navigateToLogin: () -> Unit = {}
+    val titleAndDetailEvent = mutableStateOf(Pair("", ""))
+    var startAndEndEvent = mutableStateOf(Pair(0L, 0L))
+    val listEventsResult = mutableStateListOf<EventInfo>()
+    val database =
+        Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
 
     @Suppress("SENSELESS_COMPARISON")
     fun getSelectedDate(date: Date) {
         _allTaskInDate.value = RequestState.Loading
         try {
             viewModelScope.launch {
-                repository.getSelectedRow(dateSelected = date).collect(
-                    collector = {
-                        val noteValue = if (it != null) it
-                        else Note(date = date)
-                        _allTaskInDate.value = RequestState.Success(noteValue)
-                    }
-                )
+                repository.getSelectedRow(dateSelected = date).collect(collector = {
+                    val noteValue = if (it != null) it
+                    else Note(date = date)
+                    _allTaskInDate.value = RequestState.Success(noteValue)
+                })
             }
         } catch (e: java.lang.Exception) {
             _allTaskInDate.value = RequestState.Error(e)
@@ -99,7 +118,9 @@ class SharedViewModel @Inject constructor(
         return result
     }
 
-    fun signUp(email: String, password: String, name: String, resultJob : (()-> Unit)? = null): FirebaseUser? {
+    fun signUp(
+        email: String, password: String, name: String, resultJob: (() -> Unit)? = null
+    ): FirebaseUser? {
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
@@ -119,16 +140,14 @@ class SharedViewModel @Inject constructor(
                                 val endTime = System.currentTimeMillis()
                                 Log.e("TIME", (endTime - startTime).toString())
                                 Toast.makeText(
-                                    mainActivity, R.string.sign_up_successfully,
-                                    Toast.LENGTH_SHORT
+                                    mainActivity, R.string.sign_up_successfully, Toast.LENGTH_SHORT
                                 ).show()
-                                resultJob?.let {resultJob()}
+                                resultJob?.let { resultJob() }
                             } else {
                                 // If sign up fails, display a message to the user.
                                 Log.e("RESULT", "createUserWithEmail:failure", task.exception)
                                 Toast.makeText(
-                                    mainActivity, task.exception?.message,
-                                    Toast.LENGTH_SHORT
+                                    mainActivity, task.exception?.message, Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
@@ -138,9 +157,7 @@ class SharedViewModel @Inject constructor(
                 }
             } else {
                 Toast.makeText(
-                    mainActivity,
-                    R.string.network_unavailable,
-                    Toast.LENGTH_SHORT
+                    mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -155,7 +172,7 @@ class SharedViewModel @Inject constructor(
         return user
     }
 
-    fun signIn(email: String, password: String, resultJob : (()-> Unit)? = null){
+    fun signIn(email: String, password: String, resultJob: (() -> Unit)? = null) {
         val auth: FirebaseAuth = Firebase.auth
         if (isUserInfoValidate(email, password)) {
             if (isNetworkAvailable()) {
@@ -168,25 +185,20 @@ class SharedViewModel @Inject constructor(
                             Log.e("RESULT", "signInWithEmail:success")
 
                             Toast.makeText(
-                                mainActivity,
-                                R.string.sign_in_successfully,
-                                Toast.LENGTH_SHORT
+                                mainActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT
                             ).show()
                             resultJob?.let { resultJob() }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e("RESULT", "signInWithEmail:failure", task.exception)
                             Toast.makeText(
-                                mainActivity, "Authentication failed.",
-                                Toast.LENGTH_SHORT
+                                mainActivity, "Authentication failed.", Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
             } else {
                 Toast.makeText(
-                    mainActivity,
-                    R.string.network_unavailable,
-                    Toast.LENGTH_SHORT
+                    mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -196,30 +208,23 @@ class SharedViewModel @Inject constructor(
         Firebase.auth.signOut()
     }
 
-    fun signInGoogle(resultJob : ()->Unit){
+    fun signInGoogle(resultJob: () -> Unit) {
         mResultJob = resultJob
-        if(isNetworkAvailable())
-        {
+        if (isNetworkAvailable()) {
             val signInRequest = GetSignInIntentRequest.builder()
-                .setServerClientId(mainActivity.getString(R.string.web_client_id))
-                .build()
+                .setServerClientId(mainActivity.getString(R.string.web_client_id)).build()
 
-            signInClient.getSignInIntent(signInRequest)
-                .addOnSuccessListener { pendingIntent ->
+            signInClient.getSignInIntent(signInRequest).addOnSuccessListener { pendingIntent ->
                     launchSignIn(pendingIntent)
-                }
-                .addOnFailureListener { e ->
+                }.addOnFailureListener { e ->
                     Log.e("INTENT_ERROR", "Google Sign-in failed", e)
                 }
-        }
-        else
-            Toast.makeText(mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT).show()
     }
 
     private fun launchSignIn(pendingIntent: PendingIntent) {
         try {
-            val intentSenderRequest = IntentSenderRequest.Builder(pendingIntent)
-                .build()
+            val intentSenderRequest = IntentSenderRequest.Builder(pendingIntent).build()
             mainActivity.getSignInLauncher().launch(intentSenderRequest)
         } catch (e: IntentSender.SendIntentException) {
             Log.e("SIGNIN_ERROR", "Couldn't start Sign In: ${e.localizedMessage}")
@@ -247,35 +252,111 @@ class SharedViewModel @Inject constructor(
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(mainActivity) { task ->
+        auth.signInWithCredential(credential).addOnCompleteListener(mainActivity) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:success")
                     Toast.makeText(
-                        mainActivity,
-                        R.string.sign_in_successfully,
-                        Toast.LENGTH_SHORT
+                        mainActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT
                     ).show()
                     mResultJob()
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(
-                        mainActivity, "Authentication failed.",
-                        Toast.LENGTH_SHORT
+                        mainActivity, "Authentication failed.", Toast.LENGTH_SHORT
                     ).show()
                     Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:failure", task.exception)
                 }
             }
     }
 
-    fun signInFacebook(){
+    fun signInFacebook() {
         openFacebookActivity()
     }
 
-    private fun openFacebookActivity(){
+    private fun openFacebookActivity() {
         val intent = Intent(mainActivity, FacebookActivity::class.java)
         mainActivity.startActivity(intent)
         mainActivity.finish()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun addEventInfo(onFinished: () -> Unit) {
+        val title = titleAndDetailEvent.value.first
+        if (title == "") {
+            Toast.makeText(mainActivity, "Please Input Title", Toast.LENGTH_SHORT).show()
+        } else {
+            val detail = titleAndDetailEvent.value.second
+            val startTime = startAndEndEvent.value.first
+            val endTime = startAndEndEvent.value.second
+            val listEvents = mutableListOf<EventInfo>()
+            val currentEpochDate = LocalDate.now().toEpochDay().toString()
+            val mDatabaseReference = database.child(
+                getCurrentUser()?.uid.toString()
+            ).child(currentEpochDate).child("ListEvent")
+            mDatabaseReference.get().addOnCompleteListener {
+                if (it.result != null) {
+                    for (mEventInfo in it.result.children) {
+                        val value = mEventInfo.getValue<EventInfo>()
+                        listEvents.add(value!!)
+                    }
+                }
+                listEvents.add(
+                    EventInfo(
+                        title = title,
+                        detail = detail,
+                        startTime = startTime.toFloat(),
+                        endTime = endTime.toFloat(),
+                    )
+                )
+                for (mEventInfo in listEvents) {
+                    mDatabaseReference.child(listEvents.indexOf(mEventInfo).toString()).setValue(mEventInfo)
+                        .addOnCanceledListener {
+                            Log.e("PUSH_DATABASE", it.exception.toString())
+                            Toast.makeText(mainActivity, "Add Event Failed!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                }
+                Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT).show()
+                onFinished()
+            }
+        }
+    }
+
+    fun getEventInfo(date : Long, isCalendarContent : Boolean){
+        if(isCalendarContent){
+            listEventsResult.clear()
+            val childEventListenr = object : ChildEventListener{
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    val eventInfo = snapshot.getValue<EventInfo>()
+                    Log.e("TITLE", eventInfo!!.title)
+                    listEventsResult.add(eventInfo)
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onCancelled(error: DatabaseError) {}
+
+            }
+            database.child(
+                getCurrentUser()?.uid.toString()
+            ).child(date.toString()).child("ListEvent").addChildEventListener(childEventListenr)
+        }
+    }
+
+    fun getHourAndMinute(time : Float) : Float{
+        val mTime = LocalDateTime.ofInstant(
+            Instant.ofEpochSecond(time.toLong()),
+            ZoneId.systemDefault()
+        )
+        val hour = mTime.hour
+        val minute = (mTime.minute.toDouble() / 60).toBigDecimal().setScale(1, RoundingMode.DOWN)
+            .toDouble()
+        val result = hour + minute
+        return result.toFloat()
     }
 }

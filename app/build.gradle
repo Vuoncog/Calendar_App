@@ -112,6 +112,9 @@ dependencies {
     implementation 'com.maxkeppeler.sheets-compose-dialogs:core:1.0.2'
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2"
 
+    //Clock Dialog
+    implementation "com.maxkeppeler.sheets-compose-dialogs:clock:1.0.2"
+
     //Firebase SDK
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -131,6 +134,9 @@ dependencies {
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+    //Realtime Database
+    implementation 'com.google.firebase:firebase-database-ktx'
 }
 kapt {
     correctErrorTypes = true

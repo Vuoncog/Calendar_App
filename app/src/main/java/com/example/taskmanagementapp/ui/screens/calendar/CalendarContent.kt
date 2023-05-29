@@ -2,19 +2,28 @@ package com.example.taskmanagementapp.ui.screens.calendar
 
 import TimeGrid
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.data.SharedViewModel
+import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.theme.*
+import com.google.firebase.database.ktx.getValue
+import java.math.RoundingMode
+import java.sql.Timestamp
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
@@ -25,39 +34,28 @@ fun CalendarContent(
     date: Date,
     calendar: Calendar,
     selectedDate: Date,
-    onSelectDay: (Date) -> Unit
+    onSelectDay: (Date) -> Unit,
+    navigateToAddTask: () -> Unit,
+    sharedViewModel: SharedViewModel? = null
 ) {
-    val eventList = listOf(
-        EventInfo(
-            color = BackgroundColorTask,
-            title = "Sleep",
-            startTime = 3.7f,
-            timeRange = 2.6f
-        ),
-        EventInfo(
-            color = Primary1,
-            title = "Running",
-            startTime = 5f,
-            timeRange = 2.8f
-        ),
-        EventInfo(
-            color = Primary3,
-            title = "Running",
-            startTime = 6f,
-            timeRange = 3f
-        ),
-    )
+    LaunchedEffect(
+        key1 = true,
+        block = { sharedViewModel?.getEventInfo(LocalDate.now().toEpochDay(), isCalendarContent = true) })
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
     listOffset.add(0f)
     listSpace.add(0f)
-    for (event in eventList) {
+    for (index in sharedViewModel?.listEventsResult!!.indices ) {
+        var startTime = sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].startTime)
+        val endTime = sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].endTime)
+        if(startTime > endTime) startTime -= 24
+        val offset = endTime - startTime
+        val space = startTime + offset
         listOffset.add(
-            heightEvent(timeRange = event.timeRange)
+            heightEvent(timeRange = offset)
         )
-        listSpace.add(
-            event.timeRange + event.startTime
-        )
+        listSpace.add(space)
+
     }
     val scrollState by mutableStateOf(rememberScrollState())
     val localDensity = LocalDensity.current
@@ -84,7 +82,9 @@ fun CalendarContent(
             currentDate = date,
             calendar = calendar,
             selectedDate = selectedDate,
-            onSelectDay = onSelectDay
+            onSelectDay = onSelectDay,
+            sharedViewModel = sharedViewModel,
+            isCalendarContent = true
         )
 
         Divider(
@@ -113,13 +113,25 @@ fun CalendarContent(
 
     // Setup Event
     CalendarEvent(
-        listEvent = eventList,
+        listEvent = sharedViewModel.listEventsResult,
         listOffset = listOffset,
         listSpace = listSpace,
         state = scrollState,
         height = timeGridHeightDp,
         offset = columnHeightDp,
+        sharedViewModel = sharedViewModel
     )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .offset(
+                y = (-56).dp
+            )
+            .padding(16.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        Fab(onFabClicked = navigateToAddTask)
+    }
 }
 
 
@@ -132,6 +144,7 @@ fun CalendarPreview() {
         date = date,
         calendar = calendar,
         selectedDate = date,
-        onSelectDay = {}
+        onSelectDay = {},
+        navigateToAddTask = {}
     )
 }

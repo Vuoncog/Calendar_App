@@ -65,6 +65,7 @@ class SharedViewModel @Inject constructor(
     val titleAndDetailEvent = mutableStateOf(Pair("", ""))
     var startAndEndEvent = mutableStateOf(Pair(0L, 0L))
     val listEventsResult = mutableStateListOf<EventInfo>()
+    val listBackgroundColor = listOf<Long>(0xFFF8F2F3,0xFFFEE6DF,0xFFFAA36A,0xFF03DAC5,0xFFBB86FC)
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
 
@@ -303,6 +304,7 @@ class SharedViewModel @Inject constructor(
                 }
                 listEvents.add(
                     EventInfo(
+                        color = listBackgroundColor.random(),
                         title = title,
                         detail = detail,
                         startTime = startTime.toFloat(),

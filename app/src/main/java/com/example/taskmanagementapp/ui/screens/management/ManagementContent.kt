@@ -28,7 +28,7 @@ fun ManagementContent(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
-    sharedViewModel: SharedViewModel? = null
+    sharedViewModel: SharedViewModel
 ) {
 
     val listTask = listOf(
@@ -59,7 +59,7 @@ fun ManagementContent(
                 calendar = calendar,
                 selectedDate = selectedDate,
                 onSelectDay = onSelectDay,
-                sharedViewModel = sharedViewModel!!,
+                sharedViewModel = sharedViewModel,
                 isCalendarContent = false
             )
 
@@ -78,7 +78,8 @@ fun ManagementContent(
         }
 
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .offset(
                     y = (-56).dp
                 ),
@@ -94,11 +95,13 @@ fun ManagementContent(
 fun ManagementPreView() {
     val date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
     val calendar = Calendar.getInstance()
+    val sharedViewModel: SharedViewModel? = null
     ManagementContent(
         date = date,
         calendar = calendar,
         selectedDate = date,
         onSelectDay = {},
-        navigateToAddTask = {}
+        navigateToAddTask = {},
+        sharedViewModel = sharedViewModel!!
     )
 }

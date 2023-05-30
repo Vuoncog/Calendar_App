@@ -6,15 +6,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.taskmanagementapp.constant.BottomBarItems
-import com.example.taskmanagementapp.constant.Screen
+import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.data.SharedViewModel
-import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
-import com.example.taskmanagementapp.ui.screens.home.HomeContent
-import com.example.taskmanagementapp.ui.screens.management.ManagementContent
-import com.example.taskmanagementapp.ui.screens.management.task.AddTask
-import com.example.taskmanagementapp.ui.screens.profile.ProfileContent
+import com.example.taskmanagementapp.navigation.calendar.calendarNavigation
+import com.example.taskmanagementapp.navigation.home.homeNavigation
+import com.example.taskmanagementapp.navigation.profile.profileNavigation
 import java.util.*
 
 
@@ -40,53 +36,38 @@ fun BottomNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = BottomBarItems.Home.route
+        route = Graph.MAIN,
+        startDestination = Graph.HOME
     ) {
-        composable(BottomBarItems.Home.route) {
-            isShowBottomBarItems(true)
-            HomeContent(
-                listAllTask = allTaskInDate,
-                currentDate = Calendar.getInstance().time
-            )
-        }
-        composable(BottomBarItems.Calendar.route) {
-            isShowBottomBarItems(true)
-            CalendarContent(
-                date = currentDate,
-                calendar = calendar,
-                selectedDate = selectedDate,
-                onSelectDay = onSelectDay,
-                navigateToAddTask = {
-                    navController.navigate("${BottomBarItems.Management.route}/${Screen.AddTask.route}")
-                },
-                sharedViewModel = sharedViewModel
-            )
-        }
-        composable(BottomBarItems.Management.route) {
-            isShowBottomBarItems(true)
-            ManagementContent(
-                date = currentDate,
-                calendar = calendar,
-                selectedDate = selectedDate,
-                onSelectDay = onSelectDay,
-                navigateToAddTask = {
-                    navController.navigate("${BottomBarItems.Management.route}/${Screen.AddTask.route}")
-                },
-                sharedViewModel = sharedViewModel
-            )
-        }
-        composable(BottomBarItems.Profile.route) {
-            isShowBottomBarItems(true)
-            ProfileContent(sharedViewModel = sharedViewModel)
-        }
+        homeNavigation(
+            allTaskInDate = allTaskInDate,
+            currentDate = currentDate,
+            isShowBottomBarItems = isShowBottomBarItems
+        )
 
-        composable("${BottomBarItems.Management.route}/${Screen.AddTask.route}") {
-            isShowBottomBarItems(false)
-            AddTask(sharedViewModel)
-        }
-        composable("${BottomBarItems.Calendar.route}/${Screen.AddTask.route}") {
-            isShowBottomBarItems(false)
-            AddTask(sharedViewModel)
-        }
+        calendarNavigation(
+            navController = navController,
+            sharedViewModel = sharedViewModel,
+            currentDate = currentDate,
+            calendar = calendar,
+            selectedDate = selectedDate,
+            onSelectDay = onSelectDay,
+            isShowBottomBarItems = isShowBottomBarItems
+        )
+
+        managementNavigation(
+            navController = navController,
+            sharedViewModel = sharedViewModel,
+            currentDate = currentDate,
+            calendar = calendar,
+            selectedDate = selectedDate,
+            onSelectDay = onSelectDay,
+            isShowBottomBarItems = isShowBottomBarItems
+        )
+
+        profileNavigation(
+            sharedViewModel = sharedViewModel,
+            isShowBottomBarItems = isShowBottomBarItems
+        )
     }
 }

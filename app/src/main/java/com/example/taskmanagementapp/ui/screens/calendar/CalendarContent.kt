@@ -2,7 +2,6 @@ package com.example.taskmanagementapp.ui.screens.calendar
 
 import TimeGrid
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,16 +13,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.theme.*
-import com.google.firebase.database.ktx.getValue
-import java.math.RoundingMode
-import java.sql.Timestamp
-import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
@@ -103,7 +96,6 @@ fun CalendarContent(
                 vertical = 20.dp
             )
             .onGloballyPositioned { coordinates ->
-                // Set column height using the LayoutCoordinates
                 timeGridHeightDp = with(localDensity) { coordinates.size.height.toDp() }
             }
             .verticalScroll(

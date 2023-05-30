@@ -4,15 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.taskmanagementapp.constant.BottomBarItems
-import com.example.taskmanagementapp.constant.Screen
+import com.example.taskmanagementapp.constant.Graph
+import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.data.SharedViewModel
-import com.example.taskmanagementapp.ui.screens.calendar.CalendarTopAppBar
-import com.example.taskmanagementapp.ui.screens.home.HomeAppBar
-import com.example.taskmanagementapp.ui.screens.management.ManagementTopAppBar
-import com.example.taskmanagementapp.ui.screens.management.task.AddTaskTopAppBar
-import com.example.taskmanagementapp.ui.screens.profile.ProfileTopAppBar
+import com.example.taskmanagementapp.navigation.calendar.topCalendarNavigation
+import com.example.taskmanagementapp.navigation.home.topHomeNavigation
+import com.example.taskmanagementapp.navigation.management.topManagementNavigation
+import com.example.taskmanagementapp.navigation.profile.topProfileNavigation
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -30,48 +28,39 @@ fun TopNavGraph(
             navController.popBackStack()
         }
     }
-    val onFinished : () -> Unit = {
+    val onFinished: () -> Unit = {
         coroutineScope.launch {
-            navController.navigate(BottomBarItems.Calendar.route)
+            navController.navigate(GraphRoute.Calendar.route)
         }
     }
 
-    NavHost(navController = navController, startDestination = BottomBarItems.Home.route) {
-        composable(BottomBarItems.Home.route) {
-            HomeAppBar()
-        }
-        composable(BottomBarItems.Calendar.route) {
-            CalendarTopAppBar(
-                onNextWeekClicked = onNextWeekClicked,
-                onPrevWeekClicked = onPrevWeekClicked,
-                currentDay = date,
-            )
-        }
-        composable(BottomBarItems.Management.route) {
-            ManagementTopAppBar(
-                onNextWeekClicked = onNextWeekClicked,
-                onPrevWeekClicked = onPrevWeekClicked,
-                currentDay = date,
-            )
-        }
-        composable(BottomBarItems.Profile.route) {
-            ProfileTopAppBar()
-        }
+    NavHost(
+        navController = navController,
+        route = Graph.MAIN,
+        startDestination = Graph.HOME
+    ) {
+        topHomeNavigation()
 
-        composable("${BottomBarItems.Management.route}/${Screen.AddTask.route}") {
-            AddTaskTopAppBar(
-                onBackClicked = onBackClicked,
-                sharedViewModel = sharedViewModel,
-                onFinished = onFinished
-            )
-        }
-        composable("${BottomBarItems.Calendar.route}/${Screen.AddTask.route}") {
-            AddTaskTopAppBar(
-                onBackClicked = onBackClicked,
-                sharedViewModel = sharedViewModel,
-                onFinished = onFinished
-            )
-        }
+        topProfileNavigation()
 
+        topManagementNavigation(
+            navController = navController,
+            sharedViewModel = sharedViewModel,
+            date = date,
+            onPrevWeekClicked = onPrevWeekClicked,
+            onNextWeekClicked = onNextWeekClicked,
+            onBackClicked = onBackClicked,
+            onFinished = onFinished
+        )
+
+        topCalendarNavigation(
+            navController = navController,
+            sharedViewModel = sharedViewModel,
+            date = date,
+            onPrevWeekClicked = onPrevWeekClicked,
+            onNextWeekClicked = onNextWeekClicked,
+            onBackClicked = onBackClicked,
+            onFinished = onFinished
+        )
     }
 }

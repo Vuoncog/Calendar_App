@@ -15,7 +15,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.taskmanagementapp.constant.BottomBarItems
+import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.ui.theme.*
 import java.util.*
 
@@ -25,10 +25,10 @@ fun BottomBar(
     resetDay: (Date) -> Unit
 ) {
     val screens = listOf(
-        BottomBarItems.Home,
-        BottomBarItems.Calendar,
-        BottomBarItems.Management,
-        BottomBarItems.Profile,
+        GraphRoute.Home,
+        GraphRoute.Calendar,
+        GraphRoute.Management,
+        GraphRoute.Profile,
         )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -55,7 +55,7 @@ fun BottomBar(
 
 @Composable
 fun RowScope.BottomItem(
-    screen: BottomBarItems,
+    screen: GraphRoute,
     navController: NavHostController,
     currentDestination: NavDestination?,
     resetDay: (Date) -> Unit

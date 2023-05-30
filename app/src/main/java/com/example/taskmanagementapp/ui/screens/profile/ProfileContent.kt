@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.taskmanagementapp.constant.BottomBarItems
+import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
@@ -57,9 +57,9 @@ fun ProfileContent(
     ) {
         NavHost(
             navController = navController,
-            startDestination = BottomBarItems.Profile.route
+            startDestination = GraphRoute.Profile.route
         ) {
-            composable(BottomBarItems.Profile.route) {
+            composable(GraphRoute.Profile.route) {
                 ProfileContentUI(
                     onExpandIconClicked = {
                         openBottomSheet(it)
@@ -71,7 +71,7 @@ fun ProfileContent(
                 )
             }
 
-            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.NotificationAndAlerts.route}") {
+            bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.NotificationAndAlerts.route}") {
                 NotificationBottomSheet(
                     isNotificate = isNotificate,
                     systemColor = systemColor,
@@ -84,7 +84,7 @@ fun ProfileContent(
                 )
             }
 
-            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Color.route}") {
+            bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Color.route}") {
                 ColorBottomSheet(
                     systemColor = systemColorPreview,
                     onColorChange = {
@@ -100,7 +100,7 @@ fun ProfileContent(
                 )
             }
 
-            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Settings.route}") {
+            bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Settings.route}") {
                 SettingsBottomSheet(
                     systemColor = systemColor,
                     onBackupClicked = {},
@@ -110,7 +110,7 @@ fun ProfileContent(
                 )
             }
 
-            bottomSheet(route = "${BottomBarItems.Profile.route}/${ProfileSettingItem.Logout.route}") {
+            bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Logout.route}") {
                 LogoutBottomSheet(
                     systemColor = systemColor,
                     onLogoutClicked = {},

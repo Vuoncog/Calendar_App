@@ -33,6 +33,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
+import java.util.Calendar.HOUR_OF_DAY
 
 @Composable
 fun Time(
@@ -82,10 +83,10 @@ fun TimeSetup(
     systemColor: Color = SystemColor,
     isStart: Boolean
 ) : Long{
-    val currentDay = Calendar.getInstance().time
+    val currentDay = if(isStart) Date() else Date(Date().time + (1 * 60 * 60 * 1000))
     var dateFormatter by remember { mutableStateOf(dateFormatter(currentDay))}
     var timeFormatter by remember { mutableStateOf(timeFormatter(currentDay))}
-    var timestamp by remember { mutableStateOf(LocalDateTime.now()) }
+    val timestamp by remember { mutableStateOf(LocalDateTime.now()) }
     var mHour  by remember { mutableStateOf(LocalDateTime.now().hour) }
     var mMinute by remember { mutableStateOf(LocalDateTime.now().minute) }
     var mDay by remember { mutableStateOf(LocalDate.now().dayOfMonth) }

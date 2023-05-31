@@ -6,6 +6,7 @@ import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.RequestState
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import java.util.*
@@ -13,7 +14,8 @@ import java.util.*
 fun NavGraphBuilder.homeNavigation(
     allTaskInDate: RequestState<Note>,
     currentDate: Date,
-    isShowBottomBarItems: (Boolean) -> Unit
+    isShowBottomBarItems: (Boolean) -> Unit,
+    systemColorSet: SystemColorSet
 ){
     navigation(
         startDestination = GraphRoute.Home.route,
@@ -23,7 +25,8 @@ fun NavGraphBuilder.homeNavigation(
             isShowBottomBarItems(true)
             HomeContent(
                 listAllTask = allTaskInDate,
-                currentDate = currentDate
+                currentDate = currentDate,
+                systemColorSet = systemColorSet
             )
         }
 

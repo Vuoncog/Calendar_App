@@ -38,6 +38,11 @@ val Neutral7 = Color(0xFFB2A9A5)
 val Neutral8 = Color(0xFFFEFBFF)
 val NeutralBorder = Color(0xFFEAEAEA)
 
+val GreenPrimary = Color(0xFF408285)
+val GreenSecondary = Color(0xFFF1F8F8)
+val PurplePrimary = Color(0xFF615D86)
+val PurpleSecondary = Color(0xFFE7E6F1)
+
 var SystemColor = Primary4
 
 fun ChangeLightness(

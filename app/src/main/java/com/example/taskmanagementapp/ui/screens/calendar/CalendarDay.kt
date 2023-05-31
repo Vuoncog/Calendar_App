@@ -10,11 +10,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.data.SharedViewModel
-import com.example.taskmanagementapp.ui.theme.*
+import com.example.taskmanagementapp.ui.theme.Neutral2
+import com.example.taskmanagementapp.ui.theme.Neutral5
+import com.example.taskmanagementapp.ui.theme.Neutral8
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import com.mrerror.singleRowCalendar.DateUtils
 import java.time.ZoneId
 import java.util.*
@@ -22,6 +26,7 @@ import java.util.*
 @Composable
 fun WeeklyCalendar(
     modifier: Modifier = Modifier,
+    systemColor: Color,
     onSelectedDayChange: (Date) -> Unit,
     currentDate: Date,
     calendar: Calendar,
@@ -34,6 +39,7 @@ fun WeeklyCalendar(
     Column(modifier) {
         WeeklyHeader(
             firstDayDate = currentDate,
+            systemColor = systemColor,
             selectedDate = selectedDate,
             onSelectDay = onSelectDay,
             onSelectedDayChange = onSelectedDayChange,
@@ -46,6 +52,7 @@ fun WeeklyCalendar(
 @Composable
 fun WeeklyHeader(
     modifier: Modifier = Modifier,
+    systemColor: Color,
     firstDayDate: Date,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
@@ -86,7 +93,7 @@ fun WeeklyHeader(
                         .padding(top = 16.dp)
                         .drawBehind {
                             drawCircle(
-                                color = SystemColor, radius = this.size.height
+                                color = systemColor, radius = this.size.height
                             )
                         }
                     else Modifier

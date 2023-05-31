@@ -34,6 +34,7 @@ fun ProfileAreaSetting(
     title: ProfileAreaSettingName,
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
+    subSystemColor: Color,
     isNotificate: Boolean = false,
     sharedViewModel: SharedViewModel
 ) {
@@ -54,7 +55,7 @@ fun ProfileAreaSetting(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = BackgroundColorTask),
+                .background(color = subSystemColor),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             listSettingItems.forEach { item: ProfileSettingItem ->

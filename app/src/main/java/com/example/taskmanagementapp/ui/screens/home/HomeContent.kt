@@ -2,7 +2,6 @@
 
 package com.example.taskmanagementapp.ui.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,21 +17,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.RequestState
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral3
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.util.*
 
 @Composable
 fun HomeContent(
     listAllTask: RequestState<Note>,
     currentDate: Date,
-    systemColor: Color = SystemColor
+    systemColorSet: SystemColorSet = SystemColorSet.ORANGE
 ) {
     Column(
         modifier = Modifier
@@ -42,10 +39,20 @@ fun HomeContent(
     ) {
         if (listAllTask is RequestState.Success) {
             if (listAllTask.data.listToDoTask.isEmpty()) {
-                NoToDoTask(systemColor = systemColor)
+                NoToDoTask(
+                    systemColor = systemColorSet.primaryColor,
+                    subSystemColor = systemColorSet.secondaryColor,
+                    sticker = systemColorSet.listStickerSet[11]
+                )
             } else {
-                ExistTaskText(list = listAllTask.data.listToDoTask)
-                TodoTask(list = listAllTask.data.listToDoTask)
+                ExistTaskText(
+                    list = listAllTask.data.listToDoTask,
+                    systemColor = systemColorSet.primaryColor
+                )
+                TodoTask(
+                    list = listAllTask.data.listToDoTask,
+                    systemColor = systemColorSet.primaryColor
+                )
             }
 
             Column(
@@ -60,10 +67,20 @@ fun HomeContent(
                     letterSpacing = 1.sp
                 )
                 if (listAllTask.data.listEvent.isEmpty()) {
-                    NoEventCard(currentDate = currentDate)
+                    NoEventCard(
+                        currentDate = currentDate,
+                        systemColor = systemColorSet.primaryColor,
+                        subSystemColor = systemColorSet.secondaryColor,
+                        sticker = systemColorSet.listStickerSet[5]
+                    )
                 } else {
                     listAllTask.data.listEvent.forEach { event ->
-                        HomeEvent(event = event)
+                        HomeEvent(
+                            event = event,
+                            systemColor = systemColorSet.primaryColor,
+                            subSystemColor = systemColorSet.secondaryColor,
+                            sticker = systemColorSet.listStickerSet[17]
+                        )
                     }
                 }
             }
@@ -73,7 +90,8 @@ fun HomeContent(
 
 @Composable
 fun ExistTaskText(
-    list: List<TaskType>
+    list: List<TaskType>,
+    systemColor: Color
 ) {
     Column {
         Text(
@@ -85,17 +103,26 @@ fun ExistTaskText(
         Text(
             text = "${list.size} todo tasks",
             style = VisbyTypography.h6,
-            color = SystemColor
+            color = systemColor
         )
     }
 }
 
 @Composable
-fun NoToDoTask(systemColor: Color = SystemColor) {
+fun NoToDoTask(
+    systemColor: Color,
+    subSystemColor: Color,
+    sticker: Int
+) {
     NoTaskText(
         systemColor = systemColor
     )
-    NoTaskPlanned()
+
+    NoTaskPlanned(
+        systemColor = systemColor,
+        subSystemColor = subSystemColor,
+        sticker = sticker
+    )
 }
 
 @Preview

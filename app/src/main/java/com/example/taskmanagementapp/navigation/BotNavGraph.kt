@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.taskmanagementapp.constant.Graph
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.navigation.calendar.calendarNavigation
 import com.example.taskmanagementapp.navigation.home.homeNavigation
@@ -19,11 +20,13 @@ import java.util.*
 fun BottomNavGraph(
     navController: NavHostController,
     sharedViewModel: SharedViewModel,
+    systemColorSet: SystemColorSet,
     currentDate: Date,
     calendar: Calendar,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
-    isShowBottomBarItems: (Boolean) -> Unit
+    isShowBottomBarItems: (Boolean) -> Unit,
+    onColorChange: (SystemColorSet) -> Unit
 ) {
     val resetCalendar = Calendar.getInstance()
     resetCalendar.time = selectedDate
@@ -42,12 +45,14 @@ fun BottomNavGraph(
         homeNavigation(
             allTaskInDate = allTaskInDate,
             currentDate = currentDate,
-            isShowBottomBarItems = isShowBottomBarItems
+            isShowBottomBarItems = isShowBottomBarItems,
+            systemColorSet = systemColorSet
         )
 
         calendarNavigation(
             navController = navController,
             sharedViewModel = sharedViewModel,
+            systemColorSet = systemColorSet,
             currentDate = currentDate,
             calendar = calendar,
             selectedDate = selectedDate,
@@ -58,6 +63,7 @@ fun BottomNavGraph(
         managementNavigation(
             navController = navController,
             sharedViewModel = sharedViewModel,
+            systemColorSet = systemColorSet,
             currentDate = currentDate,
             calendar = calendar,
             selectedDate = selectedDate,
@@ -67,7 +73,9 @@ fun BottomNavGraph(
 
         profileNavigation(
             sharedViewModel = sharedViewModel,
-            isShowBottomBarItems = isShowBottomBarItems
+            isShowBottomBarItems = isShowBottomBarItems,
+            systemColorSet = systemColorSet,
+            onColorChange = onColorChange
         )
     }
 }

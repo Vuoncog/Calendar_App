@@ -30,6 +30,8 @@ import java.util.*
 @Composable
 fun HomeNoTask(
     systemColor: Color = SystemColor,
+    subSystemColor: Color = BackgroundColorTask,
+    sticker: Int,
     currentDate: Date
 ) {
     Column(
@@ -42,7 +44,11 @@ fun HomeNoTask(
             systemColor = systemColor
         )
 
-        NoTaskPlanned()
+        NoTaskPlanned(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            sticker = sticker
+        )
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -55,7 +61,10 @@ fun HomeNoTask(
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp
             )
-            NoEventCard(currentDate = currentDate)
+            NoEventCard(
+                currentDate = currentDate,
+                sticker = sticker
+            )
         }
     }
 }
@@ -94,7 +103,9 @@ fun NoTaskText(
 
 @Composable
 fun NoTaskPlanned(
-    systemColor: Color = SystemColor
+    systemColor: Color,
+    subSystemColor: Color,
+    sticker: Int
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -110,46 +121,50 @@ fun NoTaskPlanned(
             )
             Text(text = stringResource(R.string.view_all),
                 style = VisbyTypography.button,
-                color = SystemColor,
+                color = systemColor,
                 modifier = Modifier.clickable {
 
                 })
         }
 
         NoTaskCard(
-            systemColor = systemColor
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            sticker = sticker
         )
     }
 }
 
 @Composable
 fun NoTaskCard(
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    subSystemColor: Color = BackgroundColorTask,
+    sticker: Int = R.drawable.boar_emoji_sad
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .width(128.dp)
             .border(
                 width = 1.dp,
                 color = systemColor,
                 shape = RoundedCornerShape(12.dp)
             )
             .clip(RoundedCornerShape(12.dp))
-            .background(BackgroundColorTask)
+            .background(subSystemColor)
             .padding(8.dp)
     ) {
         Image(
             modifier = Modifier.size(40.dp),
-            painter = painterResource(id = R.drawable.cat_emoji_sad),
+            painter = painterResource(id = sticker),
             contentDescription = "Cat sticker",
         )
         Text(
-            text = "Not have tasks",
+            text = "Not have\ntasks",
             style = VisbyTypography.subtitle2,
             color = Neutral3,
-            maxLines = 2
+            maxLines = 2,
+            modifier = Modifier.padding(end = 4.dp)
         )
     }
 }
@@ -157,13 +172,15 @@ fun NoTaskCard(
 @Composable
 fun NoEventCard(
     systemColor: Color = SystemColor,
-    currentDate: Date
+    subSystemColor: Color = BackgroundColorTask,
+    currentDate: Date,
+    sticker: Int
 ) {
     val dateFormatter = "${DateUtils.getDayName(currentDate)}, " +
             "${DateUtils.getDayNumber(currentDate)} ${DateUtils.getMonth3LettersName(currentDate)}"
 
     Card(
-        backgroundColor = BackgroundColorTask,
+        backgroundColor = subSystemColor,
         modifier = Modifier
             .fillMaxWidth()
             .border(
@@ -191,8 +208,16 @@ fun NoEventCard(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                MiniDetail(icon = R.drawable.ic_detail, title = dateFormatter)
-                MiniDetail(icon = R.drawable.ic_add, title = "Click here to add event")
+                MiniDetail(
+                    icon = R.drawable.ic_detail,
+                    title = dateFormatter,
+                    systemColor = systemColor
+                )
+                MiniDetail(
+                    icon = R.drawable.ic_add,
+                    title = "Click here to add event",
+                    systemColor = systemColor
+                )
             }
 
         }
@@ -204,7 +229,7 @@ fun NoEventCard(
                 modifier = Modifier
                     .size(80.dp)
                     .offset(x = (-3).dp, y = 0.dp),
-                painter = painterResource(id = R.drawable.cat_emoji_confusing),
+                painter = painterResource(id = sticker),
                 contentDescription = "Sticker",
             )
         }
@@ -214,5 +239,8 @@ fun NoEventCard(
 @Preview
 @Composable
 fun HomeNoTaskPreview() {
-    HomeNoTask(currentDate = Calendar.getInstance().time)
+    HomeNoTask(
+        currentDate = Calendar.getInstance().time,
+        sticker = R.drawable.boar_emoji_sad
+    )
 }

@@ -8,7 +8,7 @@ import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.data.SharedViewModel
-import com.example.taskmanagementapp.ui.screens.management.ManagementTopAppBar
+import com.example.taskmanagementapp.ui.screens.calendar.CalendarTopAppBar
 import com.example.taskmanagementapp.ui.screens.management.task.AddTaskTopAppBar
 import java.util.*
 
@@ -26,7 +26,7 @@ fun NavGraphBuilder.topCalendarNavigation(
         route = Graph.CALENDAR
     ){
         composable(route = GraphRoute.Calendar.route){
-            ManagementTopAppBar(
+            CalendarTopAppBar(
                 onNextWeekClicked = onNextWeekClicked,
                 onPrevWeekClicked = onPrevWeekClicked,
                 currentDay = date,

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.data.SharedViewModel
@@ -23,6 +24,7 @@ import java.util.*
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun ManagementContent(
+    systemColorSet: SystemColorSet,
     date: Date,
     calendar: Calendar,
     selectedDate: Date,
@@ -54,6 +56,7 @@ fun ManagementContent(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             WeeklyCalendar(
+                systemColor = systemColorSet.primaryColor,
                 onSelectedDayChange = {},
                 currentDate = date,
                 calendar = calendar,
@@ -63,17 +66,26 @@ fun ManagementContent(
                 isCalendarContent = false
             )
 
-            TaskInfoCard(listTask = _listTask)
+            TaskInfoCard(
+                listTask = _listTask,
+                systemColor = systemColorSet.primaryColor,
+                subSystemColor = systemColorSet.secondaryColor,
+                sticker = systemColorSet.listStickerSet[14]
+            )
 
             TaskState(
                 listTask = _listTask,
                 isCompleted = false,
                 changeTaskState = changeTaskState,
+                systemColor = systemColorSet.primaryColor,
+                subSystemColor = systemColorSet.secondaryColor
             )
             TaskState(
                 listTask = _listTask,
                 isCompleted = true,
                 changeTaskState = changeTaskState,
+                systemColor = systemColorSet.primaryColor,
+                subSystemColor = systemColorSet.secondaryColor
             )
         }
 
@@ -85,7 +97,10 @@ fun ManagementContent(
                 ),
             contentAlignment = Alignment.BottomEnd
         ) {
-            Fab(onFabClicked = navigateToAddTask)
+            Fab(
+                onFabClicked = navigateToAddTask,
+                systemColor = systemColorSet.primaryColor
+            )
         }
     }
 }
@@ -102,6 +117,7 @@ fun ManagementPreView() {
         selectedDate = date,
         onSelectDay = {},
         navigateToAddTask = {},
-        sharedViewModel = sharedViewModel!!
+        sharedViewModel = sharedViewModel!!,
+        systemColorSet = SystemColorSet.ORANGE
     )
 }

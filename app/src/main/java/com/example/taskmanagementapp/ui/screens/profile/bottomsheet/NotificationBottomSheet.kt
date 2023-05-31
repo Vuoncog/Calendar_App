@@ -18,15 +18,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.theme.Neutral5
 import com.example.taskmanagementapp.ui.theme.Neutral8
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationBottomSheet(
-    systemColor: Color = SystemColor,
+    systemColorSet: SystemColorSet,
     onSwitchClicked: (Boolean) -> Unit,
     onCloseClicked: () -> Unit,
     isNotificate: Boolean = false
@@ -42,7 +42,7 @@ fun NotificationBottomSheet(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TitleBottomSheet(
-            systemColor = systemColor,
+            systemColorSet = systemColorSet,
             profileSettingItem = ProfileSettingItem.NotificationAndAlerts,
             onCloseClicked = onCloseClicked
         )
@@ -64,7 +64,7 @@ fun NotificationBottomSheet(
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Neutral8,
-                        checkedTrackColor = systemColor,
+                        checkedTrackColor = systemColorSet.primaryColor,
                         uncheckedThumbColor = Neutral5,
                         uncheckedTrackColor = Neutral8,
                         uncheckedBorderColor = Neutral5,
@@ -81,5 +81,6 @@ fun NnAPreview() {
     NotificationBottomSheet(
         onSwitchClicked = {  },
         onCloseClicked = {},
+        systemColorSet = SystemColorSet.ORANGE
     )
 }

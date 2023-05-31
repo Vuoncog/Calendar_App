@@ -6,26 +6,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.RecommendColor
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorCircle
 import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun Theme(
-    systemColor: Color = SystemColor
+    systemColorSet: SystemColorSet = SystemColorSet.ORANGE
 ) {
-    val recommendColor = listOf(
-        RecommendColor.Orange,
-        RecommendColor.Green,
-        RecommendColor.Purple,
+    val recommendColorSet = listOf(
+        SystemColorSet.ORANGE,
+        SystemColorSet.GREEN,
+        SystemColorSet.PURPLE,
     )
 
     Column(
@@ -43,7 +41,7 @@ fun Theme(
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_paint_board),
                 contentDescription = "Paint",
-                tint = systemColor
+                tint = systemColorSet.primaryColor
             )
 
             Text(
@@ -61,11 +59,11 @@ fun Theme(
                 )
                 .fillMaxWidth()
         ) {
-            recommendColor.forEach { displayColor ->
+            recommendColorSet.forEach { displayColor ->
                 ColorCircle(
                     onColorCircleClicked = {},
                     color = displayColor,
-                    systemColor = systemColor,
+                    systemColorSet = systemColorSet,
                     onColorChange = {},
                     circleSize = 16.dp
                 )
@@ -77,5 +75,7 @@ fun Theme(
 @Preview
 @Composable
 fun ThemePreview() {
-    Theme()
+    Theme(
+        systemColorSet = SystemColorSet.ORANGE
+    )
 }

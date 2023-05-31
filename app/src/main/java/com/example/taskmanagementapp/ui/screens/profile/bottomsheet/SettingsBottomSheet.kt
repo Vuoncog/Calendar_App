@@ -14,11 +14,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun SettingsBottomSheet(
-    systemColor: Color = SystemColor,
+    systemColorSet: SystemColorSet,
     onBackupClicked: () -> Unit,
     onCloseClicked: () -> Unit
 ) {
@@ -33,7 +34,7 @@ fun SettingsBottomSheet(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TitleBottomSheet(
-            systemColor = systemColor,
+            systemColorSet = systemColorSet,
             profileSettingItem = ProfileSettingItem.Settings,
             onCheckClicked = null,
             onCloseClicked = onCloseClicked
@@ -55,7 +56,7 @@ fun SettingsBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 ProfileButton(
-                    systemColor = systemColor,
+                    systemColor = systemColorSet.primaryColor,
                     onBackupClicked = onBackupClicked
                 )
                 Text(
@@ -103,5 +104,9 @@ fun ProfileButton(
 @Preview
 @Composable
 fun SettingsPreview() {
-    SettingsBottomSheet(onBackupClicked = {}, onCloseClicked = {})
+    SettingsBottomSheet(
+        onBackupClicked = {},
+        onCloseClicked = {},
+        systemColorSet = SystemColorSet.ORANGE
+    )
 }

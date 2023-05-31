@@ -13,11 +13,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun LogoutBottomSheet(
-    systemColor: Color = SystemColor,
+    systemColorSet: SystemColorSet,
     onLogoutClicked: () -> Unit,
     onCloseClicked: () -> Unit
 ) {
@@ -34,7 +35,7 @@ fun LogoutBottomSheet(
         TitleBottomSheet(
             profileSettingItem = ProfileSettingItem.Logout,
             onCloseClicked = onCloseClicked,
-            systemColor = systemColor
+            systemColorSet = systemColorSet
         )
 
         Column(
@@ -49,7 +50,7 @@ fun LogoutBottomSheet(
                 color = Neutral5
             )
             DangerButton(
-                systemColor = systemColor,
+                systemColor = systemColorSet.primaryColor,
                 onClicked = onLogoutClicked
             )
         }

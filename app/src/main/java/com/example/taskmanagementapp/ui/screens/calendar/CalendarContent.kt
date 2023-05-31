@@ -9,6 +9,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import java.util.*
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CalendarContent(
+    systemColor: Color,
     date: Date,
     calendar: Calendar,
     selectedDate: Date,
@@ -71,6 +73,7 @@ fun CalendarContent(
             }
     ) {
         WeeklyCalendar(
+            systemColor = systemColor,
             onSelectedDayChange = {},
             currentDate = date,
             calendar = calendar,
@@ -122,7 +125,8 @@ fun CalendarContent(
             .padding(16.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Fab(onFabClicked = navigateToAddTask)
+        Fab(onFabClicked = navigateToAddTask,
+        systemColor = systemColor)
     }
 }
 
@@ -137,6 +141,7 @@ fun CalendarPreview() {
         calendar = calendar,
         selectedDate = date,
         onSelectDay = {},
-        navigateToAddTask = {}
+        navigateToAddTask = {},
+        systemColor = SystemColor
     )
 }

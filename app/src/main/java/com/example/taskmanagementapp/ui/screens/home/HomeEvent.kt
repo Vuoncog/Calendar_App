@@ -11,23 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
-import com.example.taskmanagementapp.ui.theme.BackgroundColorTask
 import com.example.taskmanagementapp.ui.theme.Neutral2
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun HomeEvent(
-    event: EventInfo
+    event: EventInfo,
+    systemColor: Color,
+    subSystemColor: Color,
+    sticker: Int,
 ) {
     Card(
-        backgroundColor = BackgroundColorTask,
+        backgroundColor = subSystemColor,
         modifier = Modifier
             .padding(end = 16.dp)
             .fillMaxWidth()
@@ -51,8 +53,16 @@ fun HomeEvent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                MiniDetail(icon = R.drawable.ic_clock, title = event.startTime.toString())
-                MiniDetail(icon = R.drawable.ic_note, title = event.detail.toString())
+                MiniDetail(
+                    icon = R.drawable.ic_clock,
+                    title = event.startTime.toString(),
+                    systemColor = systemColor
+                )
+                MiniDetail(
+                    icon = R.drawable.ic_note,
+                    title = event.detail.toString(),
+                    systemColor = systemColor
+                )
             }
 
         }
@@ -65,7 +75,7 @@ fun HomeEvent(
                 modifier = Modifier
                     .size(80.dp)
                     .offset(x = (-3).dp, y = 0.dp),
-                painter = painterResource(id = R.drawable.cat_emoji_wink),
+                painter = painterResource(id = sticker),
                 contentDescription = "Sticker",
             )
         }
@@ -75,7 +85,8 @@ fun HomeEvent(
 @Composable
 fun MiniDetail(
     @DrawableRes icon: Int,
-    title: String
+    title: String,
+    systemColor: Color
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -85,7 +96,7 @@ fun MiniDetail(
         Icon(
             imageVector = ImageVector.vectorResource(id = icon),
             contentDescription = "Icon Detail",
-            tint = SystemColor,
+            tint = systemColor,
             modifier = Modifier.size(20.dp)
         )
 

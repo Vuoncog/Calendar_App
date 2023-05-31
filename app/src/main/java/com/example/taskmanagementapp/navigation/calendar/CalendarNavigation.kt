@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
 import com.example.taskmanagementapp.ui.screens.management.task.AddTask
@@ -15,6 +16,7 @@ import java.util.*
 fun NavGraphBuilder.calendarNavigation(
     navController: NavHostController,
     sharedViewModel: SharedViewModel,
+    systemColorSet: SystemColorSet,
     currentDate: Date,
     calendar: Calendar,
     selectedDate: Date,
@@ -28,6 +30,7 @@ fun NavGraphBuilder.calendarNavigation(
         composable(route = GraphRoute.Calendar.route){
             isShowBottomBarItems(true)
             CalendarContent(
+                systemColor = systemColorSet.primaryColor,
                 date = currentDate,
                 calendar = calendar,
                 selectedDate = selectedDate,

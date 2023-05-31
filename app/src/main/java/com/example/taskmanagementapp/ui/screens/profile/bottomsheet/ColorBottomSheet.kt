@@ -20,24 +20,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileSettingItem
-import com.example.taskmanagementapp.constant.RecommendColor
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.ui.screens.home.HomeTodoTaskItem
-import com.example.taskmanagementapp.ui.theme.Primary4
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
 
 @Composable
 fun ColorBottomSheet(
-    systemColor: Color,
-    onColorChange: (Color) -> Unit,
-    onCheckClicked: (Color) -> Unit,
+    systemColorSet: SystemColorSet,
+    onColorChange: (SystemColorSet) -> Unit,
+    onCheckClicked: (SystemColorSet) -> Unit,
     onCloseClicked: () -> Unit
 ) {
-    val recommendColor = listOf(
-        RecommendColor.Orange,
-        RecommendColor.Green,
-        RecommendColor.Purple,
+    val recommendColorSet = listOf(
+        SystemColorSet.ORANGE,
+        SystemColorSet.GREEN,
+        SystemColorSet.PURPLE,
     )
 
     Column(
@@ -52,7 +51,7 @@ fun ColorBottomSheet(
     ) {
         TitleBottomSheet(
             profileSettingItem = ProfileSettingItem.Color,
-            systemColor = systemColor,
+            systemColorSet = systemColorSet,
             onCheckClicked = onCheckClicked,
             onCloseClicked = onCloseClicked
         )
@@ -67,7 +66,7 @@ fun ColorBottomSheet(
             )
             HomeTodoTaskItem(
                 taskType = TaskType.Shopping,
-                systemColor = systemColor
+                systemColor = systemColorSet.primaryColor
             )
         }
 
@@ -92,13 +91,13 @@ fun ColorBottomSheet(
                         horizontal = 16.dp
                     )
             ) {
-                recommendColor.forEach { displayColor ->
+                recommendColorSet.forEach { displayColor ->
                     ColorCircle(
                         onColorCircleClicked = {
                             /* TODO */
                         },
                         color = displayColor,
-                        systemColor = systemColor,
+                        systemColorSet = systemColorSet,
                         onColorChange = onColorChange
                     )
                 }
@@ -136,24 +135,24 @@ fun ColorPicker() {
 
 @Composable
 fun ColorCircle(
-    onColorCircleClicked: (Color) -> Unit,
-    color: Color,
-    systemColor: Color,
-    onColorChange: (Color) -> Unit,
+    onColorCircleClicked: (SystemColorSet) -> Unit,
+    color: SystemColorSet,
+    systemColorSet: SystemColorSet,
+    onColorChange: (SystemColorSet) -> Unit,
     circleSize: Dp = 20.dp
 ) {
-    val isSelected = color == systemColor
+    val isSelected = color == systemColorSet
 
     val borderModifier = Modifier.border(
         width = 1.dp,
         shape = CircleShape,
-        color = color
+        color = color.primaryColor
     )
 
     val noBorder = Modifier.border(
         width = 0.dp,
         shape = CircleShape,
-        color = color
+        color = color.primaryColor
     )
     Canvas(
         modifier = Modifier
@@ -167,7 +166,7 @@ fun ColorCircle(
             },
         onDraw = {
             drawCircle(
-                color = color,
+                color = color.primaryColor,
                 radius = if (isSelected) 12.dp.value else size.minDimension / 2.0f
             )
         }
@@ -178,7 +177,7 @@ fun ColorCircle(
 @Composable
 fun ProfileColorPreview() {
     ColorBottomSheet(
-        Primary4,
+        SystemColorSet.ORANGE,
         {},
         {}, {})
 }

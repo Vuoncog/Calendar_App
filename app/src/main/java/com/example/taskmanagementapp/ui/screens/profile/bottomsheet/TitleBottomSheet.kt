@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
@@ -26,8 +27,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @Composable
 fun TitleBottomSheet(
     profileSettingItem: ProfileSettingItem,
-    systemColor: Color = SystemColor,
-    onCheckClicked: ((Color) -> Unit)? = null,
+    systemColorSet: SystemColorSet,
+    onCheckClicked: ((SystemColorSet) -> Unit)? = null,
     onCloseClicked: () -> Unit
 ) {
     CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
@@ -38,7 +39,7 @@ fun TitleBottomSheet(
                 .padding(0.dp)
         ) {
             CloseIcon(
-                systemColor = systemColor,
+                systemColor = systemColorSet.primaryColor,
                 onCloseClicked = onCloseClicked
             )
             Text(
@@ -54,7 +55,7 @@ fun TitleBottomSheet(
             )
             if (onCheckClicked != null) {
                 CheckIcon(
-                    systemColor = systemColor,
+                    systemColorSet = systemColorSet,
                     onCheckClicked = onCheckClicked
                 )
             }
@@ -81,17 +82,17 @@ fun CloseIcon(
 
 @Composable
 fun CheckIcon(
-    systemColor: Color = SystemColor,
-    onCheckClicked: ((Color) -> Unit)? = null,
+    systemColorSet: SystemColorSet,
+    onCheckClicked: ((SystemColorSet) -> Unit)? = null,
 ) {
     if (onCheckClicked != null) {
         IconButton(onClick = {
-            onCheckClicked(systemColor)
+            onCheckClicked(systemColorSet)
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_tick),
                 contentDescription = "Close icon",
-                tint = systemColor,
+                tint = systemColorSet.primaryColor,
                 modifier = Modifier.size(32.dp)
             )
         }
@@ -103,15 +104,21 @@ fun <T> onCheckClicked(type: T): (T) -> T = { it }
 @Preview
 @Composable
 fun TitleBottomSheetPreview() {
-    TitleBottomSheet(ProfileSettingItem.Color,
+    TitleBottomSheet(
+        ProfileSettingItem.Color,
         onCheckClicked = null,
-        onCloseClicked = {})
+        onCloseClicked = {},
+        systemColorSet = SystemColorSet.ORANGE
+    )
 }
 
 @Preview
 @Composable
 fun TitleBottomSheetPreview2() {
-    TitleBottomSheet(ProfileSettingItem.Color,
+    TitleBottomSheet(
+        ProfileSettingItem.Color,
         onCheckClicked = {},
-        onCloseClicked = {})
+        onCloseClicked = {},
+        systemColorSet = SystemColorSet.ORANGE
+    )
 }

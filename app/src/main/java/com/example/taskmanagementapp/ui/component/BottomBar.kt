@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -16,13 +17,17 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.taskmanagementapp.constant.GraphRoute
-import com.example.taskmanagementapp.ui.theme.*
+import com.example.taskmanagementapp.ui.theme.Neutral1
+import com.example.taskmanagementapp.ui.theme.Neutral8
+import com.example.taskmanagementapp.ui.theme.NeutralBorder
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import java.util.*
 
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    resetDay: (Date) -> Unit
+    resetDay: (Date) -> Unit,
+    systemColor: Color,
 ) {
     val screens = listOf(
         GraphRoute.Home,
@@ -35,7 +40,7 @@ fun BottomBar(
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation(
-        contentColor = contentColorFor(backgroundColor = SystemColor),
+        contentColor = contentColorFor(backgroundColor = systemColor),
         backgroundColor = Neutral8,
         elevation = 4.dp,
         modifier = Modifier.border(
@@ -46,6 +51,7 @@ fun BottomBar(
             BottomItem(
                 screen = screen,
                 navController = navController,
+                systemColor = systemColor,
                 currentDestination = currentDestination,
                 resetDay = resetDay
             )
@@ -57,6 +63,7 @@ fun BottomBar(
 fun RowScope.BottomItem(
     screen: GraphRoute,
     navController: NavHostController,
+    systemColor: Color,
     currentDestination: NavDestination?,
     resetDay: (Date) -> Unit
 ) {
@@ -88,7 +95,7 @@ fun RowScope.BottomItem(
                     id = if (isSelected) screen.iconSelected else screen.icon
                 ),
                 contentDescription = "Bottom Item Icon",
-                tint = if (isSelected) SystemColor else Neutral1
+                tint = if (isSelected) systemColor else Neutral1
             )
 
         },

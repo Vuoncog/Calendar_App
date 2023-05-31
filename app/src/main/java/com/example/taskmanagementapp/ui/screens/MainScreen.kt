@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.navigation.BottomNavGraph
 import com.example.taskmanagementapp.navigation.TopNavGraph
@@ -16,7 +17,7 @@ import java.util.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
 ) {
     val calendar = Calendar.getInstance(Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
@@ -25,6 +26,7 @@ fun MainScreen(
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
     var showBottomBar by remember { mutableStateOf(true) }
+    var systemColorSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
 
     Scaffold(
         backgroundColor = Color.White,
@@ -47,6 +49,7 @@ fun MainScreen(
             if(showBottomBar){
                 BottomBar(
                     navController = navController,
+                    systemColor = systemColorSet.primaryColor,
                     resetDay = { day ->
                         calendar.time = day
                         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
@@ -69,6 +72,10 @@ fun MainScreen(
             },
             isShowBottomBarItems = {
                 showBottomBar = it
+            },
+            systemColorSet = systemColorSet,
+            onColorChange = {
+                systemColorSet = it
             }
         )
     }

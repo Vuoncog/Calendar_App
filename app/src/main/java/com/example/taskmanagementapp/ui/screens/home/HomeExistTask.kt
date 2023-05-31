@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.database.Note
 import com.example.taskmanagementapp.ui.theme.Neutral1
@@ -26,7 +27,8 @@ import java.util.*
 
 @Composable
 fun HomeExistTask(
-    listTask: Note
+    listTask: Note,
+    systemColorSet: SystemColorSet
 ) {
     Column(
         modifier = Modifier
@@ -53,7 +55,12 @@ fun HomeExistTask(
             )
         }
 
-        listTask.listToDoTask.let { TodoTask(list = it) }
+        listTask.listToDoTask.let {
+            TodoTask(
+                list = it,
+                systemColor = systemColorSet.primaryColor
+            )
+        }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -67,7 +74,12 @@ fun HomeExistTask(
                 letterSpacing = 1.sp
             )
             listTask.listEvent.forEach { eventInfo ->
-                HomeEvent(eventInfo)
+                HomeEvent(
+                    event = eventInfo,
+                    systemColor = systemColorSet.primaryColor,
+                    subSystemColor = systemColorSet.secondaryColor,
+                    sticker = systemColorSet.listStickerSet[0]
+                )
             }
 
         }
@@ -90,7 +102,8 @@ fun HomeContentPreview() {
                     endTime = 2f,
                 )
             )
-        )
+        ),
+        systemColorSet = SystemColorSet.ORANGE
     )
 
 }

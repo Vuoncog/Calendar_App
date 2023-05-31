@@ -15,21 +15,17 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.ViewModel.LogInViewModel
 import com.example.taskmanagementapp.constant.ProfileAreaSettingName
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.loadImage
-import com.example.taskmanagementapp.constant.loadImage
 import com.example.taskmanagementapp.data.SharedViewModel
-import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.Neutral6
-import com.example.taskmanagementapp.ui.theme.SystemColor
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun ProfileContentUI(
     onExpandIconClicked: (ProfileSettingItem) -> Unit,
     systemColor: Color = SystemColor,
+    subSystemColor: Color = BackgroundColorTask,
     isNotificate: Boolean = false,
     sharedViewModel: SharedViewModel
 ) {
@@ -54,6 +50,7 @@ fun ProfileContentUI(
             title = ProfileAreaSettingName.GENERAL,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
+            subSystemColor = subSystemColor,
             isNotificate = isNotificate,
             sharedViewModel = sharedViewModel
         )
@@ -62,6 +59,7 @@ fun ProfileContentUI(
             title = ProfileAreaSettingName.ACCOUNT,
             onExpandIconClicked = onExpandIconClicked,
             systemColor = systemColor,
+            subSystemColor = subSystemColor,
             sharedViewModel = sharedViewModel
         )
     }

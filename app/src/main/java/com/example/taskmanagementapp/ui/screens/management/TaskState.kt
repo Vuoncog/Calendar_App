@@ -13,17 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.component.IconType
 import com.example.taskmanagementapp.ui.component.Tick
-import com.example.taskmanagementapp.ui.theme.BackgroundColorTask
 import com.example.taskmanagementapp.ui.theme.Neutral2
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun TaskState(
+    systemColor: Color,
+    subSystemColor: Color,
     listTask: List<ToDoTask>,
     isCompleted: Boolean,
     changeTaskState: (ToDoTask, ToDoTask) -> Unit,
@@ -47,6 +48,8 @@ fun TaskState(
                     TaskDisplay(
                         toDoTask = toDoTask,
                         onChangeStateClicked = changeTaskState,
+                        systemColor = systemColor,
+                        subSystemColor = subSystemColor
                     )
                 }
             }
@@ -58,26 +61,32 @@ fun TaskState(
 fun TaskDisplay(
     toDoTask: ToDoTask,
     onChangeStateClicked: (ToDoTask, ToDoTask) -> Unit,
+    systemColor: Color,
+    subSystemColor: Color,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(color = BackgroundColorTask)
+            .background(color = subSystemColor)
             .padding(8.dp),
         verticalAlignment = CenterVertically
     ) {
-        IconType(icon = toDoTask.taskType.icon)
+        IconType(
+            icon = toDoTask.taskType.icon,
+            systemColor = systemColor
+        )
 
         Text(
             text = toDoTask.taskName,
             style = VisbyTypography.subtitle1,
-            color = SystemColor,
+            color = systemColor,
             modifier = Modifier.weight(1f)
         )
 
         Tick(
             toDoTask = toDoTask,
+            systemColor = systemColor,
             onChangeStateClicked = onChangeStateClicked,
         )
     }

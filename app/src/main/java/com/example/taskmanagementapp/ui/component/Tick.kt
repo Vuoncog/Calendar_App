@@ -17,12 +17,11 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.theme.Neutral8
-import com.example.taskmanagementapp.ui.theme.Primary4
-import com.example.taskmanagementapp.ui.theme.SystemColor
 
 @Composable
 fun Tick(
     toDoTask: ToDoTask,
+    systemColor: Color,
     onChangeStateClicked: (ToDoTask, ToDoTask) -> Unit,
 ) {
     IconButton(
@@ -39,10 +38,10 @@ fun Tick(
             .clip(CircleShape)
             .border(
                 width = 1.dp,
-                color = SystemColor,
+                color = systemColor,
                 shape = CircleShape
             )
-            .background(color = if (toDoTask.isDone) Primary4 else Color.Transparent)
+            .background(color = if (toDoTask.isDone) systemColor else Color.Transparent)
             .padding(0.dp)
     ) {
         Icon(

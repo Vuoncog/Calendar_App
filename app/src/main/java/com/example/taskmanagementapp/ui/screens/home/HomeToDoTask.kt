@@ -7,17 +7,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.ui.theme.Neutral5
-import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun TodoTask(
-    list: List<TaskType>
+    list: List<TaskType>,
+    systemColor: Color,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -33,7 +34,7 @@ fun TodoTask(
             )
             Text(text = stringResource(R.string.view_all),
                 style = VisbyTypography.button,
-                color = SystemColor,
+                color = systemColor,
                 modifier = Modifier.clickable {
 
                 }

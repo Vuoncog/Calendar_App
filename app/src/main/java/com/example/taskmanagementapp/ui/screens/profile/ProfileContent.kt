@@ -9,12 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.ProfileSettingItem
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.LogoutBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.NotificationBottomSheet
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.SettingsBottomSheet
-import com.example.taskmanagementapp.ui.theme.Primary4
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.google.accompanist.navigation.material.bottomSheet
@@ -25,7 +25,9 @@ import java.util.*
 @OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun ProfileContent(
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    systemColorSet: SystemColorSet,
+    onColorChange: (SystemColorSet) -> Unit,
 ) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
@@ -44,8 +46,7 @@ fun ProfileContent(
     }
 
     var isNotificate by remember { mutableStateOf(false) }
-    var systemColor by remember { mutableStateOf(Primary4) }
-    var systemColorPreview by remember { mutableStateOf(systemColor) }
+    var systemColor by remember { mutableStateOf(systemColorSet) }
 
     ModalBottomSheetLayout(
         bottomSheetNavigator = bottomSheetNavigator,
@@ -64,8 +65,8 @@ fun ProfileContent(
                     onExpandIconClicked = {
                         openBottomSheet(it)
                     },
-                    systemColor = systemColor,
-
+                    systemColor = systemColorSet.primaryColor,
+                    subSystemColor = systemColorSet.secondaryColor,
                     isNotificate = isNotificate,
                     sharedViewModel = sharedViewModel
                 )
@@ -74,7 +75,7 @@ fun ProfileContent(
             bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.NotificationAndAlerts.route}") {
                 NotificationBottomSheet(
                     isNotificate = isNotificate,
-                    systemColor = systemColor,
+                    systemColorSet = systemColorSet,
                     onSwitchClicked = {
                         isNotificate = it
                     },
@@ -86,12 +87,12 @@ fun ProfileContent(
 
             bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Color.route}") {
                 ColorBottomSheet(
-                    systemColor = systemColorPreview,
+                    systemColorSet = systemColor,
                     onColorChange = {
-                        systemColorPreview = it
+                        systemColor= it
                     },
-                    onCheckClicked = {
-                        systemColor = it
+                    onCheckClicked = { chosenColor ->
+                        onColorChange(chosenColor)
                         closeBottomSheet()
                     },
                     onCloseClicked = {
@@ -102,7 +103,7 @@ fun ProfileContent(
 
             bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Settings.route}") {
                 SettingsBottomSheet(
-                    systemColor = systemColor,
+                    systemColorSet = systemColorSet,
                     onBackupClicked = {},
                     onCloseClicked = {
                         closeBottomSheet()
@@ -112,7 +113,7 @@ fun ProfileContent(
 
             bottomSheet(route = "${GraphRoute.Profile.route}/${ProfileSettingItem.Logout.route}") {
                 LogoutBottomSheet(
-                    systemColor = systemColor,
+                    systemColorSet = systemColorSet,
                     onLogoutClicked = {},
                     onCloseClicked = {
                         closeBottomSheet()

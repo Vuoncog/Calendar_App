@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.screens.management.task
+package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

@@ -9,6 +9,7 @@ import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.auth.LoginContent
 import com.example.taskmanagementapp.ui.screens.auth.RecoverPasswordContent
 import com.example.taskmanagementapp.ui.screens.auth.RegisterContent
+import com.example.taskmanagementapp.ui.screens.auth.SuccessfullyRegister
 
 fun NavGraphBuilder.authNavigation(
     navController: NavHostController,
@@ -18,7 +19,7 @@ fun NavGraphBuilder.authNavigation(
         route = Graph.AUTHENTICATION,
         startDestination = AuthScreen.Login.route
     ) {
-        sharedViewModel.navigateToLogin = {navController.navigate(AuthScreen.Login.route)}
+        sharedViewModel.navigateToLogin = { navController.navigate(AuthScreen.Login.route) }
         composable(route = AuthScreen.Login.route) {
             LoginContent(
                 navigateToHome = {
@@ -39,11 +40,22 @@ fun NavGraphBuilder.authNavigation(
                 navigateToLogin = {
                     navController.navigate(AuthScreen.Login.route)
                 },
+                successfullyRegister = {
+                    navController.navigate(AuthScreen.Successfully.route)
+                },
                 sharedViewModel = sharedViewModel
             )
         }
         composable(route = AuthScreen.RecoverPassword.route) {
             RecoverPasswordContent()
+        }
+
+        composable(route = AuthScreen.Successfully.route) {
+            SuccessfullyRegister(
+                sharedViewModel = sharedViewModel,
+                onClickedEvent = {
+                    navController.navigate(AuthScreen.Login.route)
+                })
         }
     }
 }
@@ -52,4 +64,5 @@ sealed class AuthScreen(val route: String) {
     object Login : AuthScreen(route = "login")
     object Register : AuthScreen(route = "register")
     object RecoverPassword : AuthScreen(route = "recover_password")
+    object Successfully : AuthScreen(route = "successfully")
 }

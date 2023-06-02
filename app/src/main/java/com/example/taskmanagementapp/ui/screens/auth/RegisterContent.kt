@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,6 +28,7 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 @Composable
 fun RegisterContent(
     navigateToLogin: () -> Unit,
+    successfullyRegister: () -> Unit,
     sharedViewModel: SharedViewModel
 ) {
     var email by remember { mutableStateOf("") }
@@ -73,8 +73,11 @@ fun RegisterContent(
         CustomButton(
             buttonText = stringResource(R.string.register),
             sharedViewModel = sharedViewModel,
-            navigateToHome = navigateToLogin,
-            onClickEvent = {sharedViewModel.signUp(email, password, name)})
+            navigateToHome = { },
+            onClickEvent = {
+                sharedViewModel.signUp(email, password, name)
+                successfullyRegister()
+            })
 
         //Login
         RegisterOrLogin(

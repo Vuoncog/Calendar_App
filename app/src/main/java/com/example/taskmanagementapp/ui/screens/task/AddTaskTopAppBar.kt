@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.screens.management.task
+package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,12 +21,14 @@ import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 fun AddTaskTopAppBar(
     onBackClicked: () -> Unit,
     sharedViewModel: SharedViewModel,
-    onFinished: () -> Unit
+    onFinished: () -> Unit,
+    isEvent: Boolean = false
 ) {
     AddTaskAppBar(
         onBackClicked = onBackClicked,
         sharedViewModel = sharedViewModel,
-        onFinished = onFinished
+        onFinished = onFinished,
+        isEvent = isEvent
     )
 }
 
@@ -34,7 +36,8 @@ fun AddTaskTopAppBar(
 fun AddTaskAppBar(
     onBackClicked: () -> Unit,
     sharedViewModel: SharedViewModel,
-    onFinished: () -> Unit
+    onFinished: () -> Unit,
+    isEvent: Boolean
 ) {
     Box(
         modifier = Modifier
@@ -43,7 +46,10 @@ fun AddTaskAppBar(
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.memo_background),
+            painter = painterResource(
+                id = if (isEvent) R.drawable.calendar_top_background
+                else R.drawable.management_background
+            ),
             contentDescription = "Image Top App Bar",
             contentScale = ContentScale.FillBounds
         )
@@ -52,7 +58,7 @@ fun AddTaskAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "Add Event",
+                text = if (isEvent) "Add Event" else "Add Todo Task",
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,

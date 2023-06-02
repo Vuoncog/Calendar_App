@@ -48,7 +48,7 @@ fun ManagementAppBar(
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.memo_background),
+            painter = painterResource(id = R.drawable.management_background),
             contentDescription = "Image Top App Bar",
             contentScale = ContentScale.FillBounds
         )

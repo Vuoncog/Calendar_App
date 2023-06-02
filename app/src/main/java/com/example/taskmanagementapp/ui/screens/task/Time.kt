@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.taskmanagementapp.ui.screens.management.task
+package com.example.taskmanagementapp.ui.screens.task
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

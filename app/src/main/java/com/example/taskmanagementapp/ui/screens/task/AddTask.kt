@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.ui.screens.management.task
+package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,10 @@ import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 
 @Composable
-fun AddTask(sharedViewModel: SharedViewModel){
+fun AddTask(
+    sharedViewModel: SharedViewModel,
+    haveSubtask: Boolean = false
+) {
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
@@ -35,6 +38,13 @@ fun AddTask(sharedViewModel: SharedViewModel){
             thickness = 1.dp,
             color = NeutralBorder
         )
+        if (haveSubtask) {
+            Subtask()
+            Divider(
+                thickness = 1.dp,
+                color = NeutralBorder
+            )
+        }
     }
 }
 

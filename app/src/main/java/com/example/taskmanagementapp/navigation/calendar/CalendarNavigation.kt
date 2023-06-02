@@ -10,7 +10,7 @@ import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.calendar.CalendarContent
-import com.example.taskmanagementapp.ui.screens.management.task.AddTask
+import com.example.taskmanagementapp.ui.screens.task.AddTask
 import java.util.*
 
 fun NavGraphBuilder.calendarNavigation(

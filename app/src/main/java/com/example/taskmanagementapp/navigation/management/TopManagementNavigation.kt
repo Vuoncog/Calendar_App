@@ -9,7 +9,7 @@ import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.management.ManagementTopAppBar
-import com.example.taskmanagementapp.ui.screens.management.task.AddTaskTopAppBar
+import com.example.taskmanagementapp.ui.screens.task.AddTaskTopAppBar
 import java.util.*
 
 fun NavGraphBuilder.topManagementNavigation(
@@ -36,7 +36,8 @@ fun NavGraphBuilder.topManagementNavigation(
             AddTaskTopAppBar(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
-                onFinished = onFinished
+                onFinished = onFinished,
+                isEvent = false
             )
         }
     }

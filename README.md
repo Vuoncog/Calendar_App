@@ -9,9 +9,9 @@
 
 ## Team size: 2
 
-- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/Vuoncog) Vuoncog
+- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/Vuoncog) https://github.com/Vuoncog
 
-- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/MinhPhucTr) MinhPhucTr
+- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/MinhPhucTr) https://github.com/MinhPhucTr
 
 ## Screen
 ![Home](https://imgtr.ee/images/2023/06/03/SfWnD.png)

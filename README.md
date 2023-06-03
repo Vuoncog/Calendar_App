@@ -1,3 +1,11 @@
+## Introduction
+![Title](https://imgtr.ee/images/2023/06/03/SiW5b.png)
+
+## Team size: 2
+
+- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/Vuoncog) https://github.com/Vuoncog
+
+- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/MinhPhucTr) https://github.com/MinhPhucTr
 
 ## Frameworks and Tools:
 
@@ -7,11 +15,6 @@
 ![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
 
 
-## Team size: 2
-
-- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/Vuoncog) https://github.com/Vuoncog
-
-- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/MinhPhucTr) https://github.com/MinhPhucTr
 
 ## Screen
 ![Home](https://imgtr.ee/images/2023/06/03/SfWnD.png)

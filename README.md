@@ -1,5 +1,5 @@
 ## Introduction
-![Title](https://imgtr.ee/images/2023/06/03/SiW5b.png)
+![Title](https://imgtr.ee/images/2023/06/03/SgOVB.png)
 
 ## Team size: 2
 

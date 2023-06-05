@@ -44,7 +44,9 @@ fun Reminder(
             )
         }
         Box(modifier = Modifier.padding(vertical = 12.dp)) {
-            ReminderSetup()
+            ReminderSetup(
+                systemColor = systemColor
+            )
         }
     }
 }

@@ -22,12 +22,12 @@ fun NavGraphBuilder.managementNavigation(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     isShowBottomBarItems: (Boolean) -> Unit
-){
+) {
     navigation(
         startDestination = GraphRoute.Management.route,
         route = Graph.MANAGEMENT
-    ){
-        composable(route = GraphRoute.Management.route){
+    ) {
+        composable(route = GraphRoute.Management.route) {
             isShowBottomBarItems(true)
             ManagementContent(
                 systemColorSet = systemColorSet,
@@ -42,9 +42,12 @@ fun NavGraphBuilder.managementNavigation(
             )
         }
 
-        composable(route = SubScreen.AddTodoTask.route){
+        composable(route = SubScreen.AddTodoTask.route) {
             isShowBottomBarItems(false)
-            AddTask(sharedViewModel = sharedViewModel)
+            AddTask(
+                sharedViewModel = sharedViewModel,
+                systemColorSet = systemColorSet
+            )
         }
     }
 }

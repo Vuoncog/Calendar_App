@@ -22,12 +22,12 @@ fun NavGraphBuilder.calendarNavigation(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     isShowBottomBarItems: (Boolean) -> Unit
-){
+) {
     navigation(
         startDestination = GraphRoute.Calendar.route,
         route = Graph.CALENDAR
-    ){
-        composable(route = GraphRoute.Calendar.route){
+    ) {
+        composable(route = GraphRoute.Calendar.route) {
             isShowBottomBarItems(true)
             CalendarContent(
                 systemColor = systemColorSet.primaryColor,
@@ -42,9 +42,12 @@ fun NavGraphBuilder.calendarNavigation(
             )
         }
 
-        composable(route = SubScreen.AddEvent.route){
+        composable(route = SubScreen.AddEvent.route) {
             isShowBottomBarItems(false)
-            AddTask(sharedViewModel = sharedViewModel)
+            AddTask(
+                sharedViewModel = sharedViewModel,
+                systemColorSet = systemColorSet
+            )
         }
     }
 }

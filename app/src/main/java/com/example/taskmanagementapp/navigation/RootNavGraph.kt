@@ -4,12 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.taskmanagementapp.constant.Graph
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 
 @Composable
 fun RootNavigationGraph(
     navController: NavHostController,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    systemColorSet: SystemColorSet,
+    systemColorSetChange: (SystemColorSet) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -22,11 +25,13 @@ fun RootNavigationGraph(
     ) {
         authNavigation(
             navController = navController,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
         )
         mainNavigation(
             navController = navController,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
+            systemColorSet = systemColorSet,
+            systemColorSetChange = systemColorSetChange
         )
     }
 }

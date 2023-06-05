@@ -7,39 +7,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 
 @Composable
 fun AddTask(
     sharedViewModel: SharedViewModel,
-    haveSubtask: Boolean = false
+    haveSubtask: Boolean = false,
+    systemColorSet: SystemColorSet
 ) {
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
-        sharedViewModel.titleAndDetailEvent.value = Title()
+        sharedViewModel.titleAndDetailEvent.value = Title(systemColor = systemColorSet.primaryColor)
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        sharedViewModel.startAndEndEvent.value = Time()
+        sharedViewModel.startAndEndEvent.value = Time(systemColor = systemColorSet.primaryColor)
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Reminder()
+        Reminder(systemColor = systemColorSet.primaryColor)
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Theme()
+        Theme(systemColorSet = systemColorSet)
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
         if (haveSubtask) {
-            Subtask()
+            Subtask(
+                systemColor = systemColorSet.primaryColor
+            )
             Divider(
                 thickness = 1.dp,
                 color = NeutralBorder

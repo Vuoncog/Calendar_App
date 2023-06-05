@@ -21,10 +21,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
-fun Subtask() {
+fun Subtask(
+    systemColor: Color
+) {
     var subtaskQuantity by remember {
         mutableStateOf(0)
     }
@@ -49,7 +52,8 @@ fun Subtask() {
     ) {
         SubtaskHeader(
             isCheck = isCheck,
-            onSwitchClicked = switchClicked
+            onSwitchClicked = switchClicked,
+            systemColor = systemColor
         )
         if (isCheck) {
             Column(
@@ -217,5 +221,5 @@ fun SubtaskTick(
 @Preview
 @Composable
 fun SubtaskPreview() {
-    Subtask()
+    Subtask(systemColor = SystemColorSet.ORANGE.primaryColor)
 }

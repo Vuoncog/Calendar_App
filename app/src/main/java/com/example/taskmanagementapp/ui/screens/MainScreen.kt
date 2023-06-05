@@ -18,6 +18,8 @@ import java.util.*
 @Composable
 fun MainScreen(
     sharedViewModel: SharedViewModel,
+    systemColorSet: SystemColorSet,
+    systemColorSetChange: (SystemColorSet) -> Unit,
 ) {
     val calendar = Calendar.getInstance(Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
@@ -26,7 +28,6 @@ fun MainScreen(
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
     var showBottomBar by remember { mutableStateOf(true) }
-    var systemColorSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
 
     Scaffold(
         backgroundColor = Color.White,
@@ -74,9 +75,7 @@ fun MainScreen(
                 showBottomBar = it
             },
             systemColorSet = systemColorSet,
-            onColorChange = {
-                systemColorSet = it
-            }
+            onColorChange = systemColorSetChange
         )
     }
 }

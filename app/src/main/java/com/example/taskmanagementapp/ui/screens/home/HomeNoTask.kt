@@ -160,7 +160,7 @@ fun NoTaskCard(
             contentDescription = "Cat sticker",
         )
         Text(
-            text = "Not have\ntasks",
+            text = "No task",
             style = VisbyTypography.subtitle2,
             color = Neutral3,
             maxLines = 2,

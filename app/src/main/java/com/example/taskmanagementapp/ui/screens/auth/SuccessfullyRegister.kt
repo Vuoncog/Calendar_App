@@ -1,12 +1,11 @@
 package com.example.taskmanagementapp.ui.screens.auth
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,39 +24,45 @@ fun SuccessfullyRegister(
     sharedViewModel: SharedViewModel,
     onClickedEvent: () -> Unit
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.seal_congrat),
-            contentDescription = "Congratulation",
-
-            )
-
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Center)
         ) {
-            Text(
-                text = "Register completely",
-                style = VisbyTypography.h5,
-                color = systemColor
+            Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.seal_congrat),
+                contentDescription = "Congratulation",
+
+                )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "Register completely",
+                    style = VisbyTypography.h5,
+                    color = systemColor
+                )
+
+                Text(
+                    text = "Let’s back to log-in screen for\n" +
+                            "customizing your app",
+                    style = VisbyTypography.subtitle2,
+                    color = Neutral6,
+                )
+            }
+
+            CustomButton(
+                navigateToHome = { },
+                buttonText = "Back to login screen",
+                sharedViewModel = sharedViewModel,
+                onClickEvent = onClickedEvent
             )
 
-            Text(
-                text = "Let’s back to log-in screen for\n" +
-                        "customizing your app",
-                style = VisbyTypography.subtitle2,
-                color = Neutral6,
-            )
         }
-
-        CustomButton(
-            navigateToHome = { },
-            sharedViewModel = sharedViewModel,
-            onClickEvent = onClickedEvent
-        )
 
     }
 }

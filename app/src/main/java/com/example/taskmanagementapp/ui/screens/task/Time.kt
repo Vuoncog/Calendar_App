@@ -3,6 +3,7 @@
 package com.example.taskmanagementapp.ui.screens.task
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.SystemColor
@@ -34,10 +36,11 @@ import java.util.*
 
 @Composable
 fun Time(
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    mEventInfo : EventInfo? = null
 ): Pair<Long, Long> {
     var startTime by remember { mutableStateOf(0L) }
-    var endTime by remember { mutableStateOf(0L) }
+    var endTime by remember { mutableStateOf(0L)}
     Column(
         modifier = Modifier.padding(
             top = 8.dp,
@@ -68,11 +71,13 @@ fun Time(
         ) {
             startTime = TimeSetup(
                 isStart = true,
-                systemColor = systemColor
+                systemColor = systemColor,
+                mTimestamp = mEventInfo?.startTime
             )
             endTime = TimeSetup(
                 isStart = false,
-                systemColor = systemColor
+                systemColor = systemColor,
+                mTimestamp = mEventInfo?.endTime
             )
         }
     }
@@ -84,18 +89,33 @@ fun Time(
 @Composable
 fun TimeSetup(
     systemColor: Color = SystemColor,
-    isStart: Boolean
+    isStart: Boolean,
+    mTimestamp : Long? = null
 ): Long {
-    val currentDay = if (isStart) Date() else Date(Date().time + (1 * 60 * 60 * 1000))
+    val currentDay = if(mTimestamp != null) {
+        Date(mTimestamp * 1000)
+    }
+    else
+    {
+        if (isStart) Date() else Date(Date().time + (1 * 60 * 60 * 1000))
+    }
+    Log.e("DATE", currentDay.toString())
     var dateFormatter by remember { mutableStateOf(dateFormatter(currentDay)) }
     var timeFormatter by remember { mutableStateOf(timeFormatter(currentDay)) }
-    val timestamp by remember { mutableStateOf(LocalDateTime.now()) }
-    var mHour by remember { mutableStateOf(LocalDateTime.now().hour) }
-    var mMinute by remember { mutableStateOf(LocalDateTime.now().minute) }
-    var mDay by remember { mutableStateOf(LocalDate.now().dayOfMonth) }
-    var mMonth by remember { mutableStateOf(LocalDate.now().monthValue) }
-    var mYear by remember { mutableStateOf(LocalDate.now().year) }
-
+    var mHour by remember { mutableStateOf(currentDay.hours) }
+    var mMinute by remember { mutableStateOf(currentDay.minutes) }
+    var mDay by remember { mutableStateOf(currentDay.date) }
+    var mMonth by remember { mutableStateOf(currentDay.month + 1) }
+    var mYear by remember { mutableStateOf(currentDay.year + 1900) }
+    if(isStart)
+    {
+        Log.e("START", mYear.toString())
+    }
+    else
+    {
+        Log.e("END", mYear.toString())
+    }
+    val timestamp by remember { mutableStateOf(LocalDateTime.now())}
     val timeState = rememberSheetState()
     val calendarState = rememberSheetState()
     CalendarDialog(

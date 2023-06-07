@@ -1,11 +1,9 @@
 package com.example.taskmanagementapp.ui.screens.calendar
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
+import android.util.Log
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -19,11 +17,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.google.gson.Gson
 
 
 @Composable
@@ -34,7 +35,8 @@ fun CalendarEvent(
     state: ScrollState,
     height: Dp,
     offset: Dp,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    navController : NavHostController
 ) {
     Box(
         modifier = Modifier
@@ -72,7 +74,8 @@ fun CalendarEvent(
                     eventInfo = listEvent[index],
                     offset = sumOffset.dp,
                     paddingSpace = paddingSpace.dp,
-                    sharedViewModel = sharedViewModel
+                    sharedViewModel = sharedViewModel,
+                    navController = navController
                 )
             }
             Box(
@@ -89,7 +92,8 @@ fun EventCard(
     eventInfo: EventInfo,
     offset: Dp,
     paddingSpace: Dp,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    navController: NavHostController
 ) {
     var startTime = sharedViewModel.getHourAndMinute(eventInfo.startTime)
     val endTime  = sharedViewModel.getHourAndMinute(eventInfo.endTime)
@@ -108,6 +112,10 @@ fun EventCard(
             .height(heightEvent.dp)
             .fillMaxWidth()
             .padding(end = paddingSpace)
+            .clickable {
+                val eventString = Gson().toJson(eventInfo)
+                navController.navigate("${SubScreen.EventDetail.route}/${eventString}")
+            }
     ) {
         Row {
             Text(

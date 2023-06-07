@@ -37,7 +37,7 @@ fun NavGraphBuilder.topManagementNavigation(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
-                isEvent = false
+                isUpdateEvent = false
             )
         }
     }

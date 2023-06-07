@@ -14,14 +14,21 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.theme.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
 
+@OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CalendarContent(
@@ -31,19 +38,24 @@ fun CalendarContent(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
-    sharedViewModel: SharedViewModel? = null
+    sharedViewModel: SharedViewModel? = null,
+    navController: NavHostController? = null
 ) {
     LaunchedEffect(
         key1 = true,
-        block = { sharedViewModel?.getEventInfo(LocalDate.now().toEpochDay(), isCalendarContent = true) })
+        block = {
+            sharedViewModel?.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = true)
+        })
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
     listOffset.add(0f)
     listSpace.add(0f)
-    for (index in sharedViewModel?.listEventsResult!!.indices ) {
-        var startTime = sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].startTime)
-        val endTime = sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].endTime)
-        if(startTime > endTime) startTime -= 24
+    for (index in sharedViewModel?.listEventsResult!!.indices) {
+        var startTime =
+            sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].startTime)
+        val endTime =
+            sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].endTime)
+        if (startTime > endTime) startTime -= 24
         val offset = endTime - startTime
         val space = startTime + offset
         listOffset.add(
@@ -114,7 +126,8 @@ fun CalendarContent(
         state = scrollState,
         height = timeGridHeightDp,
         offset = columnHeightDp,
-        sharedViewModel = sharedViewModel
+        sharedViewModel = sharedViewModel,
+        navController = navController!!
     )
     Box(
         modifier = Modifier
@@ -125,8 +138,10 @@ fun CalendarContent(
             .padding(16.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        Fab(onFabClicked = navigateToAddTask,
-        systemColor = systemColor)
+        Fab(
+            onFabClicked = navigateToAddTask,
+            systemColor = systemColor
+        )
     }
 }
 

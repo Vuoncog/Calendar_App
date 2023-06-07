@@ -20,6 +20,10 @@ import com.example.taskmanagementapp.ui.theme.Neutral5
 import com.example.taskmanagementapp.ui.theme.Neutral8
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import com.mrerror.singleRowCalendar.DateUtils
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
@@ -49,6 +53,7 @@ fun WeeklyCalendar(
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun WeeklyHeader(
     modifier: Modifier = Modifier,
@@ -104,9 +109,8 @@ fun WeeklyHeader(
                     ) {
                         onSelectDay(day)
                         onSelectedDayChange(day)
-                        val mLocalDate = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                        Log.e("LOCALDATE", mLocalDate.toEpochDay().toString())
-                        sharedViewModel.getEventInfo(mLocalDate.toEpochDay(), isCalendarContent = isCalendarContent)
+                        sharedViewModel.dateOfEvent = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay()
+                        sharedViewModel.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = isCalendarContent)
                     },
                     textAlign = TextAlign.Center
                 )

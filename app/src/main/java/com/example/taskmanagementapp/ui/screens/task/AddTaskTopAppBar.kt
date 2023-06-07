@@ -13,6 +13,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
@@ -22,13 +23,15 @@ fun AddTaskTopAppBar(
     onBackClicked: () -> Unit,
     sharedViewModel: SharedViewModel,
     onFinished: () -> Unit,
-    isEvent: Boolean = false
+    isEvent: Boolean = false,
+    isUpdateEvent : Boolean
 ) {
     AddTaskAppBar(
         onBackClicked = onBackClicked,
         sharedViewModel = sharedViewModel,
         onFinished = onFinished,
-        isEvent = isEvent
+        isEvent = isEvent,
+        isUpdateEvent = isUpdateEvent
     )
 }
 
@@ -37,7 +40,8 @@ fun AddTaskAppBar(
     onBackClicked: () -> Unit,
     sharedViewModel: SharedViewModel,
     onFinished: () -> Unit,
-    isEvent: Boolean
+    isEvent: Boolean,
+    isUpdateEvent: Boolean
 ) {
     Box(
         modifier = Modifier
@@ -58,7 +62,7 @@ fun AddTaskAppBar(
     TopAppBar(
         title = {
             Text(
-                text = if (isEvent) "Add Event" else "Add Todo Task",
+                text = if (isEvent) {if(isUpdateEvent) "Update Event" else "Add Event"} else "Add Todo Task",
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -68,7 +72,14 @@ fun AddTaskAppBar(
         elevation = 0.dp,
         actions = {
             AddTaskCheckIcon(onClicked = {
-                sharedViewModel.addEventInfo(onFinished)
+                if(isUpdateEvent)
+                {
+                    sharedViewModel.updateEventInfo(EventInfo(title = sharedViewModel.titleAndDetailEvent.value.first, detail = sharedViewModel.titleAndDetailEvent.value.second, startTime = sharedViewModel.startAndEndEvent.value.first, endTime = sharedViewModel.startAndEndEvent.value.second, color = sharedViewModel.oldEventInfo.color), onFinished = onFinished)
+                }
+                else
+                {
+                    sharedViewModel.addEventInfo(onFinished)
+                }
             }
             )
         },

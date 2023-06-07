@@ -1,9 +1,7 @@
 package com.example.taskmanagementapp.navigation.calendar
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
@@ -13,7 +11,6 @@ import com.example.taskmanagementapp.ui.screens.task.AddTaskTopAppBar
 import java.util.*
 
 fun NavGraphBuilder.topCalendarNavigation(
-    navController: NavHostController,
     sharedViewModel: SharedViewModel,
     date: Date,
     onPrevWeekClicked: (Date) -> Unit,
@@ -37,6 +34,19 @@ fun NavGraphBuilder.topCalendarNavigation(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
+                isUpdateEvent = false,
+                isEvent = true
+            )
+        }
+        composable(
+            route = "${SubScreen.EventDetail.route}/{event}",
+            arguments = listOf(navArgument("event") { type = NavType.StringType})
+        ){
+            AddTaskTopAppBar(
+                onBackClicked = onBackClicked,
+                sharedViewModel = sharedViewModel,
+                onFinished = onFinished,
+                isUpdateEvent = true,
                 isEvent = true
             )
         }

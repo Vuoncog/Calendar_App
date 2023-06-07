@@ -1,9 +1,7 @@
 package com.example.taskmanagementapp.navigation.calendar
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
@@ -38,7 +36,8 @@ fun NavGraphBuilder.calendarNavigation(
                 navigateToAddTask = {
                     navController.navigate(SubScreen.AddEvent.route)
                 },
-                sharedViewModel = sharedViewModel
+                sharedViewModel = sharedViewModel,
+                navController = navController
             )
         }
 
@@ -48,6 +47,14 @@ fun NavGraphBuilder.calendarNavigation(
                 sharedViewModel = sharedViewModel,
                 systemColorSet = systemColorSet
             )
+        }
+
+        composable(
+            route = "${SubScreen.EventDetail.route}/{event}",
+            arguments = listOf(navArgument("event") { type = NavType.StringType})
+        ){
+            isShowBottomBarItems(false)
+            AddTask(sharedViewModel = sharedViewModel, systemColorSet = systemColorSet, eventInfo = it.arguments?.getString("event"))
         }
     }
 }

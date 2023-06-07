@@ -36,9 +36,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDate
@@ -64,9 +66,11 @@ class SharedViewModel @Inject constructor(
     val titleAndDetailEvent = mutableStateOf(Pair("", ""))
     var startAndEndEvent = mutableStateOf(Pair(0L, 0L))
     val listEventsResult = mutableStateListOf<EventInfo>()
-    val listBackgroundColor = listOf<Long>(0xFFF8F2F3,0xFFFEE6DF,0xFFFAA36A,0xFF03DAC5,0xFFBB86FC)
+    val listBackgroundColor = listOf(0xFFF8F2F3, 0xFFFEE6DF, 0xFFFAA36A, 0xFF03DAC5, 0xFFBB86FC)
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
+    lateinit var oldEventInfo: EventInfo
+    var dateOfEvent = LocalDate.now().toEpochDay()
 
     @Suppress("SENSELESS_COMPARISON")
     fun getSelectedDate(date: Date) {
@@ -215,10 +219,10 @@ class SharedViewModel @Inject constructor(
                 .setServerClientId(mainActivity.getString(R.string.web_client_id)).build()
 
             signInClient.getSignInIntent(signInRequest).addOnSuccessListener { pendingIntent ->
-                    launchSignIn(pendingIntent)
-                }.addOnFailureListener { e ->
-                    Log.e("INTENT_ERROR", "Google Sign-in failed", e)
-                }
+                launchSignIn(pendingIntent)
+            }.addOnFailureListener { e ->
+                Log.e("INTENT_ERROR", "Google Sign-in failed", e)
+            }
         } else Toast.makeText(mainActivity, R.string.network_unavailable, Toast.LENGTH_SHORT).show()
     }
 
@@ -253,21 +257,21 @@ class SharedViewModel @Inject constructor(
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(mainActivity) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:success")
-                    Toast.makeText(
-                        mainActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT
-                    ).show()
-                    mResultJob()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(
-                        mainActivity, "Authentication failed.", Toast.LENGTH_SHORT
-                    ).show()
-                    Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:failure", task.exception)
-                }
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:success")
+                Toast.makeText(
+                    mainActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT
+                ).show()
+                mResultJob()
+            } else {
+                // If sign in fails, display a message to the user.
+                Toast.makeText(
+                    mainActivity, "Authentication failed.", Toast.LENGTH_SHORT
+                ).show()
+                Log.e("GOOGLE_SIGNIN_RESULT", "signInWithCredential:failure", task.exception)
             }
+        }
     }
 
     fun signInFacebook() {
@@ -282,82 +286,117 @@ class SharedViewModel @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     fun addEventInfo(onFinished: () -> Unit) {
-        val title = titleAndDetailEvent.value.first
-        if (title == "") {
-            Toast.makeText(mainActivity, "Please Input Title", Toast.LENGTH_SHORT).show()
-        } else {
-            val detail = titleAndDetailEvent.value.second
-            val startTime = startAndEndEvent.value.first
-            val endTime = startAndEndEvent.value.second
-            val listEvents = mutableListOf<EventInfo>()
-            val currentEpochDate = LocalDate.now().toEpochDay().toString()
-            val mDatabaseReference = database.child(
-                getCurrentUser()?.uid.toString()
-            ).child(currentEpochDate).child("ListEvent")
-            mDatabaseReference.get().addOnCompleteListener {
-                if (it.result != null) {
-                    for (mEventInfo in it.result.children) {
-                        val value = mEventInfo.getValue<EventInfo>()
-                        listEvents.add(value!!)
-                    }
-                }
-                listEvents.add(
-                    EventInfo(
-                        color = listBackgroundColor.random(),
-                        title = title,
-                        detail = detail,
-                        startTime = startTime.toFloat(),
-                        endTime = endTime.toFloat(),
-                    )
-                )
-                for (mEventInfo in listEvents) {
-                    mDatabaseReference.child(listEvents.indexOf(mEventInfo).toString()).setValue(mEventInfo)
-                        .addOnCanceledListener {
-                            Log.e("PUSH_DATABASE", it.exception.toString())
-                            Toast.makeText(mainActivity, "Add Event Failed!", Toast.LENGTH_SHORT)
-                                .show()
+        if (isNetworkAvailable()) {
+            val title = titleAndDetailEvent.value.first
+            if (title == "") {
+                Toast.makeText(mainActivity, "Please Input Title", Toast.LENGTH_SHORT).show()
+            } else {
+                val detail = titleAndDetailEvent.value.second
+                val startTime = startAndEndEvent.value.first
+                val endTime = startAndEndEvent.value.second
+                val listEvents = mutableListOf<EventInfo>()
+                val currentEpochDate = LocalDate.now().toEpochDay().toString()
+                val mDatabaseReference = database.child(
+                    getCurrentUser()?.uid.toString()
+                ).child(currentEpochDate).child("ListEvent")
+                mDatabaseReference.get().addOnCompleteListener {
+                    if (it.result != null) {
+                        for (mEventInfo in it.result.children) {
+                            val value = mEventInfo.getValue<EventInfo>()
+                            listEvents.add(value!!)
                         }
+                    }
+                    listEvents.add(
+                        EventInfo(
+                            color = listBackgroundColor.random(),
+                            title = title,
+                            detail = detail,
+                            startTime = startTime,
+                            endTime = endTime,
+                        )
+                    )
+                    for (mEventInfo in listEvents) {
+                        mDatabaseReference.child(listEvents.indexOf(mEventInfo).toString())
+                            .setValue(mEventInfo)
+                            .addOnCanceledListener {
+                                Log.e("PUSH_DATABASE", it.exception.toString())
+                                Toast.makeText(
+                                    mainActivity,
+                                    "Add Event Failed!",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
+                    }
+                    Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
+                        .show()
+                    onFinished()
                 }
-                Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT).show()
-                onFinished()
+            }
+        } else {
+            Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun getEventInfo(date: Long, isCalendarContent: Boolean) {
+        if (isCalendarContent) {
+            if (isNetworkAvailable()) {
+                listEventsResult.clear()
+                val childEventListenr = object : ChildEventListener {
+                    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                        val eventInfo = snapshot.getValue<EventInfo>()
+                        Log.e("TITLE", eventInfo!!.title)
+                        listEventsResult.add(eventInfo)
+                    }
+
+                    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                        /*if(listEventsResult.size > 0 && listEventsResult.indexOf(oldEventInfo) >= 0){
+                            val eventInfo = snapshot.getValue<EventInfo>()
+                            listEventsResult.set(listEventsResult.indexOf(oldEventInfo),eventInfo!!)
+                        }*/
+                    }
+
+                    override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                    override fun onCancelled(error: DatabaseError) {}
+                }
+                database.child(
+                    getCurrentUser()?.uid.toString()
+                ).child(date.toString()).child("ListEvent").addChildEventListener(childEventListenr)
+            } else {
+                Toast.makeText(
+                    mainActivity,
+                    "Load data unsuccessfully because network is disconnected!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    fun getEventInfo(date : Long, isCalendarContent : Boolean){
-        if(isCalendarContent){
-            listEventsResult.clear()
-            val childEventListenr = object : ChildEventListener{
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val eventInfo = snapshot.getValue<EventInfo>()
-                    Log.e("TITLE", eventInfo!!.title)
-                    listEventsResult.add(eventInfo)
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {}
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                override fun onCancelled(error: DatabaseError) {}
-
-            }
-            database.child(
-                getCurrentUser()?.uid.toString()
-            ).child(date.toString()).child("ListEvent").addChildEventListener(childEventListenr)
-        }
-    }
-
-    fun getHourAndMinute(time : Float) : Float{
+    fun getHourAndMinute(time: Long): Float {
         val mTime = LocalDateTime.ofInstant(
-            Instant.ofEpochSecond(time.toLong()),
+            Instant.ofEpochSecond(time),
             ZoneId.systemDefault()
         )
         val hour = mTime.hour
-        val minute = (mTime.minute.toDouble() / 60).toBigDecimal().setScale(1, RoundingMode.DOWN)
-            .toDouble()
+        val minute =
+            (mTime.minute.toDouble() / 60).toBigDecimal().setScale(1, RoundingMode.HALF_DOWN)
+                .toDouble()
         val result = hour + minute
         return result.toFloat()
+    }
+
+    fun updateEventInfo(eventInfo: EventInfo, onFinished: () -> Unit) {
+        val index = listEventsResult.indexOf(oldEventInfo)
+        database.child(
+            getCurrentUser()?.uid.toString()
+        ).child(dateOfEvent.toString()).child("ListEvent").child(index.toString())
+            .setValue(eventInfo).addOnSuccessListener {
+            Toast.makeText(mainActivity, "Update Event Successfully!", Toast.LENGTH_SHORT)
+                .show()
+            onFinished()
+        }
     }
 }

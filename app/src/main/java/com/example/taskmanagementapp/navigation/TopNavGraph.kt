@@ -54,7 +54,6 @@ fun TopNavGraph(
         )
 
         topCalendarNavigation(
-            navController = navController,
             sharedViewModel = sharedViewModel,
             date = date,
             onPrevWeekClicked = onPrevWeekClicked,

@@ -25,10 +25,11 @@ import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun Title(
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    titleAndDetail : Pair<String,String>? = null
 ): Pair<String, String> {
-    var title by remember { mutableStateOf("") }
-    var detail by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf(if(titleAndDetail != null) titleAndDetail.first else "") }
+    var detail by remember { mutableStateOf(if(titleAndDetail != null) titleAndDetail.second else "") }
 
     Row(
         modifier = Modifier

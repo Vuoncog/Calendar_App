@@ -98,8 +98,8 @@ fun HomeContentPreview() {
                 EventInfo(
                     color = 0xFF964908,
                     title = "UIT",
-                    startTime = 9f,
-                    endTime = 2f,
+                    startTime = 9L,
+                    endTime = 2L,
                 )
             )
         ),

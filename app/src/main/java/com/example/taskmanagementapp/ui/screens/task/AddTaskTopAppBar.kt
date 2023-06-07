@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,6 +18,9 @@ import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddTaskTopAppBar(
@@ -35,6 +39,7 @@ fun AddTaskTopAppBar(
     )
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AddTaskAppBar(
     onBackClicked: () -> Unit,
@@ -43,6 +48,7 @@ fun AddTaskAppBar(
     isEvent: Boolean,
     isUpdateEvent: Boolean
 ) {
+    val coroutinesScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,11 +80,17 @@ fun AddTaskAppBar(
             AddTaskCheckIcon(onClicked = {
                 if(isUpdateEvent)
                 {
-                    sharedViewModel.updateEventInfo(EventInfo(title = sharedViewModel.titleAndDetailEvent.value.first, detail = sharedViewModel.titleAndDetailEvent.value.second, startTime = sharedViewModel.startAndEndEvent.value.first, endTime = sharedViewModel.startAndEndEvent.value.second, color = sharedViewModel.oldEventInfo.color), onFinished = onFinished)
+                    coroutinesScope.launch {sharedViewModel.updateEventInfo(EventInfo(
+                        title = sharedViewModel.titleAndDetailEvent.value.first,
+                        detail = sharedViewModel.titleAndDetailEvent.value.second,
+                        startTime = sharedViewModel.startAndEndEvent.value.first,
+                        endTime = sharedViewModel.startAndEndEvent.value.second,
+                        color = sharedViewModel.oldEventInfo.color
+                    ), onFinished = onFinished)}
                 }
                 else
                 {
-                    sharedViewModel.addEventInfo(onFinished)
+                    coroutinesScope.launch {sharedViewModel.addEventInfo(onFinished)}
                 }
             }
             )

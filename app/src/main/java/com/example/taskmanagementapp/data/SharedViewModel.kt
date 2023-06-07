@@ -48,8 +48,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(
@@ -66,7 +64,7 @@ class SharedViewModel @Inject constructor(
     val titleAndDetailEvent = mutableStateOf(Pair("", ""))
     var startAndEndEvent = mutableStateOf(Pair(0L, 0L))
     val listEventsResult = mutableStateListOf<EventInfo>()
-    val listBackgroundColor = listOf(0xFFF8F2F3, 0xFFFEE6DF, 0xFFFAA36A, 0xFF03DAC5, 0xFFBB86FC)
+    private val listBackgroundColor = listOf(0xFFF8F2F3, 0xFFFEE6DF, 0xFFFAA36A, 0xFF03DAC5, 0xFFBB86FC)
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
     lateinit var oldEventInfo: EventInfo
@@ -285,52 +283,54 @@ class SharedViewModel @Inject constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun addEventInfo(onFinished: () -> Unit) {
+    suspend fun addEventInfo(onFinished: () -> Unit) {
         if (isNetworkAvailable()) {
-            val title = titleAndDetailEvent.value.first
-            if (title == "") {
-                Toast.makeText(mainActivity, "Please Input Title", Toast.LENGTH_SHORT).show()
-            } else {
-                val detail = titleAndDetailEvent.value.second
-                val startTime = startAndEndEvent.value.first
-                val endTime = startAndEndEvent.value.second
-                val listEvents = mutableListOf<EventInfo>()
-                val currentEpochDate = LocalDate.now().toEpochDay().toString()
-                val mDatabaseReference = database.child(
-                    getCurrentUser()?.uid.toString()
-                ).child(currentEpochDate).child("ListEvent")
-                mDatabaseReference.get().addOnCompleteListener {
-                    if (it.result != null) {
-                        for (mEventInfo in it.result.children) {
-                            val value = mEventInfo.getValue<EventInfo>()
-                            listEvents.add(value!!)
-                        }
-                    }
-                    listEvents.add(
-                        EventInfo(
-                            color = listBackgroundColor.random(),
-                            title = title,
-                            detail = detail,
-                            startTime = startTime,
-                            endTime = endTime,
-                        )
-                    )
-                    for (mEventInfo in listEvents) {
-                        mDatabaseReference.child(listEvents.indexOf(mEventInfo).toString())
-                            .setValue(mEventInfo)
-                            .addOnCanceledListener {
-                                Log.e("PUSH_DATABASE", it.exception.toString())
-                                Toast.makeText(
-                                    mainActivity,
-                                    "Add Event Failed!",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+            withContext(Dispatchers.IO){
+                val title = titleAndDetailEvent.value.first
+                if (title == "") {
+                    Toast.makeText(mainActivity, "Please Input Title", Toast.LENGTH_SHORT).show()
+                } else {
+                    val detail = titleAndDetailEvent.value.second
+                    val startTime = startAndEndEvent.value.first
+                    val endTime = startAndEndEvent.value.second
+                    val listEvents = mutableListOf<EventInfo>()
+                    val currentEpochDate = LocalDate.now().toEpochDay().toString()
+                    val mDatabaseReference = database.child(
+                        getCurrentUser()?.uid.toString()
+                    ).child(currentEpochDate).child("ListEvent")
+                    mDatabaseReference.get().addOnCompleteListener {
+                        if (it.result != null) {
+                            for (mEventInfo in it.result.children) {
+                                val value = mEventInfo.getValue<EventInfo>()
+                                listEvents.add(value!!)
                             }
+                        }
+                        listEvents.add(
+                            EventInfo(
+                                color = listBackgroundColor.random(),
+                                title = title,
+                                detail = detail,
+                                startTime = startTime,
+                                endTime = endTime,
+                            )
+                        )
+                        for (mEventInfo in listEvents) {
+                            mDatabaseReference.child(listEvents.indexOf(mEventInfo).toString())
+                                .setValue(mEventInfo)
+                                .addOnCanceledListener {
+                                    Log.e("PUSH_DATABASE", it.exception.toString())
+                                    Toast.makeText(
+                                        mainActivity,
+                                        "Add Event Failed!",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                        }
+                        Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        onFinished()
                     }
-                    Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
-                        .show()
-                    onFinished()
                 }
             }
         } else {
@@ -338,41 +338,50 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun getEventInfo(date: Long, isCalendarContent: Boolean) {
-        if (isCalendarContent) {
-            if (isNetworkAvailable()) {
-                listEventsResult.clear()
-                val childEventListenr = object : ChildEventListener {
-                    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                        val eventInfo = snapshot.getValue<EventInfo>()
-                        Log.e("TITLE", eventInfo!!.title)
-                        listEventsResult.add(eventInfo)
+    suspend fun getEventInfo(date: Long, isCalendarContent: Boolean) {
+            if (isCalendarContent) {
+                if (isNetworkAvailable()) {
+                    withContext(Dispatchers.IO){
+                        listEventsResult.clear()
+                        val childEventListenr = object : ChildEventListener {
+                            override fun onChildAdded(
+                                snapshot: DataSnapshot,
+                                previousChildName: String?
+                            ) {
+                                val eventInfo = snapshot.getValue<EventInfo>()
+                                Log.e("TITLE", eventInfo!!.title)
+                                listEventsResult.add(eventInfo)
+                            }
+
+                            override fun onChildChanged(
+                                snapshot: DataSnapshot,
+                                previousChildName: String?
+                            ) {
+                            }
+
+                            override fun onChildRemoved(snapshot: DataSnapshot) {}
+
+                            override fun onChildMoved(
+                                snapshot: DataSnapshot,
+                                previousChildName: String?
+                            ) {
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {}
+                        }
+                        database.child(
+                            getCurrentUser()?.uid.toString()
+                        ).child(date.toString()).child("ListEvent")
+                            .addChildEventListener(childEventListenr)
                     }
-
-                    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                        /*if(listEventsResult.size > 0 && listEventsResult.indexOf(oldEventInfo) >= 0){
-                            val eventInfo = snapshot.getValue<EventInfo>()
-                            listEventsResult.set(listEventsResult.indexOf(oldEventInfo),eventInfo!!)
-                        }*/
-                    }
-
-                    override fun onChildRemoved(snapshot: DataSnapshot) {}
-
-                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                    override fun onCancelled(error: DatabaseError) {}
+                } else {
+                    Toast.makeText(
+                        mainActivity,
+                        "Load data unsuccessfully because network is disconnected!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                database.child(
-                    getCurrentUser()?.uid.toString()
-                ).child(date.toString()).child("ListEvent").addChildEventListener(childEventListenr)
-            } else {
-                Toast.makeText(
-                    mainActivity,
-                    "Load data unsuccessfully because network is disconnected!",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
-        }
     }
 
     fun getHourAndMinute(time: Long): Float {
@@ -388,15 +397,24 @@ class SharedViewModel @Inject constructor(
         return result.toFloat()
     }
 
-    fun updateEventInfo(eventInfo: EventInfo, onFinished: () -> Unit) {
-        val index = listEventsResult.indexOf(oldEventInfo)
-        database.child(
-            getCurrentUser()?.uid.toString()
-        ).child(dateOfEvent.toString()).child("ListEvent").child(index.toString())
-            .setValue(eventInfo).addOnSuccessListener {
-            Toast.makeText(mainActivity, "Update Event Successfully!", Toast.LENGTH_SHORT)
-                .show()
-            onFinished()
+    suspend fun updateEventInfo(eventInfo: EventInfo, onFinished: () -> Unit) {
+        if(isNetworkAvailable())
+        {
+           withContext(Dispatchers.IO){
+               val index = listEventsResult.indexOf(oldEventInfo)
+               database.child(
+                   getCurrentUser()?.uid.toString()
+               ).child(dateOfEvent.toString()).child("ListEvent").child(index.toString())
+                   .setValue(eventInfo).addOnSuccessListener {
+                       Toast.makeText(mainActivity, "Update Event Successfully!", Toast.LENGTH_SHORT)
+                           .show()
+                       onFinished()
+                   }
+           }
+        }
+        else
+        {
+            Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -68,6 +69,7 @@ fun WeeklyHeader(
     val weekFinalDays =
         DateUtils.getFutureDates(6, Calendar.getInstance().apply { time = firstDayDate })
     val interactionSource = remember { MutableInteractionSource() }
+    val coroutineScope = rememberCoroutineScope()
 
     Row(
         modifier
@@ -110,7 +112,7 @@ fun WeeklyHeader(
                         onSelectDay(day)
                         onSelectedDayChange(day)
                         sharedViewModel.dateOfEvent = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay()
-                        sharedViewModel.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = isCalendarContent)
+                        coroutineScope.launch {sharedViewModel.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = isCalendarContent)}
                     },
                     textAlign = TextAlign.Center
                 )

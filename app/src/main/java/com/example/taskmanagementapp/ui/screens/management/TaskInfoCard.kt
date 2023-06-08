@@ -27,9 +27,29 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun TaskInfoCard(
     systemColor: Color,
     subSystemColor: Color,
-    sticker: Int,
+    listSticker: List<Int>,
     listTask: List<ToDoTask>,
 ) {
+    val percentProgress: (List<ToDoTask>) -> Float = { it ->
+        var percentProgress = 0f
+        it.forEach {
+            if (it.isDone) percentProgress++
+        }
+        percentProgress / it.size
+    }
+
+    val sticker: (Float) -> Int = {
+        if (it < 0.25f) {
+            listSticker[0]
+        } else if (it < 0.5f) {
+            listSticker[1]
+        } else if (it < 0.75f) {
+            listSticker[2]
+        } else {
+            listSticker[3]
+        }
+    }
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -45,14 +65,15 @@ fun TaskInfoCard(
         )
 
         Image(
-            painter = painterResource(id = sticker),
+            painter = painterResource(id = sticker(percentProgress(listTask))),
             contentDescription = "Hop Image",
             modifier = Modifier.size(64.dp)
         )
 
         CircularProgress(
             listTask = listTask,
-            systemColor = systemColor
+            systemColor = systemColor,
+            progress = percentProgress(listTask),
         )
     }
 }
@@ -60,15 +81,16 @@ fun TaskInfoCard(
 @Composable
 fun CircularProgress(
     listTask: List<ToDoTask>,
-    systemColor: Color
+    systemColor: Color,
+    progress: Float,
 ) {
-    val percentProgress: (List<ToDoTask>) -> Float = { it ->
-        var percentProgress = 0f
-        it.forEach {
-            if (it.isDone) percentProgress++
-        }
-        percentProgress / it.size
-    }
+//    val percentProgress: (List<ToDoTask>) -> Float = { it ->
+//        var percentProgress = 0f
+//        it.forEach {
+//            if (it.isDone) percentProgress++
+//        }
+//        percentProgress / it.size
+//    }
 
     Box(
         modifier = Modifier.size(56.dp)
@@ -76,14 +98,14 @@ fun CircularProgress(
         CircularProgressIndicator(
             modifier = Modifier
                 .size(56.dp),
-            progress = percentProgress(listTask),
+            progress = progress,
             backgroundColor = Neutral7,
             color = systemColor,
             strokeCap = StrokeCap.Round
         )
 
         Text(
-            text = "${(percentProgress(listTask) * 100).toInt()}%",
+            text = "${(progress * 100).toInt()}%",
             style = VisbyTypography.subtitle1,
             color = systemColor,
             modifier = Modifier.align(Center)
@@ -126,12 +148,17 @@ fun TaskInfo(
 fun TaskInfoCardPreview() {
     TaskInfoCard(
         listTask = listOf(
-            ToDoTask(TaskType.Running, "Walking", false),
+            ToDoTask(TaskType.Running, "Walking", true),
             ToDoTask(TaskType.Shopping, "Go shopping", true),
             ToDoTask(TaskType.Running, "Walking", true)
         ),
         systemColor = SystemColorSet.ORANGE.primaryColor,
         subSystemColor = SystemColorSet.ORANGE.secondaryColor,
-        sticker = SystemColorSet.ORANGE.listStickerSet[17]
+        listSticker = listOf(
+            SystemColorSet.ORANGE.listStickerSet[5],
+            SystemColorSet.ORANGE.listStickerSet[9],
+            SystemColorSet.ORANGE.listStickerSet[6],
+            SystemColorSet.ORANGE.listStickerSet[4],
+        )
     )
 }

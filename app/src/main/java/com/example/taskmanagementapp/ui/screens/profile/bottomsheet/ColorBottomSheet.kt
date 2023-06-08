@@ -167,7 +167,7 @@ fun ColorCircle(
         onDraw = {
             drawCircle(
                 color = color.primaryColor,
-                radius = if (isSelected) 12.dp.value else size.minDimension / 2.0f
+                radius = if (isSelected) ((circleSize).value * 3 / 5) else size.minDimension / 2.0f
             )
         }
     )

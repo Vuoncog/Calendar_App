@@ -102,8 +102,7 @@ fun AddTaskAppBar(
                 } else {
                     coroutinesScope.launch { sharedViewModel.addEventInfo(onFinished) }
                 }
-            }
-            )
+            })
         },
         navigationIcon = {
             AddTaskBackIcon(onBackClicked = onBackClicked)

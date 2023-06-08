@@ -26,12 +26,21 @@ fun AddTask(
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
-        sharedViewModel.titleAndDetailEvent.value = Title(systemColor = systemColorSet.primaryColor, titleAndDetail = if(eventInfo != null) Pair(sharedViewModel.oldEventInfo.title,sharedViewModel.oldEventInfo.detail!!) else null)
+        sharedViewModel.titleAndDetailEvent.value = Title(
+            systemColor = systemColorSet.primaryColor,
+            titleAndDetail = if (eventInfo != null) Pair(
+                sharedViewModel.oldEventInfo.title,
+                sharedViewModel.oldEventInfo.detail!!
+            ) else null
+        )
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        sharedViewModel.startAndEndEvent.value = Time(systemColor = systemColorSet.primaryColor, mEventInfo = if(eventInfo != null) sharedViewModel.oldEventInfo else null)
+        sharedViewModel.startAndEndEvent.value = Time(
+            systemColor = systemColorSet.primaryColor,
+            mEventInfo = if (eventInfo != null) sharedViewModel.oldEventInfo else null
+        )
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
@@ -41,7 +50,7 @@ fun AddTask(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Theme(systemColorSet = systemColorSet)
+        Theme()
         Divider(
             thickness = 1.dp,
             color = NeutralBorder

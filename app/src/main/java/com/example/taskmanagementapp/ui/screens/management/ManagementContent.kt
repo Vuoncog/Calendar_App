@@ -70,7 +70,12 @@ fun ManagementContent(
                 listTask = _listTask,
                 systemColor = systemColorSet.primaryColor,
                 subSystemColor = systemColorSet.secondaryColor,
-                sticker = systemColorSet.listStickerSet[14]
+                listSticker = listOf(
+                    systemColorSet.listStickerSet[5],
+                    systemColorSet.listStickerSet[9],
+                    systemColorSet.listStickerSet[6],
+                    systemColorSet.listStickerSet[4],
+                )
             )
 
             TaskState(

@@ -3,7 +3,7 @@ package com.example.taskmanagementapp.ui.screens.task
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -20,6 +20,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun Theme(
     systemColorSet: SystemColorSet = SystemColorSet.ORANGE
 ) {
+    var systemSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
+
     val recommendColorSet = listOf(
         SystemColorSet.ORANGE,
         SystemColorSet.GREEN,
@@ -63,8 +65,10 @@ fun Theme(
                 ColorCircle(
                     onColorCircleClicked = {},
                     color = displayColor,
-                    systemColorSet = systemColorSet,
-                    onColorChange = {},
+                    systemColorSet = systemSet,
+                    onColorChange = {
+                        systemSet = it
+                    },
                     circleSize = 16.dp
                 )
             }

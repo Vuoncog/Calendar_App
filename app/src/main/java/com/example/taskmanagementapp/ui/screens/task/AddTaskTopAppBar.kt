@@ -1,10 +1,10 @@
 package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
@@ -28,7 +29,7 @@ fun AddTaskTopAppBar(
     sharedViewModel: SharedViewModel,
     onFinished: () -> Unit,
     isEvent: Boolean = false,
-    isUpdateEvent : Boolean
+    isUpdateEvent: Boolean
 ) {
     AddTaskAppBar(
         onBackClicked = onBackClicked,
@@ -68,7 +69,9 @@ fun AddTaskAppBar(
     TopAppBar(
         title = {
             Text(
-                text = if (isEvent) {if(isUpdateEvent) "Update Event" else "Add Event"} else "Add Todo Task",
+                text = if (isEvent) {
+                    if (isUpdateEvent) "Update Event" else "Add Event"
+                } else "Add Todo Task",
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -77,20 +80,27 @@ fun AddTaskAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         actions = {
+            if (isUpdateEvent) {
+                RemoveIcon(
+                    onClicked = { coroutinesScope.launch { sharedViewModel.removeEvent(onFinished = onFinished) } },
+                    sharedViewModel = sharedViewModel
+                )
+            }
             AddTaskCheckIcon(onClicked = {
-                if(isUpdateEvent)
-                {
-                    coroutinesScope.launch {sharedViewModel.updateEventInfo(EventInfo(
-                        title = sharedViewModel.titleAndDetailEvent.value.first,
-                        detail = sharedViewModel.titleAndDetailEvent.value.second,
-                        startTime = sharedViewModel.startAndEndEvent.value.first,
-                        endTime = sharedViewModel.startAndEndEvent.value.second,
-                        color = sharedViewModel.oldEventInfo.color
-                    ), onFinished = onFinished)}
-                }
-                else
-                {
-                    coroutinesScope.launch {sharedViewModel.addEventInfo(onFinished)}
+                if (isUpdateEvent) {
+                    coroutinesScope.launch {
+                        sharedViewModel.updateEventInfo(
+                            EventInfo(
+                                title = sharedViewModel.titleAndDetailEvent.value.first,
+                                detail = sharedViewModel.titleAndDetailEvent.value.second,
+                                startTime = sharedViewModel.startAndEndEvent.value.first,
+                                endTime = sharedViewModel.startAndEndEvent.value.second,
+                                color = sharedViewModel.oldEventInfo.color
+                            ), onFinished = onFinished
+                        )
+                    }
+                } else {
+                    coroutinesScope.launch { sharedViewModel.addEventInfo(onFinished) }
                 }
             }
             )
@@ -131,6 +141,66 @@ fun AddTaskCheckIcon(
             contentDescription = "Close icon",
             tint = systemColor,
             modifier = Modifier.size(32.dp)
+        )
+    }
+}
+
+@Composable
+fun RemoveIcon(
+    systemColor: Color = SystemColor,
+    onClicked: () -> Unit,
+    sharedViewModel: SharedViewModel
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    IconButton(onClick = {
+        showDialog = true
+    }) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove2),
+            contentDescription = "Close icon",
+            tint = systemColor,
+            modifier = Modifier.size(28.dp)
+        )
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = {
+                Text(
+                    "Confirmation",
+                    color = systemColor,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    "Are you sure to remove ${sharedViewModel.oldEventInfo.title} ?",
+                    color = systemColor
+                )
+            },
+            confirmButton = {
+                Text(
+                    text = "Yes",
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .clickable {
+                            onClicked()
+                            showDialog = false
+                        }
+                        .padding(10.dp),
+                    color = systemColor
+                )
+            },
+            dismissButton = {
+                Text(
+                    text = "No",
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .clickable { showDialog = false}
+                        .padding(10.dp),
+                    color = systemColor
+                )
+            }
         )
     }
 }

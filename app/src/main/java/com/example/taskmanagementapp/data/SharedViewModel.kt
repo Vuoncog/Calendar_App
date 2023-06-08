@@ -356,8 +356,7 @@ class SharedViewModel @Inject constructor(
                             override fun onChildChanged(
                                 snapshot: DataSnapshot,
                                 previousChildName: String?
-                            ) {
-                            }
+                            ) {}
 
                             override fun onChildRemoved(snapshot: DataSnapshot) {}
 
@@ -414,6 +413,25 @@ class SharedViewModel @Inject constructor(
         }
         else
         {
+            Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    suspend fun removeEvent(onFinished: () -> Unit){
+        if(isNetworkAvailable()){
+            withContext(Dispatchers.IO){
+                val index = listEventsResult.indexOf(oldEventInfo)
+                database.child(
+                    getCurrentUser()?.uid.toString()
+                ).child(dateOfEvent.toString()).child("ListEvent").child(index.toString())
+                    .removeValue().addOnSuccessListener {
+                        Toast.makeText(mainActivity, "Delete Event Successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        onFinished()
+                    }
+            }
+        }
+        else{
             Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
         }
     }

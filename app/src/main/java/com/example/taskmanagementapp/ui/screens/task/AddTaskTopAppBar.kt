@@ -20,7 +20,6 @@ import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -152,7 +151,7 @@ fun RemoveIcon(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     IconButton(onClick = {
-        showDialog = true
+        showDialog = !showDialog
     }) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove2),
@@ -163,7 +162,7 @@ fun RemoveIcon(
     }
     if (showDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { showDialog = !showDialog },
             title = {
                 Text(
                     "Confirmation",
@@ -184,7 +183,7 @@ fun RemoveIcon(
                     modifier = Modifier
                         .clickable {
                             onClicked()
-                            showDialog = false
+                            showDialog = !showDialog
                         }
                         .padding(10.dp),
                     color = systemColor
@@ -195,7 +194,7 @@ fun RemoveIcon(
                     text = "No",
                     fontSize = 16.sp,
                     modifier = Modifier
-                        .clickable { showDialog = false}
+                        .clickable { showDialog = !showDialog}
                         .padding(10.dp),
                     color = systemColor
                 )

@@ -35,7 +35,7 @@ val Neutral4 = Color(0xFF645E59)
 val Neutral5 = Color(0xFF7D7571)
 val Neutral6 = Color(0xFF97908B)
 val Neutral7 = Color(0xFFB2A9A5)
-val Neutral8 = Color(0xFFFEFBFF)
+val Neutral8 = Color(0xFFE9E0DC)
 val NeutralBorder = Color(0xFFEAEAEA)
 
 val GreenPrimary = Color(0xFF408285)

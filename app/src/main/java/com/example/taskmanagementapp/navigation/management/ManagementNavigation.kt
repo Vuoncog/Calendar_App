@@ -1,16 +1,12 @@
 package com.example.taskmanagementapp.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
-import com.example.taskmanagementapp.constant.Graph
-import com.example.taskmanagementapp.constant.GraphRoute
-import com.example.taskmanagementapp.constant.SubScreen
-import com.example.taskmanagementapp.constant.SystemColorSet
+import com.example.taskmanagementapp.constant.*
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.management.ManagementContent
 import com.example.taskmanagementapp.ui.screens.task.AddTask
+import com.google.gson.Gson
 import java.util.*
 
 fun NavGraphBuilder.managementNavigation(
@@ -27,6 +23,11 @@ fun NavGraphBuilder.managementNavigation(
         startDestination = GraphRoute.Management.route,
         route = Graph.MANAGEMENT
     ) {
+        val navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit = {
+            val taskString = Gson().toJson(it)
+            navController.navigate("${SubScreen.TaskDetail.route}/${taskString}")
+
+        }
         composable(route = GraphRoute.Management.route) {
             isShowBottomBarItems(true)
             ManagementContent(
@@ -38,7 +39,8 @@ fun NavGraphBuilder.managementNavigation(
                 sharedViewModel = sharedViewModel,
                 navigateToAddTask = {
                     navController.navigate(route = SubScreen.AddTodoTask.route)
-                }
+                },
+                navigateToUpdateTask = navigateToUpdateTask
             )
         }
 
@@ -46,7 +48,20 @@ fun NavGraphBuilder.managementNavigation(
             isShowBottomBarItems(false)
             AddTask(
                 sharedViewModel = sharedViewModel,
-                systemColorSet = systemColorSet
+                systemColorSet = systemColorSet,
+                isToDoTask = true
+            )
+        }
+        composable(
+            route = "${SubScreen.TaskDetail.route}/{task}",
+            arguments = listOf(navArgument("task") { type = NavType.StringType})
+        ){
+            isShowBottomBarItems(false)
+            AddTask(
+                sharedViewModel = sharedViewModel,
+                systemColorSet = systemColorSet,
+                taskInfo = it.arguments?.getString("task"),
+                isToDoTask = true
             )
         }
     }

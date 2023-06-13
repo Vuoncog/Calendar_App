@@ -29,7 +29,8 @@ fun Tick(
             val addToDoTask = ToDoTask(
                 taskType = toDoTask.taskType,
                 taskName = toDoTask.taskName,
-                isDone = !toDoTask.isDone
+                isDone = !(toDoTask.getDone()),
+                time = toDoTask.time
             )
             onChangeStateClicked(toDoTask, addToDoTask)
         },
@@ -41,14 +42,14 @@ fun Tick(
                 color = systemColor,
                 shape = CircleShape
             )
-            .background(color = if (toDoTask.isDone) systemColor else Color.Transparent)
+            .background(color = if (toDoTask.getDone()) systemColor else Color.Transparent)
             .padding(0.dp)
     ) {
         Icon(
             modifier = Modifier.size(16.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_tick),
             contentDescription = "content description",
-            tint = if (toDoTask.isDone) Neutral8 else Color.Transparent,
+            tint = if (toDoTask.getDone()) Neutral8 else Color.Transparent,
         )
     }
 }

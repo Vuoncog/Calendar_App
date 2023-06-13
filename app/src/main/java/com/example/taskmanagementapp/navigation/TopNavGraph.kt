@@ -28,11 +28,6 @@ fun TopNavGraph(
             navController.popBackStack()
         }
     }
-    val onFinished: () -> Unit = {
-        coroutineScope.launch {
-            navController.navigate(GraphRoute.Calendar.route)
-        }
-    }
 
     NavHost(
         navController = navController,
@@ -50,7 +45,11 @@ fun TopNavGraph(
             onPrevWeekClicked = onPrevWeekClicked,
             onNextWeekClicked = onNextWeekClicked,
             onBackClicked = onBackClicked,
-            onFinished = onFinished
+            onFinished = {
+                coroutineScope.launch {
+                    navController.navigate(GraphRoute.Management.route)
+                }
+            }
         )
 
         topCalendarNavigation(
@@ -59,7 +58,11 @@ fun TopNavGraph(
             onPrevWeekClicked = onPrevWeekClicked,
             onNextWeekClicked = onNextWeekClicked,
             onBackClicked = onBackClicked,
-            onFinished = onFinished
+            onFinished = {
+                coroutineScope.launch {
+                    navController.navigate(GraphRoute.Calendar.route)
+                }
+            }
         )
     }
 }

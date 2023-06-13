@@ -28,14 +28,16 @@ fun AddTaskTopAppBar(
     sharedViewModel: SharedViewModel,
     onFinished: () -> Unit,
     isEvent: Boolean = false,
-    isUpdateEvent: Boolean
+    isUpdateEvent: Boolean,
+    isUpdateTask: Boolean = false
 ) {
     AddTaskAppBar(
         onBackClicked = onBackClicked,
         sharedViewModel = sharedViewModel,
         onFinished = onFinished,
         isEvent = isEvent,
-        isUpdateEvent = isUpdateEvent
+        isUpdateEvent = isUpdateEvent,
+        isUpdateTask = isUpdateTask
     )
 }
 
@@ -46,7 +48,8 @@ fun AddTaskAppBar(
     sharedViewModel: SharedViewModel,
     onFinished: () -> Unit,
     isEvent: Boolean,
-    isUpdateEvent: Boolean
+    isUpdateEvent: Boolean,
+    isUpdateTask: Boolean
 ) {
     val coroutinesScope = rememberCoroutineScope()
     Box(
@@ -70,7 +73,9 @@ fun AddTaskAppBar(
             Text(
                 text = if (isEvent) {
                     if (isUpdateEvent) "Update Event" else "Add Event"
-                } else "Add Todo Task",
+                } else {
+                    if (isUpdateTask) "Update Task" else "Add Task"
+                },
                 fontFamily = VisbyFontFamily,
                 fontSize = MaterialTheme.typography.h6.fontSize,
                 fontWeight = FontWeight.Medium,
@@ -90,16 +95,24 @@ fun AddTaskAppBar(
                     coroutinesScope.launch {
                         sharedViewModel.updateEventInfo(
                             EventInfo(
-                                title = sharedViewModel.titleAndDetailEvent.value.first,
-                                detail = sharedViewModel.titleAndDetailEvent.value.second,
-                                startTime = sharedViewModel.startAndEndEvent.value.first,
-                                endTime = sharedViewModel.startAndEndEvent.value.second,
+                                title = sharedViewModel.titleAndDetail.value.first,
+                                detail = sharedViewModel.titleAndDetail.value.second,
+                                startTime = sharedViewModel.startAndEnd.value.first,
+                                endTime = sharedViewModel.startAndEnd.value.second,
                                 color = sharedViewModel.oldEventInfo.color
                             ), onFinished = onFinished
                         )
                     }
                 } else {
-                    coroutinesScope.launch { sharedViewModel.addEventInfo(onFinished) }
+                    if (isEvent) {
+                        coroutinesScope.launch {
+                            sharedViewModel.addEventInfo(onFinished)
+                        }
+                    } else {
+                        coroutinesScope.launch {
+                            sharedViewModel.addToDoTask(onFinished)
+                        }
+                    }
                 }
             })
         },
@@ -151,7 +164,7 @@ fun RemoveIcon(
 ) {
     var showDialog by remember { mutableStateOf(false) }
     IconButton(onClick = {
-        showDialog = !showDialog
+        showDialog = true
     }) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove2),
@@ -162,7 +175,7 @@ fun RemoveIcon(
     }
     if (showDialog) {
         AlertDialog(
-            onDismissRequest = { showDialog = !showDialog },
+            onDismissRequest = { showDialog = false },
             title = {
                 Text(
                     "Confirmation",
@@ -183,7 +196,7 @@ fun RemoveIcon(
                     modifier = Modifier
                         .clickable {
                             onClicked()
-                            showDialog = !showDialog
+                            showDialog = false
                         }
                         .padding(10.dp),
                     color = systemColor
@@ -194,7 +207,7 @@ fun RemoveIcon(
                     text = "No",
                     fontSize = 16.sp,
                     modifier = Modifier
-                        .clickable { showDialog = !showDialog}
+                        .clickable { showDialog = false }
                         .padding(10.dp),
                     color = systemColor
                 )

@@ -15,14 +15,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.taskmanagementapp.constant.SubScreen
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.theme.*
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -44,17 +40,17 @@ fun CalendarContent(
     LaunchedEffect(
         key1 = true,
         block = {
-            sharedViewModel?.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = true)
+            sharedViewModel?.getEventInfo()
         })
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
     listOffset.add(0f)
     listSpace.add(0f)
-    for (index in sharedViewModel?.listEventsResult!!.indices) {
+    for (index in sharedViewModel?.listEventResult!!.indices) {
         var startTime =
-            sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].startTime)
+            sharedViewModel.getHourAndMinute(sharedViewModel.listEventResult[index].startTime)
         val endTime =
-            sharedViewModel.getHourAndMinute(sharedViewModel.listEventsResult[index].endTime)
+            sharedViewModel.getHourAndMinute(sharedViewModel.listEventResult[index].endTime)
         if (startTime > endTime) startTime -= 24
         val offset = endTime - startTime
         val space = startTime + offset
@@ -120,7 +116,7 @@ fun CalendarContent(
 
     // Setup Event
     CalendarEvent(
-        listEvent = sharedViewModel.listEventsResult,
+        listEvent = sharedViewModel.listEventResult,
         listOffset = listOffset,
         listSpace = listSpace,
         state = scrollState,

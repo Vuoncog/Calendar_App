@@ -1,9 +1,7 @@
 package com.example.taskmanagementapp.navigation.management
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
@@ -37,7 +35,20 @@ fun NavGraphBuilder.topManagementNavigation(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
-                isUpdateEvent = false
+                isUpdateEvent = false,
+            )
+        }
+
+        composable(
+            route = "${SubScreen.TaskDetail.route}/{task}",
+            arguments = listOf(navArgument("task") { type = NavType.StringType})
+        ){
+            AddTaskTopAppBar(
+                onBackClicked = onBackClicked,
+                sharedViewModel = sharedViewModel,
+                onFinished = onFinished,
+                isUpdateEvent =false,
+                isUpdateTask = true
             )
         }
     }

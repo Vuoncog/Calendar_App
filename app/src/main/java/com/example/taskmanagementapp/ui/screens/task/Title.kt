@@ -1,22 +1,17 @@
 package com.example.taskmanagementapp.ui.screens.task
 
-import android.util.Log
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,10 +22,12 @@ import com.example.taskmanagementapp.ui.theme.*
 @Composable
 fun Title(
     systemColor: Color = SystemColor,
-    titleAndDetail : Pair<String,String>? = null
+    subSystemColor: Color,
+    titleAndDetail: Pair<String, String>? = null
 ): Pair<String, String> {
-    var title by remember { mutableStateOf(if(titleAndDetail != null) titleAndDetail.first else "") }
-    var detail by remember { mutableStateOf(if(titleAndDetail != null) titleAndDetail.second else "") }
+    var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first else "") }
+    var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second else "") }
+    val sticker = remember { mutableStateOf(R.drawable.ic_ban) }
 
     Row(
         modifier = Modifier
@@ -56,13 +53,12 @@ fun Title(
         ) {
             BasicTextField(
                 value = title,
-                onValueChange = {title = it},
+                onValueChange = { title = it },
                 modifier = Modifier
                     .fillMaxWidth(),
                 textStyle = VisbyTypography.subtitle1,
                 maxLines = 1,
-                decorationBox = {
-                        innerTextField ->
+                decorationBox = { innerTextField ->
                     Row(modifier = Modifier.fillMaxWidth()) {
                         if (title.isEmpty()) {
                             Text(
@@ -84,8 +80,7 @@ fun Title(
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = VisbyTypography.overline,
                 maxLines = 3,
-                decorationBox = {
-                        innerTextField ->
+                decorationBox = { innerTextField ->
                     Row(modifier = Modifier.fillMaxWidth()) {
                         if (detail.isEmpty()) {
                             Text(
@@ -101,31 +96,45 @@ fun Title(
             )
         }
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(3.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_add),
-                contentDescription = "Add",
-                tint = Neutral8,
-                modifier = Modifier
-                    .size(20.dp)
-                    .clip(CircleShape)
-                    .background(color = systemColor)
-            )
-            Text(
-                text = "Sticker",
-                style = VisbyTypography.overline,
-                color = Neutral1
-            )
-        }
+        ChooseSticker(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            sticker = sticker,
+            onIconClicked = {
+                sticker.value = it
+            }
+        )
+
     }
     return Pair(title, detail)
+}
+
+@Composable
+fun ChooseSticker(
+    systemColor: Color,
+    subSystemColor: Color,
+    @DrawableRes sticker: MutableState<Int>,
+    onIconClicked: (Int) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(3.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Sticker(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            sticker = sticker,
+            onIconClicked = onIconClicked)
+        Text(
+            text = "Sticker",
+            style = VisbyTypography.overline,
+            color = Neutral1
+        )
+    }
 }
 
 @Preview
 @Composable
 fun TitlePreview() {
-    Title()
+    Title(subSystemColor = BackgroundColorTask)
 }

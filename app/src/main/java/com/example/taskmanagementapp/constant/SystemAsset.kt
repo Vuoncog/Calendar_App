@@ -48,12 +48,14 @@ val listBunnySticker = listOf(
     R.drawable.bunny_emoji_yawn,
 )
 val listTaskType = listOf(
-    TaskType.Running,
-    TaskType.PetFood,
-    TaskType.Shopping,
-    TaskType.WalkTheDog,
-    TaskType.Running,
-    TaskType.PetFood,
-    TaskType.Shopping,
-    TaskType.WalkTheDog,
+    R.drawable.ic_ban,
+    R.drawable.ic_running_man,
+    R.drawable.ic_bag,
+    R.drawable.ic_pet,
+    R.drawable.ic_pet_walking,
+
+    R.drawable.ic_running_man,
+    R.drawable.ic_bag,
+    R.drawable.ic_pet,
+    R.drawable.ic_pet_walking
 )

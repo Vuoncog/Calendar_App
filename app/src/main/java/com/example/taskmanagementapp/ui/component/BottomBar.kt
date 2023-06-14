@@ -40,7 +40,7 @@ fun BottomBar(
 
     BottomNavigation(
         contentColor = contentColorFor(backgroundColor = systemColor),
-        backgroundColor = NeutralBorder,
+        backgroundColor = Color.White,
         elevation = 4.dp,
         modifier = Modifier.border(
             border = BorderStroke(1.dp, NeutralBorder)

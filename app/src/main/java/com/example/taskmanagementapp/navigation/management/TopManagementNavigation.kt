@@ -1,9 +1,8 @@
 package com.example.taskmanagementapp.navigation.management
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
@@ -21,38 +20,39 @@ fun NavGraphBuilder.topManagementNavigation(
     onNextWeekClicked: (Date) -> Unit,
     onBackClicked: () -> Unit,
     onFinished: () -> Unit,
-){
+) {
     navigation(
         startDestination = GraphRoute.Management.route,
         route = Graph.MANAGEMENT
-    ){
-        composable(route = GraphRoute.Management.route){
+    ) {
+        composable(route = GraphRoute.Management.route) {
             ManagementTopAppBar(
                 onNextWeekClicked = onNextWeekClicked,
                 onPrevWeekClicked = onPrevWeekClicked,
                 currentDay = date,
             )
         }
-        composable(route = SubScreen.AddTodoTask.route){
+        composable(route = SubScreen.AddTodoTask.route) {
             AddTaskTopAppBar(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
                 isUpdateEvent = false,
+                isUpdateTask = true,
+                systemColor = systemColor
             )
         }
 
         composable(
             route = "${SubScreen.TaskDetail.route}/{task}",
-            arguments = listOf(navArgument("task") { type = NavType.StringType})
-        ){
+            arguments = listOf(navArgument("task") { type = NavType.StringType })
+        ) {
             AddTaskTopAppBar(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
-                isUpdateEvent =false,
-                isUpdateTask = true
                 isUpdateEvent = false,
+                isUpdateTask = true,
                 systemColor = systemColor
             )
         }

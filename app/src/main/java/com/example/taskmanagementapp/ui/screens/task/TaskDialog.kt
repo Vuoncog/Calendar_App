@@ -47,7 +47,7 @@ fun RemoveIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_bin),
             contentDescription = "Close icon",
             tint = systemColor,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(24.dp)
         )
     }
     if (showDialog.value) {

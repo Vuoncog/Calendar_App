@@ -29,6 +29,7 @@ fun AddTask(
     ) {
         sharedViewModel.titleAndDetail.value = Title(
             systemColor = systemColorSet.primaryColor,
+            subSystemColor = systemColorSet.secondaryColor,
             titleAndDetail = if (eventInfo != null) Pair(
                 sharedViewModel.oldEventInfo.title,
                 sharedViewModel.oldEventInfo.detail!!

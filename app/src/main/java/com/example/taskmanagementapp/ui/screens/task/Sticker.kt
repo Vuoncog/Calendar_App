@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.task
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,123 +8,190 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.listTaskType
-import com.example.taskmanagementapp.ui.theme.Neutral2
-import com.example.taskmanagementapp.ui.theme.Neutral8
-import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.CloseIcon
+import com.example.taskmanagementapp.ui.theme.*
+
 
 @Composable
 fun Sticker(
-    systemColor: Color = SystemColorSet.ORANGE.primaryColor,
-    onClicked: () -> Unit
+    systemColor: Color = SystemColor,
+    subSystemColor: Color,
+    onIconClicked: (Int) -> Unit,
+    @DrawableRes sticker: MutableState<Int>
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-    IconButton(onClick = {
-        showDialog = !showDialog
-    }) {
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove),
-            contentDescription = "Close icon",
-            tint = systemColor,
-            modifier = Modifier.size(28.dp)
+    val showDialog = remember { mutableStateOf(false) }
+
+    Icon(
+        imageVector = ImageVector.vectorResource(id = sticker.value),
+        contentDescription = "Add",
+        tint = systemColor,
+        modifier = Modifier
+            .size(24.dp)
+            .clickable {
+                showDialog.value = !showDialog.value
+            }
+    )
+
+    if (showDialog.value) {
+        CustomStickerDialog(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            openDialogCustom = showDialog,
+            onIconClicked = onIconClicked,
         )
     }
-    if (showDialog) {
-        AlertDialog(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false
-            ),
-            onDismissRequest = { showDialog = !showDialog },
-            title = {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Choose sticker",
-                        color = systemColor,
-                        style = VisbyTypography.subtitle1,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .weight(1f),
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove),
-                        contentDescription = "Remove",
-                        tint = Neutral2,
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable {
-                                showDialog = !showDialog
-                            }
-                    )
-                }
+}
 
-            },
-            text = {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(5),
-                ) {
-                    items(listTaskType) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = it.icon),
-                            contentDescription = "Sticker",
-                            tint = Neutral2,
-                            modifier = Modifier
-                                .padding(
-                                    start = 8.dp,
-                                    end = 8.dp,
-                                    bottom = 12.dp
-                                )
-                                .shadow(
-                                    elevation = 2.dp,
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .clip(RoundedCornerShape(14.dp))
-                                .size(48.dp)
-                                .background(color = Neutral8)
-                                .padding(13.dp)
-                                .clickable {
-                                    showDialog = !showDialog
-                                }
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-
-            },
+@Composable
+fun CustomStickerDialog(
+    systemColor: Color,
+    subSystemColor: Color,
+    openDialogCustom: MutableState<Boolean>,
+    onIconClicked: (Int) -> Unit,
+) {
+    Dialog(
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        ),
+        onDismissRequest = {
+            openDialogCustom.value = !openDialogCustom.value
+        }) {
+        CustomStickerDialogUI(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            openDialogCustom = openDialogCustom,
+            onIconClicked = onIconClicked,
+//            sharedViewModel = sharedViewModel
         )
+    }
+}
+
+@Composable
+fun CustomStickerDialogUI(
+    systemColor: Color,
+    subSystemColor: Color,
+    openDialogCustom: MutableState<Boolean>,
+    onIconClicked: (Int) -> Unit,
+//    sharedViewModel: SharedViewModel
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.White)
+            .padding(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = 12.dp
+            ),
+    ) {
+        StickerTitle(
+            systemColor = systemColor,
+            onCloseClicked = {
+                openDialogCustom.value = !openDialogCustom.value
+            }
+        )
+
+        TaskContent(
+            systemColor = systemColor,
+            subSystemColor = subSystemColor,
+            onIconClicked = onIconClicked,
+            openDialogCustom = openDialogCustom
+        )
+    }
+}
+
+@Composable
+fun StickerTitle(
+    systemColor: Color = Primary4,
+    onCloseClicked: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(
+            text = "Choose sticker",
+            style = VisbyTypography.subtitle1,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(start = 32.dp)
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+            textAlign = TextAlign.Center,
+            color = Neutral2
+        )
+
+        CloseIcon(
+            systemColor = systemColor,
+            onCloseClicked = onCloseClicked
+        )
+    }
+}
+
+@Composable
+fun TaskContent(
+    systemColor: Color,
+    subSystemColor: Color,
+    onIconClicked: (Int) -> Unit,
+    openDialogCustom: MutableState<Boolean>,
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(count = 5),
+    ) {
+        items(listTaskType) {
+            Box() {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = it),
+                    contentDescription = "Sticker",
+                    tint = systemColor,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(
+                            bottom = 12.dp
+                        )
+                        .clip(RoundedCornerShape(12.dp))
+                        .size(48.dp)
+                        .background(color = subSystemColor)
+                        .padding(12.dp)
+                        .clickable {
+                            onIconClicked(it)
+                            openDialogCustom.value = !openDialogCustom.value
+                        }
+                )
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 fun StickerPreview() {
-    Sticker(
-        onClicked = {}
+    CustomStickerDialogUI(
+        subSystemColor = BackgroundColorTask,
+        openDialogCustom = mutableStateOf(false),
+        onIconClicked = { /*TODO*/ },
+        systemColor = Primary4
     )
 }

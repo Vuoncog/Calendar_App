@@ -1,7 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -12,8 +11,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
@@ -38,7 +37,8 @@ fun AddTaskTopAppBar(
         onFinished = onFinished,
         isEvent = isEvent,
         isUpdateEvent = isUpdateEvent,
-        systemColor = systemColor
+        systemColor = systemColor,
+        isUpdateTask = isUpdateTask
     )
 }
 
@@ -81,38 +81,38 @@ fun AddTaskAppBar(
         )
     }, backgroundColor = Color.Transparent, elevation = 0.dp, actions = {
         if (isUpdateEvent) {
-                RemoveIcon(
-                    systemColor = systemColor,
-                    onClicked = { coroutinesScope.launch { sharedViewModel.removeEvent(onFinished = onFinished) } },
-                    sharedViewModel = sharedViewModel
-                )
-            }
-            AddTaskCheckIcon(onClicked = {
-                if (isUpdateEvent) {
+            RemoveIcon(
+                systemColor = systemColor,
+                onClicked = { coroutinesScope.launch { sharedViewModel.removeEvent(onFinished = onFinished) } },
+                sharedViewModel = sharedViewModel
+            )
+        }
+        AddTaskCheckIcon(onClicked = {
+            if (isUpdateEvent) {
+                coroutinesScope.launch {
+                    sharedViewModel.updateEventInfo(
+                        EventInfo(
+                            title = sharedViewModel.titleAndDetail.value.first,
+                            detail = sharedViewModel.titleAndDetail.value.second,
+                            startTime = sharedViewModel.startAndEnd.value.first,
+                            endTime = sharedViewModel.startAndEnd.value.second,
+                            color = sharedViewModel.oldEventInfo.color
+                        ), onFinished = onFinished
+                    )
+                }
+            } else {
+                if (isEvent) {
                     coroutinesScope.launch {
-                        sharedViewModel.updateEventInfo(
-                            EventInfo(
-                                title = sharedViewModel.titleAndDetail.value.first,
-                                detail = sharedViewModel.titleAndDetail.value.second,
-                                startTime = sharedViewModel.startAndEnd.value.first,
-                                endTime = sharedViewModel.startAndEnd.value.second,
-                                color = sharedViewModel.oldEventInfo.color
-                            ), onFinished = onFinished
-                        )
+                        sharedViewModel.addEventInfo(onFinished)
                     }
                 } else {
-                    if (isEvent) {
-                        coroutinesScope.launch {
-                            sharedViewModel.addEventInfo(onFinished)
-                        }
-                    } else {
-                        coroutinesScope.launch {
-                            sharedViewModel.addToDoTask(onFinished)
-                        }
+                    coroutinesScope.launch {
+                        sharedViewModel.addToDoTask(onFinished)
                     }
                 }
-            })
-        },
+            }
+        })
+    },
         navigationIcon = {
             AddTaskBackIcon(onBackClicked = onBackClicked)
         }
@@ -153,72 +153,3 @@ fun AddTaskCheckIcon(
         )
     }
 }
-
-@Composable
-fun RemoveIcon(
-    systemColor: Color = SystemColor,
-    onClicked: () -> Unit,
-    sharedViewModel: SharedViewModel
-) {
-    var showDialog by remember { mutableStateOf(false) }
-    IconButton(onClick = {
-        showDialog = !showDialog
-    }) {
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_remove2),
-            contentDescription = "Close icon",
-            tint = systemColor,
-            modifier = Modifier.size(28.dp)
-        )
-    }
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = !showDialog },
-            title = {
-                Text(
-                    "Confirmation",
-                    color = systemColor,
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Text(
-                    "Are you sure to remove ${sharedViewModel.oldEventInfo.title} ?",
-                    color = systemColor
-                )
-            },
-            confirmButton = {
-                Text(
-                    text = "Yes",
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .clickable {
-                            onClicked()
-                            showDialog = !showDialog
-                        }
-                        .padding(10.dp),
-                    color = systemColor
-                )
-            },
-            dismissButton = {
-                Text(
-                    text = "No",
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .clickable { showDialog = !showDialog}
-                        .padding(10.dp),
-                    color = systemColor
-                )
-            }
-        )
-    }
-}
-
-/*
-@Preview
-@Composable
-fun AddTaskTopAppBarPreview() {
-    AddTaskTopAppBar(
-        onBackClicked = {}
-    )
-}*/

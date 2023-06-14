@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.SystemColorSet
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 import com.google.gson.Gson
@@ -16,30 +17,37 @@ import com.google.gson.Gson
 @Composable
 fun AddTask(
     sharedViewModel: SharedViewModel,
-    haveSubtask: Boolean = false,
+    isToDoTask: Boolean = false,
     systemColorSet: SystemColorSet,
-    eventInfo: String? = null
+    eventInfo: String? = null,
+    taskInfo: String? = null
 ) {
-    if(eventInfo != null){
-        sharedViewModel.oldEventInfo = Gson().fromJson(eventInfo, EventInfo::class.java)
-    }
+    eventInfo?.let { sharedViewModel.oldEventInfo = Gson().fromJson(it, EventInfo::class.java) }
+    taskInfo?.let { sharedViewModel.oldTaskInfo = Gson().fromJson(it, ToDoTask::class.java) }
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
-        sharedViewModel.titleAndDetailEvent.value = Title(
+        sharedViewModel.titleAndDetail.value = Title(
             systemColor = systemColorSet.primaryColor,
             titleAndDetail = if (eventInfo != null) Pair(
                 sharedViewModel.oldEventInfo.title,
                 sharedViewModel.oldEventInfo.detail!!
-            ) else null
+            )
+            else if (taskInfo != null) Pair(
+                sharedViewModel.oldTaskInfo.taskName,
+                sharedViewModel.oldTaskInfo.taskType!!.description
+            )
+            else null
         )
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        sharedViewModel.startAndEndEvent.value = Time(
+        sharedViewModel.startAndEnd.value = Time(
             systemColor = systemColorSet.primaryColor,
-            mEventInfo = if (eventInfo != null) sharedViewModel.oldEventInfo else null
+            mEventInfo = if (eventInfo != null) sharedViewModel.oldEventInfo else null,
+            isToDoTask = isToDoTask,
+            mToDoTask = if(taskInfo != null) sharedViewModel.oldTaskInfo else null
         )
         Divider(
             thickness = 1.dp,
@@ -50,14 +58,17 @@ fun AddTask(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Theme()
+        if(!isToDoTask){
+            Theme()
+        }
         Divider(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        if (haveSubtask) {
+        if (isToDoTask) {
             Subtask(
-                systemColor = systemColorSet.primaryColor
+                systemColor = systemColorSet.primaryColor,
+                sharedViewModel = sharedViewModel
             )
             Divider(
                 thickness = 1.dp,

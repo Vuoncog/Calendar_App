@@ -111,8 +111,14 @@ fun WeeklyHeader(
                     ) {
                         onSelectDay(day)
                         onSelectedDayChange(day)
-                        sharedViewModel.dateOfEvent = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay()
-                        coroutineScope.launch {sharedViewModel.getEventInfo(sharedViewModel.dateOfEvent, isCalendarContent = isCalendarContent)}
+                        if(isCalendarContent){
+                            sharedViewModel.dateOfEvent = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay()
+                            coroutineScope.launch {sharedViewModel.getEventInfo()}
+                        }
+                        else{
+                            sharedViewModel.dateOfTask = day.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toEpochDay()
+                            coroutineScope.launch {sharedViewModel.getToDoTask()}
+                        }
                     },
                     textAlign = TextAlign.Center
                 )

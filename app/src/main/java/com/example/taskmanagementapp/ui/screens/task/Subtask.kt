@@ -21,12 +21,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.SubTask
 import com.example.taskmanagementapp.constant.SystemColorSet
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun Subtask(
-    systemColor: Color
+    systemColor: Color,
+    sharedViewModel: SharedViewModel?
 ) {
     var subtaskQuantity by remember {
         mutableStateOf(0)
@@ -64,9 +67,12 @@ fun Subtask(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 for (index in 1..subtaskQuantity) {
-                    MiniSubtask(
-                        onMinusSubtaskClicked = minusSubtask
-                    )
+                    if(index > sharedViewModel?.listSubTasks!!.size){
+                        sharedViewModel.listSubTasks.add(MiniSubtask(onMinusSubtaskClicked = minusSubtask))
+                    }
+                    else{
+                        sharedViewModel.listSubTasks[index - 1] = MiniSubtask(onMinusSubtaskClicked = minusSubtask)
+                    }
                 }
                 AddSubtask(
                     onAddSubtaskClicked = addSubtask
@@ -138,8 +144,9 @@ fun SubtaskHeader(
 @Composable
 fun MiniSubtask(
     onMinusSubtaskClicked: () -> Unit
-) {
-    var textField by remember { mutableStateOf("") }
+) : SubTask{
+    var textField by remember { mutableStateOf("")}
+    var subTaskTick by remember { mutableStateOf(false)}
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -149,7 +156,7 @@ fun MiniSubtask(
                 end = 16.dp
             )
     ) {
-        SubtaskTick()
+        subTaskTick = SubtaskTick()
         BasicTextField(
             modifier = Modifier.weight(1f),
             value = textField,
@@ -186,12 +193,13 @@ fun MiniSubtask(
                 }
         )
     }
+    return SubTask(subTaskTick,textField)
 }
 
 @Composable
 fun SubtaskTick(
     isTicked: Boolean = false
-) {
+) : Boolean{
     var tick by remember { mutableStateOf(isTicked) }
 
     IconButton(
@@ -216,10 +224,11 @@ fun SubtaskTick(
             tint = if (tick) Neutral8 else Color.Transparent,
         )
     }
+    return tick
 }
 
 @Preview
 @Composable
 fun SubtaskPreview() {
-    Subtask(systemColor = SystemColorSet.ORANGE.primaryColor)
+    Subtask(systemColor = SystemColorSet.ORANGE.primaryColor,null)
 }

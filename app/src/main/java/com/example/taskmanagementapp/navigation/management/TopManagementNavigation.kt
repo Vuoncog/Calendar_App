@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.navigation.management
 
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -39,6 +38,20 @@ fun NavGraphBuilder.topManagementNavigation(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
+                isUpdateEvent = false,
+            )
+        }
+
+        composable(
+            route = "${SubScreen.TaskDetail.route}/{task}",
+            arguments = listOf(navArgument("task") { type = NavType.StringType})
+        ){
+            AddTaskTopAppBar(
+                onBackClicked = onBackClicked,
+                sharedViewModel = sharedViewModel,
+                onFinished = onFinished,
+                isUpdateEvent =false,
+                isUpdateTask = true
                 isUpdateEvent = false,
                 systemColor = systemColor
             )

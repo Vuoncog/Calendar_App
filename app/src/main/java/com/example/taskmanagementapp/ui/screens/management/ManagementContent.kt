@@ -12,11 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.SystemColorSet
-import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.screens.calendar.WeeklyCalendar
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -30,20 +30,21 @@ fun ManagementContent(
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit
 ) {
-
-    val listTask = listOf(
-        ToDoTask(TaskType.Running, "Walking", true),
-        ToDoTask(TaskType.Shopping, "Go shopping", true),
-        ToDoTask(TaskType.PetFood, "Pet Food", false)
-    )
-
-    var _listTask by remember { mutableStateOf(listTask) }
+    LaunchedEffect(
+        key1 = true,
+        block = {
+            sharedViewModel.getToDoTask()
+        })
+    val coroutinesScope = rememberCoroutineScope()
+    var _listTask by remember { mutableStateOf(sharedViewModel.listTaskResult as List<ToDoTask>) }
     val changeTaskState: (ToDoTask, ToDoTask) -> Unit = { removeTask, addTask ->
-        _listTask = _listTask - removeTask
-        _listTask = _listTask + addTask
-        Log.d("list task: ", _listTask.toString())
+        _listTask = (_listTask - removeTask)
+        _listTask = (_listTask + addTask)
+        sharedViewModel.oldTaskInfo = removeTask
+        coroutinesScope.launch {sharedViewModel.updateDoneTask(removeTask,addTask)}
     }
 
     Surface(
@@ -83,14 +84,16 @@ fun ManagementContent(
                 isCompleted = false,
                 changeTaskState = changeTaskState,
                 systemColor = systemColorSet.primaryColor,
-                subSystemColor = systemColorSet.secondaryColor
+                subSystemColor = systemColorSet.secondaryColor,
+                navigateToUpdateTask = navigateToUpdateTask
             )
             TaskState(
                 listTask = _listTask,
                 isCompleted = true,
                 changeTaskState = changeTaskState,
                 systemColor = systemColorSet.primaryColor,
-                subSystemColor = systemColorSet.secondaryColor
+                subSystemColor = systemColorSet.secondaryColor,
+                navigateToUpdateTask = navigateToUpdateTask
             )
         }
 
@@ -123,6 +126,7 @@ fun ManagementPreView() {
         onSelectDay = {},
         navigateToAddTask = {},
         sharedViewModel = sharedViewModel!!,
-        systemColorSet = SystemColorSet.ORANGE
+        systemColorSet = SystemColorSet.ORANGE,
+        navigateToUpdateTask = {}
     )
 }

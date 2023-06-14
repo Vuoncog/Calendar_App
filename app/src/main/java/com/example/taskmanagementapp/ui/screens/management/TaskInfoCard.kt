@@ -30,51 +30,53 @@ fun TaskInfoCard(
     listSticker: List<Int>,
     listTask: List<ToDoTask>,
 ) {
-    val percentProgress: (List<ToDoTask>) -> Float = { it ->
-        var percentProgress = 0f
-        it.forEach {
-            if (it.isDone) percentProgress++
+    if(listTask.size > 0){
+        val percentProgress: (List<ToDoTask>) -> Float = { it ->
+            var percentProgress = 0f
+            it.forEach {
+                if (it.getDone()) percentProgress++
+            }
+            percentProgress / it.size
         }
-        percentProgress / it.size
-    }
 
-    val sticker: (Float) -> Int = {
-        if (it < 0.25f) {
-            listSticker[0]
-        } else if (it < 0.5f) {
-            listSticker[1]
-        } else if (it < 0.75f) {
-            listSticker[2]
-        } else {
-            listSticker[3]
+        val sticker: (Float) -> Int = {
+            if (it < 0.25f) {
+                listSticker[0]
+            } else if (it < 0.5f) {
+                listSticker[1]
+            } else if (it < 0.75f) {
+                listSticker[2]
+            } else {
+                listSticker[3]
+            }
         }
-    }
 
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = subSystemColor)
-            .padding(12.dp)
-            .fillMaxWidth()
-    ) {
-        TaskInfo(
-            listTask = listTask,
-            systemColor = systemColor,
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = subSystemColor)
+                .padding(12.dp)
+                .fillMaxWidth()
+        ) {
+            TaskInfo(
+                listTask = listTask,
+                systemColor = systemColor,
+            )
 
-        Image(
-            painter = painterResource(id = sticker(percentProgress(listTask))),
-            contentDescription = "Hop Image",
-            modifier = Modifier.size(64.dp)
-        )
+            Image(
+                painter = painterResource(id = sticker(percentProgress(listTask))),
+                contentDescription = "Hop Image",
+                modifier = Modifier.size(64.dp)
+            )
 
-        CircularProgress(
-            listTask = listTask,
-            systemColor = systemColor,
-            progress = percentProgress(listTask),
-        )
+            CircularProgress(
+                listTask = listTask,
+                systemColor = systemColor,
+                progress = percentProgress(listTask),
+            )
+        }
     }
 }
 
@@ -120,9 +122,9 @@ fun TaskInfo(
     systemColor: Color,
 ) {
     val tasksCompleted: (List<ToDoTask>) -> Int = { it ->
-        var taskCompleted: Int = 0
+        var taskCompleted = 0
         it.forEach {
-            if (it.isDone) taskCompleted++
+            if (it.getDone()) taskCompleted++
         }
         taskCompleted
     }
@@ -148,9 +150,9 @@ fun TaskInfo(
 fun TaskInfoCardPreview() {
     TaskInfoCard(
         listTask = listOf(
-            ToDoTask(TaskType.Running, "Walking", true),
-            ToDoTask(TaskType.Shopping, "Go shopping", true),
-            ToDoTask(TaskType.Running, "Walking", true)
+            ToDoTask(taskType = TaskType.Running, taskName = "Walking", isDone = true, time = 0L),
+            ToDoTask(taskType = TaskType.Shopping, taskName = "Go shopping", isDone = true, time = 0L),
+            ToDoTask(taskType = TaskType.Running, taskName = "Walking", isDone = true, time = 0L)
         ),
         systemColor = SystemColorSet.ORANGE.primaryColor,
         subSystemColor = SystemColorSet.ORANGE.secondaryColor,

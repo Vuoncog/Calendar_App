@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.SystemColor
@@ -37,7 +38,9 @@ import java.util.*
 @Composable
 fun Time(
     systemColor: Color = SystemColor,
-    mEventInfo : EventInfo? = null
+    mEventInfo : EventInfo? = null,
+    mToDoTask : ToDoTask? = null,
+    isToDoTask : Boolean = false
 ): Pair<Long, Long> {
     var startTime by remember { mutableStateOf(0L) }
     var endTime by remember { mutableStateOf(0L)}
@@ -72,13 +75,15 @@ fun Time(
             startTime = TimeSetup(
                 isStart = true,
                 systemColor = systemColor,
-                mTimestamp = mEventInfo?.startTime
+                mTimestamp = mEventInfo?.startTime ?: mToDoTask?.time
             )
-            endTime = TimeSetup(
-                isStart = false,
-                systemColor = systemColor,
-                mTimestamp = mEventInfo?.endTime
-            )
+            if(!isToDoTask){
+                endTime = TimeSetup(
+                    isStart = false,
+                    systemColor = systemColor,
+                    mTimestamp = mEventInfo?.endTime
+                )
+            }
         }
     }
     return Pair(startTime, endTime)

@@ -5,10 +5,9 @@ import androidx.compose.ui.graphics.Color
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.SystemColor
 
-sealed class TaskType(
-    @DrawableRes val icon: Int,
+open class TaskType(
+    @DrawableRes val icon: Int = 0,
     val description: String,
-    val color: Color = SystemColor
 ) {
     object Running: TaskType(
         icon = R.drawable.ic_running_man,
@@ -26,4 +25,5 @@ sealed class TaskType(
         icon = R.drawable.ic_bag,
         description = "Shopping"
     )
+    constructor() : this(0,"")
 }

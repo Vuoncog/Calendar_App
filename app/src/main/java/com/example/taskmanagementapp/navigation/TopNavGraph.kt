@@ -2,6 +2,7 @@ package com.example.taskmanagementapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.taskmanagementapp.constant.Graph
@@ -20,7 +21,8 @@ fun TopNavGraph(
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
     date: Date,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    systemColor: Color
 ) {
     val coroutineScope = rememberCoroutineScope()
     val onBackClicked: () -> Unit = {
@@ -50,7 +52,8 @@ fun TopNavGraph(
             onPrevWeekClicked = onPrevWeekClicked,
             onNextWeekClicked = onNextWeekClicked,
             onBackClicked = onBackClicked,
-            onFinished = onFinished
+            onFinished = onFinished,
+            systemColor = systemColor
         )
 
         topCalendarNavigation(
@@ -59,7 +62,8 @@ fun TopNavGraph(
             onPrevWeekClicked = onPrevWeekClicked,
             onNextWeekClicked = onNextWeekClicked,
             onBackClicked = onBackClicked,
-            onFinished = onFinished
+            onFinished = onFinished,
+            systemColor = systemColor
         )
     }
 }

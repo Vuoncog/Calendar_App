@@ -1,7 +1,11 @@
 package com.example.taskmanagementapp.navigation.calendar
 
-import androidx.navigation.*
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.Graph
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.constant.SubScreen
@@ -13,6 +17,7 @@ import java.util.*
 fun NavGraphBuilder.topCalendarNavigation(
     sharedViewModel: SharedViewModel,
     date: Date,
+    systemColor: Color,
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
     onBackClicked: () -> Unit,
@@ -27,6 +32,7 @@ fun NavGraphBuilder.topCalendarNavigation(
                 onNextWeekClicked = onNextWeekClicked,
                 onPrevWeekClicked = onPrevWeekClicked,
                 currentDay = date,
+                systemColor = systemColor
             )
         }
         composable(route = SubScreen.AddEvent.route){
@@ -35,7 +41,8 @@ fun NavGraphBuilder.topCalendarNavigation(
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
                 isUpdateEvent = false,
-                isEvent = true
+                isEvent = true,
+                systemColor = systemColor
             )
         }
         composable(
@@ -47,7 +54,8 @@ fun NavGraphBuilder.topCalendarNavigation(
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
                 isUpdateEvent = true,
-                isEvent = true
+                isEvent = true,
+                systemColor = systemColor
             )
         }
     }

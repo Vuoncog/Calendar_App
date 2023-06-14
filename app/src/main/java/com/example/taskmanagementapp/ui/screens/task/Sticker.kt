@@ -55,7 +55,7 @@ fun Sticker(
             properties = DialogProperties(
                 usePlatformDefaultWidth = false
             ),
-            onDismissRequest = { showDialog = false },
+            onDismissRequest = { showDialog = !showDialog },
             title = {
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,

@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.navigation.management
 
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,6 +17,7 @@ fun NavGraphBuilder.topManagementNavigation(
     navController: NavHostController,
     sharedViewModel: SharedViewModel,
     date: Date,
+    systemColor: Color,
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
     onBackClicked: () -> Unit,
@@ -37,7 +39,8 @@ fun NavGraphBuilder.topManagementNavigation(
                 onBackClicked = onBackClicked,
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
-                isUpdateEvent = false
+                isUpdateEvent = false,
+                systemColor = systemColor
             )
         }
     }

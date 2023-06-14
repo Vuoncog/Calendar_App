@@ -43,7 +43,8 @@ fun MainScreen(
                     currentDate = it
                 },
                 date = currentDate,
-                sharedViewModel = sharedViewModel
+                sharedViewModel = sharedViewModel,
+                systemColor = systemColorSet.primaryColor
             )
         },
         bottomBar = {

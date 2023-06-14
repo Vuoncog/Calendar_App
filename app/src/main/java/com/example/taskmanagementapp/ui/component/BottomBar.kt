@@ -18,7 +18,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.taskmanagementapp.constant.GraphRoute
 import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.Neutral8
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import java.util.*
@@ -41,7 +40,7 @@ fun BottomBar(
 
     BottomNavigation(
         contentColor = contentColorFor(backgroundColor = systemColor),
-        backgroundColor = Neutral8,
+        backgroundColor = NeutralBorder,
         elevation = 4.dp,
         modifier = Modifier.border(
             border = BorderStroke(1.dp, NeutralBorder)

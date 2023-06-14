@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.ui.theme.Neutral1
-import com.example.taskmanagementapp.ui.theme.SystemColor
+import com.example.taskmanagementapp.ui.theme.Primary4
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import com.mrerror.singleRowCalendar.DateUtils
 import java.time.LocalDate
@@ -32,12 +32,14 @@ import java.util.*
 fun CalendarTopAppBar(
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
-    currentDay: Date
+    currentDay: Date,
+    systemColor: Color
 ) {
     CalendarAppBar(
         onNextWeekClicked = onNextWeekClicked,
         onPrevWeekClicked = onPrevWeekClicked,
-        currentDay = currentDay
+        currentDay = currentDay,
+        systemColor = systemColor
     )
 }
 
@@ -45,7 +47,8 @@ fun CalendarTopAppBar(
 fun CalendarAppBar(
     onPrevWeekClicked: (Date) -> Unit,
     onNextWeekClicked: (Date) -> Unit,
-    currentDay: Date
+    currentDay: Date,
+    systemColor: Color
 ) {
     val dayName = DateUtils.getDayNumber(currentDay)
     val monthName = DateUtils.getMonthName(currentDay)
@@ -84,7 +87,7 @@ fun CalendarAppBar(
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = SystemColor,
+                            color = systemColor,
                             fontStyle = VisbyTypography.h6.fontStyle,
                             fontWeight = VisbyTypography.h5.fontWeight,
                             fontSize = VisbyTypography.h6.fontSize
@@ -104,7 +107,7 @@ fun CalendarAppBar(
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = SystemColor,
+                            color = systemColor,
                             fontStyle = VisbyTypography.h6.fontStyle,
                             fontWeight = VisbyTypography.h5.fontWeight,
                             fontSize = VisbyTypography.h6.fontSize
@@ -184,5 +187,5 @@ fun NextWeekIcon(
 fun MemoTopAppBarPreview() {
     val date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())
 
-    CalendarTopAppBar({ }, {}, date)
+    CalendarTopAppBar({ }, {}, date, Primary4)
 }

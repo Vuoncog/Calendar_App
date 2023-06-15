@@ -1,5 +1,7 @@
 package com.example.taskmanagementapp.ui.screens.task
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.SubTask
 import com.example.taskmanagementapp.constant.SystemColorSet
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 
@@ -34,17 +37,19 @@ fun Subtask(
     var subtaskQuantity by remember {
         mutableStateOf(0)
     }
-    var isCheck by remember { mutableStateOf(false) }
+    var isCheck by remember { mutableStateOf(sharedViewModel?.oldTaskInfo!!.listSubTasks.isNotEmpty()) }
     val addSubtask: () -> Unit = {
         subtaskQuantity++
     }
-    val minusSubtask: () -> Unit = {
+    val minusSubtask: (subTask: SubTask?) -> Unit = {
         subtaskQuantity--
+        it?.let { sharedViewModel?.listSubTasks!!.remove(it) }
     }
     val switchClicked: (Boolean) -> Unit = {
         isCheck = it
         if (!isCheck) subtaskQuantity = 0
     }
+    sharedViewModel?.listSubTasks!!.clear()
 
     Column(
         modifier = Modifier.padding(
@@ -66,12 +71,26 @@ fun Subtask(
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                for (index in 1..subtaskQuantity) {
-                    if(index > sharedViewModel?.listSubTasks!!.size){
-                        sharedViewModel.listSubTasks.add(MiniSubtask(onMinusSubtaskClicked = minusSubtask))
-                    }
-                    else{
-                        sharedViewModel.listSubTasks[index - 1] = MiniSubtask(onMinusSubtaskClicked = minusSubtask)
+                if (sharedViewModel.oldTaskInfo.listSubTasks.isNotEmpty() && subtaskQuantity == 0) {
+                    subtaskQuantity = sharedViewModel.oldTaskInfo.listSubTasks.size
+                }
+                for (index in 0 until subtaskQuantity) {
+                    if (index >= sharedViewModel.listSubTasks.size) {
+                        sharedViewModel.listSubTasks.add(
+                            MiniSubtask(
+                                onMinusSubtaskClicked = minusSubtask,
+                                subTask = if (index < sharedViewModel.oldTaskInfo.listSubTasks.size) {
+                                    sharedViewModel.oldTaskInfo.listSubTasks[index]
+                                } else {
+                                    null
+                                }
+                            )
+                        )
+                    } else {
+                        sharedViewModel.listSubTasks[index] = MiniSubtask(
+                            onMinusSubtaskClicked = minusSubtask,
+                            subTask = sharedViewModel.oldTaskInfo.listSubTasks[index]
+                        )
                     }
                 }
                 AddSubtask(
@@ -143,10 +162,11 @@ fun SubtaskHeader(
 
 @Composable
 fun MiniSubtask(
-    onMinusSubtaskClicked: () -> Unit
-) : SubTask{
-    var textField by remember { mutableStateOf("")}
-    var subTaskTick by remember { mutableStateOf(false)}
+    onMinusSubtaskClicked: (subTask: SubTask?) -> Unit,
+    subTask: SubTask? = null
+): SubTask {
+    var textField by remember { mutableStateOf(subTask?.title ?: "") }
+    var subTaskTick by remember { mutableStateOf(false) }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -156,7 +176,7 @@ fun MiniSubtask(
                 end = 16.dp
             )
     ) {
-        subTaskTick = SubtaskTick()
+        subTaskTick = SubtaskTick(isTicked = subTask?.done ?: false)
         BasicTextField(
             modifier = Modifier.weight(1f),
             value = textField,
@@ -189,17 +209,17 @@ fun MiniSubtask(
             modifier = Modifier
                 .size(20.dp)
                 .clickable {
-                    onMinusSubtaskClicked()
+                    onMinusSubtaskClicked(subTask)
                 }
         )
     }
-    return SubTask(subTaskTick,textField)
+    return SubTask(subTaskTick, textField)
 }
 
 @Composable
 fun SubtaskTick(
     isTicked: Boolean = false
-) : Boolean{
+): Boolean {
     var tick by remember { mutableStateOf(isTicked) }
 
     IconButton(
@@ -230,5 +250,5 @@ fun SubtaskTick(
 @Preview
 @Composable
 fun SubtaskPreview() {
-    Subtask(systemColor = SystemColorSet.ORANGE.primaryColor,null)
+    Subtask(systemColor = SystemColorSet.ORANGE.primaryColor, null)
 }

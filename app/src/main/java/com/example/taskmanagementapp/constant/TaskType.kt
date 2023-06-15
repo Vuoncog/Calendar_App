@@ -1,15 +1,12 @@
 package com.example.taskmanagementapp.constant
 
 import androidx.annotation.DrawableRes
-import androidx.compose.ui.graphics.Color
-import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.ui.theme.SystemColor
 
-open class TaskType(
+data class TaskType(
     @DrawableRes val icon: Int = 0,
     val description: String,
 ) {
-    object Running: TaskType(
+    /*object Running: TaskType(
         icon = R.drawable.ic_running_man,
         description = "Running"
     )
@@ -24,6 +21,6 @@ open class TaskType(
     object Shopping: TaskType(
         icon = R.drawable.ic_bag,
         description = "Shopping"
-    )
+    )*/
     constructor() : this(0,"")
 }

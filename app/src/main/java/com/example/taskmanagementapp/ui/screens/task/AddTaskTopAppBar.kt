@@ -18,7 +18,6 @@ import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,7 +41,6 @@ fun AddTaskTopAppBar(
     )
 }
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AddTaskAppBar(
     onBackClicked: () -> Unit,
@@ -74,17 +72,18 @@ fun AddTaskAppBar(
         Text(
             text = if (isEvent) {
                 if (isUpdateEvent) "Update Event" else "Add Event"
-            } else "Add Todo Task",
+            } else {if(isUpdateTask) "Update Task" else "Add Todo Task"},
             fontFamily = VisbyFontFamily,
             fontSize = MaterialTheme.typography.h6.fontSize,
             fontWeight = FontWeight.Medium,
         )
     }, backgroundColor = Color.Transparent, elevation = 0.dp, actions = {
-        if (isUpdateEvent) {
+        if (isUpdateEvent || isUpdateTask) {
             RemoveIcon(
                 systemColor = systemColor,
-                onClicked = { coroutinesScope.launch { sharedViewModel.removeEvent(onFinished = onFinished) } },
-                sharedViewModel = sharedViewModel
+                onClicked = { coroutinesScope.launch {if(isUpdateEvent) sharedViewModel.removeEvent(onFinished = onFinished) else sharedViewModel.removeToDoTask(onFinished)} },
+                sharedViewModel = sharedViewModel,
+                isEvent = isUpdateEvent
             )
         }
         AddTaskCheckIcon(onClicked = {
@@ -106,8 +105,15 @@ fun AddTaskAppBar(
                         sharedViewModel.addEventInfo(onFinished)
                     }
                 } else {
-                    coroutinesScope.launch {
-                        sharedViewModel.addToDoTask(onFinished)
+                    if(isUpdateTask){
+                        coroutinesScope.launch {
+                            sharedViewModel.updateToDoTask(onFinished)
+                        }
+                    }
+                    else{
+                        coroutinesScope.launch {
+                            sharedViewModel.addToDoTask(onFinished)
+                        }
                     }
                 }
             }

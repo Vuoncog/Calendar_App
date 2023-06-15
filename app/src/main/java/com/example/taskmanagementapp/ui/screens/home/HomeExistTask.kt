@@ -93,7 +93,7 @@ fun HomeContentPreview() {
     HomeExistTask(
         listTask = Note(
             date = Calendar.getInstance().time,
-            listToDoTask = listOf(TaskType.Running),
+            listToDoTask = listOf(TaskType(R.drawable.ic_running_man,"")),
             listEvent = listOf(
                 EventInfo(
                     color = 0xFF964908,

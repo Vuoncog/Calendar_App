@@ -65,7 +65,7 @@ fun ColorBottomSheet(
                 letterSpacing = 0.28.sp,
             )
             HomeTodoTaskItem(
-                taskType = TaskType.Shopping,
+                taskType = TaskType(R.drawable.ic_bag,"Shopping"),
                 systemColor = systemColorSet.primaryColor
             )
         }

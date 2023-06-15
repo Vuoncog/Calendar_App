@@ -69,10 +69,10 @@ class SharedViewModel @Inject constructor(
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
     lateinit var oldEventInfo: EventInfo
-    lateinit var oldTaskInfo: ToDoTask
+    var oldTaskInfo = ToDoTask()
     var dateOfEvent = LocalDate.now().toEpochDay()
     var dateOfTask = LocalDate.now().toEpochDay()
-    val listSubTasks = mutableListOf<SubTask>()
+    val listSubTasks = mutableStateListOf<SubTask>()
 
     @Suppress("SENSELESS_COMPARISON")
     fun getSelectedDate(date: Date) {
@@ -352,6 +352,42 @@ class SharedViewModel @Inject constructor(
             Toast.makeText(mainActivity, "Network is disconnected so we can not save latest changes!", Toast.LENGTH_SHORT).show()
         }
     }
+
+    suspend fun updateToDoTask(onFinished: () -> Unit){
+        // Check if network is available
+        if(isNetworkAvailable())
+        {
+            // Handle interacting with Firebase on IO Thread to offload for Main Thread
+            withContext(Dispatchers.IO){
+                val newTask = ToDoTask(
+                    taskType = TaskType(
+                        icon = oldTaskInfo.taskType.icon,
+                        description = titleAndDetail.value.second
+                    ),
+                    taskName = titleAndDetail.value.first,
+                    isDone = oldTaskInfo.getDone(),
+                    time = startAndEnd.value.first,
+                    listSubTasks = listSubTasks
+                )
+                // Get the index of current Event in listEventResult, it is also it's index in Firebase List
+                val index = listTaskResult.indexOf(oldTaskInfo)
+                // Move to the position of the event we need and set the new value for it
+                database.child(
+                    getCurrentUser()?.uid.toString()
+                ).child(dateOfTask.toString()).child("ListTask").child(index.toString())
+                    .setValue(newTask).addOnSuccessListener {
+                        Toast.makeText(mainActivity, "Update Task Successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        // Do the next step
+                        onFinished()
+                    }
+            }
+        }
+        else
+        {
+            Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
+        }
+    }
     suspend fun removeEvent(onFinished: () -> Unit){
         // Check if network is available
         if(isNetworkAvailable()){
@@ -372,7 +408,30 @@ class SharedViewModel @Inject constructor(
             }
         }
         else{
-            Toast.makeText(mainActivity, "Network is disconnected!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mainActivity, "Network is disconnected so we can not save latest changes!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    suspend fun removeToDoTask(onFinished: () -> Unit){
+        if(isNetworkAvailable()){
+            // Handle interacting with Firebase on IO Thread to offload for Main Thread
+            withContext(Dispatchers.IO){
+                // Get the index of current Event in listEventResult, it is also it's index in Firebase List
+                val index = listTaskResult.indexOf(oldTaskInfo)
+                // Move to the position of the event we need and remove it
+                database.child(
+                    getCurrentUser()?.uid.toString()
+                ).child(dateOfTask.toString()).child("ListTask").child(index.toString())
+                    .removeValue().addOnSuccessListener {
+                        Toast.makeText(mainActivity, "Delete Task Successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        // Do the next step
+                        onFinished()
+                    }
+            }
+        }
+        else{
+            Toast.makeText(mainActivity, "Network is disconnected so we can not save latest changes!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -522,9 +581,8 @@ class SharedViewModel @Inject constructor(
                             previousChildName: String?
                         ) {
                             val eventInfo = snapshot.getValue<EventInfo>()
-                            Log.e("TITLE", eventInfo!!.title)
                             // Add the value we got from Firebase into the listEventResult
-                            listEventResult.add(eventInfo)
+                            listEventResult.add(eventInfo!!)
                         }
 
                         override fun onChildChanged(

@@ -150,9 +150,9 @@ fun TaskInfo(
 fun TaskInfoCardPreview() {
     TaskInfoCard(
         listTask = listOf(
-            ToDoTask(taskType = TaskType.Running, taskName = "Walking", isDone = true, time = 0L),
-            ToDoTask(taskType = TaskType.Shopping, taskName = "Go shopping", isDone = true, time = 0L),
-            ToDoTask(taskType = TaskType.Running, taskName = "Walking", isDone = true, time = 0L)
+            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Walking", isDone = true, time = 0L),
+            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Go shopping", isDone = true, time = 0L),
+            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Walking", isDone = true, time = 0L)
         ),
         systemColor = SystemColorSet.ORANGE.primaryColor,
         subSystemColor = SystemColorSet.ORANGE.secondaryColor,

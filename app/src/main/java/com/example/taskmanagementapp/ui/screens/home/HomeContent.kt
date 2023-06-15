@@ -136,7 +136,7 @@ fun HomePreview() {
             timeRange = 2f,
         )
     )*/
-    val listToDoTask = listOf(TaskType.Running)
+    /*val listToDoTask = listOf(TaskType.Running)
     HomeContent(
         listAllTask = RequestState.Success(
             Note(
@@ -146,5 +146,5 @@ fun HomePreview() {
             )
         ),
         currentDate = Calendar.getInstance().time
-    )
+    )*/
 }

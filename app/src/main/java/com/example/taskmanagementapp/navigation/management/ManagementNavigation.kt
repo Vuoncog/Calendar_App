@@ -61,7 +61,7 @@ fun NavGraphBuilder.managementNavigation(
                 sharedViewModel = sharedViewModel,
                 systemColorSet = systemColorSet,
                 taskInfo = it.arguments?.getString("task"),
-                isToDoTask = true
+                isToDoTask = true,
             )
         }
     }

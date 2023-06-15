@@ -20,6 +20,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.ui.theme.*
 
@@ -94,11 +95,11 @@ fun inProgressModifier(color: Color, radius: Dp) = Modifier
 @Preview
 @Composable
 fun ToDoTaskPreview() {
-    HomeTodoTaskItem(taskType = TaskType.Shopping, systemColor = SystemColor, isDone = true)
+    HomeTodoTaskItem(taskType = TaskType(R.drawable.ic_bag,""), systemColor = SystemColor, isDone = true)
 }
 
 @Preview
 @Composable
 fun ToDoTaskDonePreview() {
-    HomeTodoTaskItem(taskType = TaskType.Shopping, systemColor = SystemColor, isDone = false)
+    HomeTodoTaskItem(taskType = TaskType(R.drawable.ic_bag,""), systemColor = SystemColor, isDone = false)
 }

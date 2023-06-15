@@ -23,7 +23,12 @@ fun AddTask(
     taskInfo: String? = null
 ) {
     eventInfo?.let { sharedViewModel.oldEventInfo = Gson().fromJson(it, EventInfo::class.java) }
-    taskInfo?.let { sharedViewModel.oldTaskInfo = Gson().fromJson(it, ToDoTask::class.java) }
+    if(taskInfo == null){
+        sharedViewModel.oldTaskInfo = ToDoTask()
+    }
+    else{
+        sharedViewModel.oldTaskInfo = Gson().fromJson(taskInfo, ToDoTask::class.java)
+    }
     Column(
         modifier = Modifier.background(color = Color.White)
     ) {
@@ -36,7 +41,7 @@ fun AddTask(
             )
             else if (taskInfo != null) Pair(
                 sharedViewModel.oldTaskInfo.taskName,
-                sharedViewModel.oldTaskInfo.taskType!!.description
+                sharedViewModel.oldTaskInfo.taskType.description
             )
             else null
         )

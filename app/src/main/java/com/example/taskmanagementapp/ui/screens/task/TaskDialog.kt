@@ -36,7 +36,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun RemoveIcon(
     systemColor: Color = SystemColor,
     onClicked: () -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    isEvent: Boolean = false
 ) {
     val showDialog = remember { mutableStateOf(false) }
     IconButton(onClick = {
@@ -55,7 +56,8 @@ fun RemoveIcon(
             systemColor = systemColor,
             openDialogCustom = showDialog,
             onClicked = onClicked,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
+            isEvent = isEvent
         )
     }
 }
@@ -65,7 +67,8 @@ fun CustomDialog(
     systemColor: Color,
     openDialogCustom: MutableState<Boolean>,
     onClicked: () -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    isEvent: Boolean
 ) {
     Dialog(
         properties = DialogProperties(
@@ -78,7 +81,8 @@ fun CustomDialog(
             systemColor = systemColor,
             openDialogCustom = openDialogCustom,
             onClicked = onClicked,
-            sharedViewModel = sharedViewModel
+            sharedViewModel = sharedViewModel,
+            isEvent = isEvent
         )
     }
 }
@@ -88,7 +92,8 @@ fun CustomDialogUI(
     systemColor: Color,
     openDialogCustom: MutableState<Boolean>,
     onClicked: () -> Unit,
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    isEvent : Boolean
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -110,7 +115,7 @@ fun CustomDialogUI(
             }
         )
 
-        DialogContent(contentText = sharedViewModel.oldEventInfo.title, isEvent = false)
+        DialogContent(contentText = if(isEvent) sharedViewModel.oldEventInfo.title else sharedViewModel.oldTaskInfo.taskName, isEvent = isEvent)
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp),

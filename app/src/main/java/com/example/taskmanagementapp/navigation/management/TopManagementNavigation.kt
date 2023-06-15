@@ -38,7 +38,6 @@ fun NavGraphBuilder.topManagementNavigation(
                 sharedViewModel = sharedViewModel,
                 onFinished = onFinished,
                 isUpdateEvent = false,
-                isUpdateTask = true,
                 systemColor = systemColor
             )
         }

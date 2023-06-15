@@ -30,7 +30,8 @@ fun Tick(
                 taskType = toDoTask.taskType,
                 taskName = toDoTask.taskName,
                 isDone = !(toDoTask.getDone()),
-                time = toDoTask.time
+                time = toDoTask.time,
+                listSubTasks = toDoTask.listSubTasks
             )
             onChangeStateClicked(toDoTask, addToDoTask)
         },

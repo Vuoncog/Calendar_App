@@ -90,13 +90,7 @@ fun AddTaskAppBar(
             if (isUpdateEvent) {
                 coroutinesScope.launch {
                     sharedViewModel.updateEventInfo(
-                        EventInfo(
-                            title = sharedViewModel.titleAndDetail.value.first,
-                            detail = sharedViewModel.titleAndDetail.value.second,
-                            startTime = sharedViewModel.startAndEnd.value.first,
-                            endTime = sharedViewModel.startAndEnd.value.second,
-                            color = sharedViewModel.oldEventInfo.color
-                        ), onFinished = onFinished
+                         onFinished = onFinished
                     )
                 }
             } else {

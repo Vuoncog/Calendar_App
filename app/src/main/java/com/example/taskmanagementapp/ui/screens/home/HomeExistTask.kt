@@ -11,23 +11,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.SystemColorSet
-import com.example.taskmanagementapp.constant.TaskType
-import com.example.taskmanagementapp.database.Note
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral3
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
-import java.util.*
 
 @Composable
 fun HomeExistTask(
-    listTask: Note,
+    listTask: List<ToDoTask>,
+    listEvent : List<EventInfo>,
     systemColorSet: SystemColorSet
 ) {
     Column(
@@ -55,12 +53,10 @@ fun HomeExistTask(
             )
         }
 
-        listTask.listToDoTask.let {
-            TodoTask(
-                list = it,
-                systemColor = systemColorSet.primaryColor
-            )
-        }
+        TodoTask(
+            list = listTask,
+            systemColor = systemColorSet.primaryColor
+        )
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -73,7 +69,7 @@ fun HomeExistTask(
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.sp
             )
-            listTask.listEvent.forEach { eventInfo ->
+            listEvent.forEach { eventInfo ->
                 HomeEvent(
                     event = eventInfo,
                     systemColor = systemColorSet.primaryColor,
@@ -87,6 +83,7 @@ fun HomeExistTask(
     }
 }
 
+/*
 @Composable
 @Preview
 fun HomeContentPreview() {
@@ -106,4 +103,4 @@ fun HomeContentPreview() {
         systemColorSet = SystemColorSet.ORANGE
     )
 
-}
+}*/

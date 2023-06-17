@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.navigation.home
 
+import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -15,6 +16,7 @@ fun NavGraphBuilder.topHomeNavigation(
         route = Graph.HOME
     ) {
         composable(route = GraphRoute.Home.route) {
+            Log.e("TOP","2")
             HomeAppBar()
         }
     }

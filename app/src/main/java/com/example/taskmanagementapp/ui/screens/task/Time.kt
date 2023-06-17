@@ -104,7 +104,6 @@ fun TimeSetup(
     {
         if (isStart) Date() else Date(Date().time + (1 * 60 * 60 * 1000))
     }
-    Log.e("DATE", currentDay.toString())
     var dateFormatter by remember { mutableStateOf(dateFormatter(currentDay)) }
     var timeFormatter by remember { mutableStateOf(timeFormatter(currentDay)) }
     var mHour by remember { mutableStateOf(currentDay.hours) }
@@ -112,14 +111,6 @@ fun TimeSetup(
     var mDay by remember { mutableStateOf(currentDay.date) }
     var mMonth by remember { mutableStateOf(currentDay.month + 1) }
     var mYear by remember { mutableStateOf(currentDay.year + 1900) }
-    if(isStart)
-    {
-        Log.e("START", mYear.toString())
-    }
-    else
-    {
-        Log.e("END", mYear.toString())
-    }
     val timestamp by remember { mutableStateOf(LocalDateTime.now())}
     val timeState = rememberSheetState()
     val calendarState = rememberSheetState()

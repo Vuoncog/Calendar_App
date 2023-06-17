@@ -1,6 +1,7 @@
 package com.example.taskmanagementapp.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,22 +21,22 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.TaskType
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.theme.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun HomeTodoTaskItem(
-    taskType: TaskType,
     systemColor: Color = SystemColor,
-    isDone: Boolean = false
+    toDoTask: ToDoTask
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .then(
-                if (isDone) isDoneModifier(color = BackgroundColorTask)
+                if (toDoTask.getDone()) isDoneModifier(color = BackgroundColorTask)
                 else inProgressModifier(
                     color = systemColor,
                     radius = 12.dp
@@ -53,26 +54,27 @@ fun HomeTodoTaskItem(
                         RoundedCornerShape(8.dp)
                     )
                     .then(
-                        if (isDone) isDoneModifier(color = Color.White)
+                        if (toDoTask.getDone()) isDoneModifier(color = Color.White)
                         else inProgressModifier(
                             color = systemColor,
                             radius = 8.dp
                         )
                     )
                     .padding(8.dp),
-                imageVector = ImageVector.vectorResource(id = taskType.icon),
-                contentDescription = taskType.description,
-                tint = if (isDone) Neutral6 else systemColor
+                imageVector = ImageVector.vectorResource(id = toDoTask.taskType.icon),
+                contentDescription = toDoTask.taskName,
+                tint = if (toDoTask.getDone()) Neutral6 else systemColor
             )
             Text(
-                text = taskType.description,
+                text = toDoTask.taskName,
                 style = VisbyTypography.subtitle2,
-                color = if (isDone) Neutral6 else Neutral3
+                color = if (toDoTask.getDone()) Neutral6 else Neutral3
             )
         }
-
+        val taskTime = Date(toDoTask.time * 1000)
+        val formatter = SimpleDateFormat("h:mm aa", Locale.ENGLISH)
         Text(
-            text = "8:00 AM".uppercase(),
+            text = formatter.format(taskTime).uppercase(),
             style = VisbyTypography.overline,
             color = Neutral6
         )
@@ -95,11 +97,11 @@ fun inProgressModifier(color: Color, radius: Dp) = Modifier
 @Preview
 @Composable
 fun ToDoTaskPreview() {
-    HomeTodoTaskItem(taskType = TaskType(R.drawable.ic_bag,""), systemColor = SystemColor, isDone = true)
+    HomeTodoTaskItem(toDoTask = ToDoTask(), systemColor = SystemColor)
 }
 
 @Preview
 @Composable
 fun ToDoTaskDonePreview() {
-    HomeTodoTaskItem(taskType = TaskType(R.drawable.ic_bag,""), systemColor = SystemColor, isDone = false)
+    HomeTodoTaskItem(toDoTask = ToDoTask(), systemColor = SystemColor)
 }

@@ -58,7 +58,7 @@ fun CalendarEvent(
         ) {
             var sumOffset = listOffset[0]
             var paddingSpace = 0
-            for (index in listEvent.indices) {
+            for (index in 0 until listEvent.size) {
                 sumOffset += listOffset[index]
                 var startTime = sharedViewModel.getHourAndMinute(listEvent[index].startTime)
                 val endTime  = sharedViewModel.getHourAndMinute(listEvent[index].endTime)

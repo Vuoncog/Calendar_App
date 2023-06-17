@@ -22,6 +22,7 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ProfileSettingItem
 import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
+import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.screens.home.HomeTodoTaskItem
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
@@ -65,8 +66,8 @@ fun ColorBottomSheet(
                 letterSpacing = 0.28.sp,
             )
             HomeTodoTaskItem(
-                taskType = TaskType(R.drawable.ic_bag,"Shopping"),
-                systemColor = systemColorSet.primaryColor
+                toDoTask = ToDoTask(taskType = TaskType(R.drawable.ic_bag,""), taskName = "Shopping", isDone = false, time = 0L),
+                systemColor = systemColorSet.primaryColor,
             )
         }
 

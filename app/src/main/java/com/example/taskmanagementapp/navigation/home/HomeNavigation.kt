@@ -1,18 +1,16 @@
 package com.example.taskmanagementapp.navigation.home
 
+import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.taskmanagementapp.constant.Graph
-import com.example.taskmanagementapp.constant.GraphRoute
-import com.example.taskmanagementapp.constant.RequestState
-import com.example.taskmanagementapp.constant.SystemColorSet
-import com.example.taskmanagementapp.database.Note
+import com.example.taskmanagementapp.constant.*
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import java.util.*
 
 fun NavGraphBuilder.homeNavigation(
-    allTaskInDate: RequestState<Note>,
+    allTasksInDate: List<ToDoTask>,
+    allEventsInDate: List<EventInfo>,
     currentDate: Date,
     isShowBottomBarItems: (Boolean) -> Unit,
     systemColorSet: SystemColorSet
@@ -24,9 +22,10 @@ fun NavGraphBuilder.homeNavigation(
         composable(route = GraphRoute.Home.route){
             isShowBottomBarItems(true)
             HomeContent(
-                listAllTask = allTaskInDate,
+                listAllTask = allTasksInDate,
                 currentDate = currentDate,
-                systemColorSet = systemColorSet
+                systemColorSet = systemColorSet,
+                listAllEvent = allEventsInDate
             )
         }
 

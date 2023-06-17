@@ -7,11 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.taskmanagementapp.constant.SystemColorSet
@@ -52,6 +48,4 @@ class MainActivity : ComponentActivity() {
     }
 
     fun getSignInLauncher(): ActivityResultLauncher<IntentSenderRequest> = signInLauncher
-
-     fun getMainActivity() : MainActivity = this
 }

@@ -15,16 +15,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.Fab
 import com.example.taskmanagementapp.ui.theme.*
-import kotlinx.coroutines.DelicateCoroutinesApi
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
 
-@OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun CalendarContent(
@@ -37,20 +36,21 @@ fun CalendarContent(
     sharedViewModel: SharedViewModel? = null,
     navController: NavHostController? = null
 ) {
-    LaunchedEffect(
+    /*LaunchedEffect(
         key1 = true,
         block = {
             sharedViewModel?.getEventInfo()
-        })
+        })*/
+    val listEvent by remember { mutableStateOf(sharedViewModel!!.listEventResult as List<EventInfo>) }
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
     listOffset.add(0f)
     listSpace.add(0f)
-    for (index in sharedViewModel?.listEventResult!!.indices) {
+    for (index in listEvent.indices) {
         var startTime =
-            sharedViewModel.getHourAndMinute(sharedViewModel.listEventResult[index].startTime)
+            sharedViewModel!!.getHourAndMinute(listEvent[index].startTime)
         val endTime =
-            sharedViewModel.getHourAndMinute(sharedViewModel.listEventResult[index].endTime)
+            sharedViewModel.getHourAndMinute(listEvent[index].endTime)
         if (startTime > endTime) startTime -= 24
         val offset = endTime - startTime
         val space = startTime + offset
@@ -87,7 +87,7 @@ fun CalendarContent(
             calendar = calendar,
             selectedDate = selectedDate,
             onSelectDay = onSelectDay,
-            sharedViewModel = sharedViewModel,
+            sharedViewModel = sharedViewModel!!,
             isCalendarContent = true
         )
 
@@ -116,13 +116,13 @@ fun CalendarContent(
 
     // Setup Event
     CalendarEvent(
-        listEvent = sharedViewModel.listEventResult,
+        listEvent = listEvent,
         listOffset = listOffset,
         listSpace = listSpace,
         state = scrollState,
         height = timeGridHeightDp,
         offset = columnHeightDp,
-        sharedViewModel = sharedViewModel,
+        sharedViewModel = sharedViewModel!!,
         navController = navController!!
     )
     Box(

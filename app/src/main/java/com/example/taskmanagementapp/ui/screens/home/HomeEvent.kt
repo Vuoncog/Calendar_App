@@ -20,6 +20,7 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import java.util.Date
 
 @Composable
 fun HomeEvent(
@@ -28,6 +29,7 @@ fun HomeEvent(
     subSystemColor: Color,
     sticker: Int,
 ) {
+    val eventDate = Date(event.startTime * 1000)
     Card(
         backgroundColor = subSystemColor,
         modifier = Modifier

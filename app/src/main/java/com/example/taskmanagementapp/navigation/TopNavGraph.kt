@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
@@ -35,7 +36,6 @@ fun TopNavGraph(
             navController.navigate(GraphRoute.Calendar.route)
         }
     }
-
     NavHost(
         navController = navController,
         route = Graph.MAIN,

@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -26,6 +27,7 @@ fun HomeTopAppBar() {
 
 @Composable
 fun HomeAppBar() {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()

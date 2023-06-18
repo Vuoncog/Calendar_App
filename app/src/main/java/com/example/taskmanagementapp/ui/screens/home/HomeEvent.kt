@@ -20,6 +20,9 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import com.mrerror.singleRowCalendar.DateUtils
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Date
 
 @Composable
@@ -29,59 +32,72 @@ fun HomeEvent(
     subSystemColor: Color,
     sticker: Int,
 ) {
-    val eventDate = Date(event.startTime * 1000)
-    Card(
-        backgroundColor = subSystemColor,
-        modifier = Modifier
-            .padding(end = 16.dp)
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .clip(RoundedCornerShape(size = 12.dp)),
-        elevation = 0.dp
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        )
-        {
-            Text(
-                text = event.title,
-                style = VisbyTypography.h5,
-                maxLines = 2,
-                color = Neutral2
-            )
+    fun weekday(date: Date): String = DateUtils.getDay3LettersName(date)
+    fun dayName(date: Date): String = DateUtils.getDayNumber(date)
+    fun monthName(date: Date): String = DateUtils.getMonthName(date)
+    fun year(date: Date): String = DateUtils.getYear(date)
+    fun hour(date: Date): String = date.hours.toString()
+    fun minute(date: Date): String = date.minutes.toString()
+    fun dateFormatter(date: Date): String =
+        "${weekday(date)}, ${dayName(date)} ${monthName(date)}, ${year(date)}"
 
+    fun timeFormatter(date: Date): String = "${hour(date)}:${minute(date)}"
+    val currentTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().epochSecond
+    //if(event.startTime > currentTime){
+        val eventDate = Date(event.startTime * 1000)
+        Card(
+            backgroundColor = subSystemColor,
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .clip(RoundedCornerShape(size = 12.dp)),
+            elevation = 0.dp
+        ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                MiniDetail(
-                    icon = R.drawable.ic_clock,
-                    title = event.startTime.toString(),
-                    systemColor = systemColor
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp,),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            )
+            {
+                Text(
+                    text = event.title,
+                    style = VisbyTypography.h5,
+                    maxLines = 2,
+                    color = Neutral2
                 )
-                MiniDetail(
-                    icon = R.drawable.ic_note,
-                    title = event.detail.toString(),
-                    systemColor = systemColor
-                )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    MiniDetail(
+                        icon = R.drawable.ic_clock,
+                        title = "${dateFormatter(eventDate)} - ${timeFormatter(eventDate)}",
+                        systemColor = systemColor
+                    )
+                    MiniDetail(
+                        icon = R.drawable.ic_note,
+                        title = event.detail.toString(),
+                        systemColor = systemColor
+                    )
+                }
+
             }
 
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomEnd
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .offset(x = (-3).dp, y = 0.dp),
+                    painter = painterResource(id = sticker),
+                    contentDescription = "Sticker",
+                )
+            }
         }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(80.dp)
-                    .offset(x = (-3).dp, y = 0.dp),
-                painter = painterResource(id = sticker),
-                contentDescription = "Sticker",
-            )
-        }
-    }
+    //}
 }
 
 @Composable

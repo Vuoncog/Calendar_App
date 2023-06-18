@@ -383,8 +383,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
             withContext(Dispatchers.IO) {
                 //Remove the event which we want in our list
                 listEventResult.remove(oldEventInfo)
-                Log.e("START", oldEventInfo.startTime.toString())
-                Log.e("END", oldEventInfo.endTime.toString())
                 //Notify to user if delete successfully, show Toast by UI Thread
                 mainActivity.runOnUiThread {
                     Toast.makeText(mainActivity, "Delete Event Successfully!", Toast.LENGTH_SHORT)
@@ -660,7 +658,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     ) {
                         val toDoTask = snapshot.getValue<ToDoTask>()
                         val index = listTaskResult.indexOf(oldTaskInfo)
-                        listTaskResult[index] = toDoTask!!
+                        if(index >= 0)
+                            listTaskResult[index] = toDoTask!!
                     }
 
                     // This function triggered whenever a child of the path is removed

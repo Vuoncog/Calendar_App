@@ -2,10 +2,11 @@
 
 package com.example.taskmanagementapp.ui.screens.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,68 +18,83 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.*
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral3
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import java.util.*
 
 @Composable
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 fun HomeContent(
     listAllTask: List<ToDoTask>,
     listAllEvent: List<EventInfo>,
     currentDate: Date,
-    systemColorSet: SystemColorSet = SystemColorSet.ORANGE
+    systemColorSet: SystemColorSet = SystemColorSet.ORANGE,
+    sharedViewModel: SharedViewModel
 ) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+    Scaffold(topBar = { HomeAppBar(sharedViewModel = sharedViewModel) }
     ) {
-        if (listAllTask.isEmpty()) {
-            NoToDoTask(
-                systemColor = systemColorSet.primaryColor,
-                subSystemColor = systemColorSet.secondaryColor,
-                sticker = systemColorSet.listStickerSet[11]
-            )
-        } else {
-            ExistTaskText(
-                list = listAllTask,
-                systemColor = systemColorSet.primaryColor
-            )
-            TodoTask(
-                list = listAllTask,
-                systemColor = systemColorSet.primaryColor
-            )
-        }
-
-
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(top = 12.dp)
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Text(
-                text = stringResource(R.string.upcoming_events),
-                style = VisbyTypography.subtitle1,
-                color = Neutral3,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp
-            )
-            if (listAllEvent.isEmpty()) {
-                NoEventCard(
-                    currentDate = currentDate,
+            if (listAllTask.isEmpty()) {
+                NoToDoTask(
                     systemColor = systemColorSet.primaryColor,
                     subSystemColor = systemColorSet.secondaryColor,
-                    sticker = systemColorSet.listStickerSet[5]
+                    sticker = systemColorSet.listStickerSet[11]
                 )
             } else {
-                listAllEvent.forEach { event ->
-                    HomeEvent(
-                        event = event,
+                ExistTaskText(
+                    list = listAllTask,
+                    systemColor = systemColorSet.primaryColor
+                )
+                TodoTask(
+                    list = listAllTask,
+                    systemColor = systemColorSet.primaryColor
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(top = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.upcoming_events),
+                    style = VisbyTypography.subtitle1,
+                    color = Neutral3,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.sp
+                )
+                if (listAllEvent.isEmpty()) {
+                    NoEventCard(
+                        currentDate = currentDate,
                         systemColor = systemColorSet.primaryColor,
                         subSystemColor = systemColorSet.secondaryColor,
-                        sticker = systemColorSet.listStickerSet[17]
+                        sticker = systemColorSet.listStickerSet[5]
                     )
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier
+                            .verticalScroll(state = rememberScrollState())
+                            .padding(bottom = 50.dp),
+                    )
+                    {
+                        listAllEvent.forEach { event ->
+                            HomeEvent(
+                                event = event,
+                                systemColor = systemColorSet.primaryColor,
+                                subSystemColor = systemColorSet.secondaryColor,
+                                sticker = systemColorSet.listStickerSet[17]
+                            )
+                        }
+                    }
                 }
             }
         }

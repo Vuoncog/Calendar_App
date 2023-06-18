@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.ui.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -9,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -18,15 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.constant.loadImage
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 
 @Composable
-fun HomeTopAppBar() {
-    HomeAppBar()
-}
-
-@Composable
-fun HomeAppBar() {
+fun HomeAppBar(sharedViewModel: SharedViewModel) {
 
     Box(
         modifier = Modifier
@@ -43,7 +40,7 @@ fun HomeAppBar() {
 
     TopAppBar(
         navigationIcon = {
-            AvatarIcon()
+            AvatarIcon(sharedViewModel = sharedViewModel)
         },
         title = {
             Text(
@@ -72,23 +69,31 @@ fun NotificationIcon() {
 }
 
 @Composable
-fun AvatarIcon() {
+fun AvatarIcon(sharedViewModel: SharedViewModel) {
+    val imageUser = loadImage(url = sharedViewModel.getCurrentUser()?.photoUrl.toString(), activity = sharedViewModel.mainActivity).value
     IconButton(
         modifier = Modifier
             .fillMaxSize(),
         onClick = { /*TODO*/ }) {
-        Image(
+        /*Image(
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape),
             painter = painterResource(id = R.drawable.avatar),
             contentDescription = "Avatar"
-        )
+        )*/
+        imageUser?.asImageBitmap()?.let { Image(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape),
+            bitmap = it,
+            contentDescription = "Avatar"
+        ) }
     }
 }
 
 @Composable
 @Preview
 fun HomeTopAppBarPreview() {
-    HomeTopAppBar()
+
 }

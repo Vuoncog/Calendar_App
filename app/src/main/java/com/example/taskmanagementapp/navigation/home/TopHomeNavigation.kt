@@ -16,8 +16,7 @@ fun NavGraphBuilder.topHomeNavigation(
         route = Graph.HOME
     ) {
         composable(route = GraphRoute.Home.route) {
-            Log.e("TOP","2")
-            HomeAppBar()
+
         }
     }
 }

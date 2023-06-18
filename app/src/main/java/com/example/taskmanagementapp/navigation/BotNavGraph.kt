@@ -44,7 +44,8 @@ fun BottomNavGraph(
             allEventsInDate = sharedViewModel.listEventResult,
             currentDate = currentDate,
             isShowBottomBarItems = isShowBottomBarItems,
-            systemColorSet = systemColorSet
+            systemColorSet = systemColorSet,
+            sharedViewModel = sharedViewModel
         )
 
         calendarNavigation(

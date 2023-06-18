@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.taskmanagementapp.constant.*
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.home.HomeContent
 import java.util.*
 
@@ -13,7 +14,8 @@ fun NavGraphBuilder.homeNavigation(
     allEventsInDate: List<EventInfo>,
     currentDate: Date,
     isShowBottomBarItems: (Boolean) -> Unit,
-    systemColorSet: SystemColorSet
+    systemColorSet: SystemColorSet,
+    sharedViewModel: SharedViewModel
 ){
     navigation(
         startDestination = GraphRoute.Home.route,
@@ -25,7 +27,8 @@ fun NavGraphBuilder.homeNavigation(
                 listAllTask = allTasksInDate,
                 currentDate = currentDate,
                 systemColorSet = systemColorSet,
-                listAllEvent = allEventsInDate
+                listAllEvent = allEventsInDate,
+                sharedViewModel = sharedViewModel
             )
         }
 

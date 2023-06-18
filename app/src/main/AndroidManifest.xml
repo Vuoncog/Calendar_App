@@ -4,7 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:name=".TaskApplication"
         android:allowBackup="true"
@@ -16,6 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskManagementApp"
         tools:targetApi="31">
+
+        <receiver
+            android:name=".data.NotificationBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.timenotification.NOTIFICATION_ACTION" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".FacebookActivity"
             android:exported="false"

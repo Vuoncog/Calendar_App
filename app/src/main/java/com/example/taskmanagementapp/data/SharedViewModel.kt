@@ -41,6 +41,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.hours
 
 @Suppress("UNCHECKED_CAST")
 @HiltViewModel
@@ -459,6 +460,9 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     val startTime = startAndEnd.value.first
                     val endTime = startAndEnd.value.second
                     val listEvents = mutableListOf<EventInfo>()
+
+                    // Do the next step
+                    onFinished()
                     // Move to the position we need
                     val mDatabaseReference = database.child(
                         getCurrentUser()?.uid.toString()
@@ -497,8 +501,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         }
                         Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
                             .show()
-                        // Do the next step
-                        onFinished()
                     }
                 }
             }

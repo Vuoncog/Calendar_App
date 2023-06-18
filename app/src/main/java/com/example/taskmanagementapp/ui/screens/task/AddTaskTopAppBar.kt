@@ -3,22 +3,27 @@ package com.example.taskmanagementapp.ui.screens.task
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
-import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.data.SharedViewModel
+import com.example.taskmanagementapp.data.scheduleNotification
 import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.util.*
 
 @Composable
 fun AddTaskTopAppBar(
@@ -51,6 +56,13 @@ fun AddTaskAppBar(
     isUpdateEvent: Boolean,
     isUpdateTask: Boolean
 ) {
+    val context = LocalContext.current
+    val longStartTime = sharedViewModel.startAndEnd.value.first
+    val triggerTime: LocalDateTime = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(longStartTime*1000),
+        TimeZone.getDefault().toZoneId()
+    )
+
     val coroutinesScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
@@ -97,6 +109,13 @@ fun AddTaskAppBar(
                 if (isEvent) {
                     coroutinesScope.launch {
                         sharedViewModel.addEventInfo(onFinished)
+
+                        scheduleNotification(
+                            context = context,
+                            eventTime = triggerTime,
+                            title = sharedViewModel.titleAndDetail.value.first,
+                            detail = sharedViewModel.titleAndDetail.value.second,
+                        )
                     }
                 } else {
                     if(isUpdateTask){

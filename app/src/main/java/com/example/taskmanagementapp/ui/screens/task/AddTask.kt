@@ -66,11 +66,11 @@ fun AddTask(
         )
         if(!isToDoTask){
             Theme()
+            Divider(
+                thickness = 1.dp,
+                color = NeutralBorder
+            )
         }
-        Divider(
-            thickness = 1.dp,
-            color = NeutralBorder
-        )
         if (isToDoTask) {
             Subtask(
                 systemColor = systemColorSet.primaryColor,

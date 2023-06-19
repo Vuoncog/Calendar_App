@@ -1,10 +1,12 @@
 package com.example.taskmanagementapp.ui.screens.profile.bottomsheet
 
 import android.util.Log
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +26,10 @@ import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.TaskType
 import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.ui.screens.home.HomeTodoTaskItem
+import com.example.taskmanagementapp.ui.screens.home.MiniDetail
+import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyFontFamily
+import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 
 @Composable
@@ -65,9 +70,10 @@ fun ColorBottomSheet(
                 fontSize = 14.sp,
                 letterSpacing = 0.28.sp,
             )
-            HomeTodoTaskItem(
-                toDoTask = ToDoTask(taskType = TaskType(R.drawable.ic_bag,""), taskName = "Shopping", isDone = false, time = 0L),
+            HomeCardPreview(
+                sticker = systemColorSet.listStickerSet[17],
                 systemColor = systemColorSet.primaryColor,
+                subSystemColor = systemColorSet.secondaryColor
             )
         }
 
@@ -172,6 +178,68 @@ fun ColorCircle(
             )
         }
     )
+}
+
+@Composable
+fun HomeCardPreview(
+    @DrawableRes sticker: Int,
+    systemColor: Color,
+    subSystemColor: Color,
+) {
+    Card(
+        backgroundColor = subSystemColor,
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = systemColor,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .clip(RoundedCornerShape(size = 12.dp)),
+        elevation = 0.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        )
+        {
+            Text(
+                text = "This is event card",
+                style = VisbyTypography.h6,
+                maxLines = 2,
+                color = Neutral2
+            )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                MiniDetail(
+                    icon = R.drawable.ic_clock,
+                    title = "Time",
+                    systemColor = systemColor
+                )
+            }
+
+        }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(80.dp)
+                    .offset(x = (-3).dp, y = 0.dp),
+                painter = painterResource(id = sticker),
+                contentDescription = "Sticker",
+            )
+        }
+    }
 }
 
 @Preview

@@ -103,15 +103,17 @@ fun CalendarContent(
         modifier = Modifier
             .offset(y = columnHeightDp)
             .padding(
-                horizontal = 16.dp,
-                vertical = 20.dp
+                start = 16.dp,
+                end = 16.dp,
+                top = 20.dp,
+                bottom = 76.dp
+            )
+            .verticalScroll(
+                state = scrollState,
             )
             .onGloballyPositioned { coordinates ->
                 timeGridHeightDp = with(localDensity) { coordinates.size.height.toDp() }
             }
-            .verticalScroll(
-                state = scrollState,
-            )
     )
 
     // Setup Event

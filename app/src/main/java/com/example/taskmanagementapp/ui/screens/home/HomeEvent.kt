@@ -2,6 +2,7 @@ package com.example.taskmanagementapp.ui.screens.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
@@ -23,7 +25,7 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 import com.mrerror.singleRowCalendar.DateUtils
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import java.util.*
 
 @Composable
 fun HomeEvent(
@@ -44,59 +46,66 @@ fun HomeEvent(
     fun timeFormatter(date: Date): String = "${hour(date)}:${minute(date)}"
     val currentTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().epochSecond
     //if(event.startTime > currentTime){
-        val eventDate = Date(event.startTime * 1000)
-        Card(
-            backgroundColor = subSystemColor,
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .clip(RoundedCornerShape(size = 12.dp)),
-            elevation = 0.dp
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp,),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+    val eventDate = Date(event.startTime * 1000)
+    Card(
+        backgroundColor = subSystemColor,
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = systemColor,
+                shape = RoundedCornerShape(12.dp)
             )
-            {
-                Text(
-                    text = event.title,
-                    style = VisbyTypography.h5,
-                    maxLines = 2,
-                    color = Neutral2
-                )
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .clip(RoundedCornerShape(size = 12.dp)),
+        elevation = 0.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        )
+        {
+            Text(
+                text = event.title,
+                style = VisbyTypography.h6,
+                maxLines = 2,
+                color = Neutral2
+            )
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    MiniDetail(
-                        icon = R.drawable.ic_clock,
-                        title = "${dateFormatter(eventDate)} - ${timeFormatter(eventDate)}",
-                        systemColor = systemColor
-                    )
-                    MiniDetail(
-                        icon = R.drawable.ic_note,
-                        title = event.detail.toString(),
-                        systemColor = systemColor
-                    )
-                }
-
-            }
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomEnd
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Image(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .offset(x = (-3).dp, y = 0.dp),
-                    painter = painterResource(id = sticker),
-                    contentDescription = "Sticker",
+                MiniDetail(
+                    icon = R.drawable.ic_clock,
+                    title = "${dateFormatter(eventDate)} - ${timeFormatter(eventDate)}",
+                    systemColor = systemColor
+                )
+                MiniDetail(
+                    icon = R.drawable.ic_note,
+                    title = event.detail.toString(),
+                    systemColor = systemColor
                 )
             }
+
         }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(80.dp)
+                    .offset(x = (-3).dp, y = 0.dp),
+                painter = painterResource(id = sticker),
+                contentDescription = "Sticker",
+            )
+        }
+    }
     //}
 }
 
@@ -121,7 +130,8 @@ fun MiniDetail(
         Text(
             text = title,
             style = VisbyTypography.subtitle2,
-            color = Neutral2
+            color = Neutral2,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

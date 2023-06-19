@@ -80,7 +80,7 @@ fun CalendarEvent(
             }
             Box(
                 modifier = Modifier
-                    .height((24 * 56).dp)
+                    .height(height)
                     .background(color = Color.Transparent)
             )
         }

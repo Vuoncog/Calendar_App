@@ -7,7 +7,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.example.taskmanagementapp.constant.SystemColorSet
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun M3Theme(
@@ -37,6 +39,12 @@ fun M3Theme(
         } else {
             darkColorScheme
         }
+
+    val systemUIcontroller = rememberSystemUiController()
+    systemUIcontroller.setSystemBarsColor(
+        color = systemColorSet.secondaryColor,
+    )
+
     MaterialTheme(
         colorScheme = colorScheme,
         content = content

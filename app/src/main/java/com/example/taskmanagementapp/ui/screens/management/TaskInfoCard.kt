@@ -30,7 +30,7 @@ fun TaskInfoCard(
     listSticker: List<Int>,
     listTask: List<ToDoTask>,
 ) {
-    if(listTask.size > 0){
+    if (listTask.size > 0) {
         val percentProgress: (List<ToDoTask>) -> Float = { it ->
             var percentProgress = 0f
             it.forEach {
@@ -150,9 +150,24 @@ fun TaskInfo(
 fun TaskInfoCardPreview() {
     TaskInfoCard(
         listTask = listOf(
-            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Walking", isDone = true, time = 0L),
-            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Go shopping", isDone = true, time = 0L),
-            ToDoTask(taskType = TaskType(com.example.taskmanagementapp.R.drawable.ic_running_man,""), taskName = "Walking", isDone = true, time = 0L)
+            ToDoTask(
+                taskType = TaskType(
+                    com.example.taskmanagementapp.R.drawable.ic_running_man,
+                    ""
+                ), taskName = "Walking", isDone = true, time = 0L
+            ),
+            ToDoTask(
+                taskType = TaskType(
+                    com.example.taskmanagementapp.R.drawable.ic_running_man,
+                    ""
+                ), taskName = "Go shopping", isDone = true, time = 0L
+            ),
+            ToDoTask(
+                taskType = TaskType(
+                    com.example.taskmanagementapp.R.drawable.ic_running_man,
+                    ""
+                ), taskName = "Walking", isDone = true, time = 0L
+            )
         ),
         systemColor = SystemColorSet.ORANGE.primaryColor,
         subSystemColor = SystemColorSet.ORANGE.secondaryColor,

@@ -137,6 +137,9 @@ dependencies {
 
     //Realtime Database
     implementation 'com.google.firebase:firebase-database-ktx'
+
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta"
 }
 kapt {
     correctErrorTypes = true

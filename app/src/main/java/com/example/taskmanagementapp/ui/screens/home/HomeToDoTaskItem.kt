@@ -1,7 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.home
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -11,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -31,6 +32,11 @@ fun HomeTodoTaskItem(
     systemColor: Color = SystemColor,
     toDoTask: ToDoTask
 ) {
+    val localDensity = LocalDensity.current
+    var todoTaskWidthDp by remember {
+        mutableStateOf(0.dp)
+    }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
@@ -46,7 +52,10 @@ fun HomeTodoTaskItem(
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.onGloballyPositioned { coordinates ->
+                todoTaskWidthDp = with(localDensity) { coordinates.size.width.toDp() }
+            }
         ) {
             Icon(
                 modifier = Modifier
@@ -68,7 +77,8 @@ fun HomeTodoTaskItem(
             Text(
                 text = toDoTask.taskName,
                 style = VisbyTypography.subtitle2,
-                color = if (toDoTask.getDone()) Neutral6 else Neutral3
+                color = if (toDoTask.getDone()) Neutral6 else Neutral3,
+                maxLines = if (todoTaskWidthDp >= 128.dp) 2 else 1
             )
         }
         val taskTime = Date(toDoTask.time * 1000)

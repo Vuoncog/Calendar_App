@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +21,8 @@ import com.example.taskmanagementapp.ui.theme.*
 fun Reminder(
     systemColor: Color = SystemColor
 ) {
+    val showDialog = remember { mutableStateOf(false) }
+    val reminderMinute = remember { mutableStateOf(5) }
     Column(
         modifier = Modifier.padding(
             top = 8.dp,
@@ -43,17 +47,29 @@ fun Reminder(
                 color = Neutral1
             )
         }
-        Box(modifier = Modifier.padding(vertical = 12.dp)) {
+        Box(modifier = Modifier
+            .clickable {
+                showDialog.value = true
+            }
+            .padding(vertical = 12.dp)) {
             ReminderSetup(
-                systemColor = systemColor
+                systemColor = systemColor,
+                reminderText = ReminderText(reminderMinute.value)
             )
         }
+    }
+    if (showDialog.value) {
+        ReminderDialog(
+            openDialogCustom = showDialog,
+            reminderMinute = reminderMinute
+        )
     }
 }
 
 @Composable
 fun ReminderSetup(
     systemColor: Color = SystemColor,
+    reminderText: String
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -73,7 +89,7 @@ fun ReminderSetup(
         )
 
         Text(
-            text = "15 minutes before",
+            text = reminderText,
             style = VisbyTypography.body2,
             color = Neutral2,
             modifier = Modifier
@@ -86,9 +102,6 @@ fun ReminderSetup(
             tint = Neutral5,
             modifier = Modifier
                 .size(20.dp)
-                .clickable {
-
-                }
         )
     }
 }

@@ -8,4 +8,5 @@ object Graph {
     const val CALENDAR = "calendar_graph"
     const val MANAGEMENT = "management_graph"
     const val PROFILE = "profile_graph"
+    const val SPLASH = "splash_graph"
 }

@@ -105,11 +105,6 @@ fun LoginContent(
                 onClickEvent = { sharedViewModel.signInFacebook() }
             )
         }
-        Text(text = "Log as Administrator",
-            style = VisbyTypography.subtitle1,
-            modifier = Modifier.clickable {
-                navigateToHome()
-            })
 
         //Register
         RegisterOrLogin(

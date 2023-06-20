@@ -2,6 +2,7 @@ package com.example.taskmanagementapp.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,7 +53,7 @@ fun Splash(
         .fillMaxSize()
         .alpha(alpha),
     contentAlignment = Alignment.Center){
-        Icon(
+        Image(
             modifier = Modifier.size(192.dp),
             imageVector = ImageVector.vectorResource(id = R.drawable.scheme_logo),
             contentDescription = "Scheme Logo",

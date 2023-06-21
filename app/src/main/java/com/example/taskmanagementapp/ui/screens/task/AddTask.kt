@@ -43,7 +43,8 @@ fun AddTask(
                 sharedViewModel.oldTaskInfo.taskName,
                 sharedViewModel.oldTaskInfo.taskType.description
             )
-            else null
+            else null,
+            sharedViewModel = sharedViewModel
         )
         Divider(
             thickness = 1.dp,

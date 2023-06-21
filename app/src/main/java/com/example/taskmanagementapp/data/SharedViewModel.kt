@@ -63,7 +63,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     var dateOfTask = LocalDate.now().toEpochDay()
     val listSubTasks = mutableStateListOf<SubTask>()
     var eventTheme = 0UL
-    var taskSticker = 0L
+    var taskSticker = 0
 
     // Check network connection
     private fun isNetworkAvailable(): Boolean {
@@ -346,7 +346,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
             withContext(Dispatchers.IO) {
                 val newTask = ToDoTask(
                     taskType = TaskType(
-                        icon = oldTaskInfo.taskType.icon,
+                        icon = taskSticker,
                         description = titleAndDetail.value.second
                     ),
                     taskName = titleAndDetail.value.first,
@@ -541,7 +541,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                                 isDone = false,
                                 time = startAndEnd.value.first,
                                 taskType = TaskType(
-                                    R.drawable.ic_running_man,
+                                    taskSticker,
                                     titleAndDetail.value.second
                                 ),
                                 listSubTasks = listSubTasks as List<SubTask>
@@ -681,6 +681,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     override fun onCancelled(error: DatabaseError) {}
                 }
                 // Apply ChildEventListener to the path we want
+                Log.e("TODO", dateOfTask.toString())
                 database.child(
                     getCurrentUser()?.uid.toString()
                 ).child(dateOfTask.toString()).child("ListTask")

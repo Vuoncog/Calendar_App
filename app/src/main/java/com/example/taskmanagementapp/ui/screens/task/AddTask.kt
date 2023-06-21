@@ -44,7 +44,8 @@ fun AddTask(
                 sharedViewModel.oldTaskInfo.taskName,
                 sharedViewModel.oldTaskInfo.taskType.description
             )
-            else null
+            else null,
+            sharedViewModel = sharedViewModel
         )
         Divider(
             thickness = 1.dp,
@@ -66,7 +67,7 @@ fun AddTask(
             color = NeutralBorder
         )
         if(!isToDoTask){
-            Theme()
+            Theme(sharedViewModel = sharedViewModel)
             Divider(
                 thickness = 1.dp,
                 color = NeutralBorder

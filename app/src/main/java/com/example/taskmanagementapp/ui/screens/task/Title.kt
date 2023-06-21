@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 
 
@@ -24,11 +25,13 @@ fun Title(
     systemColor: Color = SystemColor,
     subSystemColor: Color,
     isEvent: Boolean,
-    titleAndDetail: Pair<String, String>? = null
+    titleAndDetail: Pair<String, String>? = null,
+    sharedViewModel: SharedViewModel? = null
 ): Pair<String, String> {
     var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first else "") }
     var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second else "") }
-    val sticker = remember { mutableStateOf(R.drawable.ic_ban) }
+    val sticker = remember { mutableStateOf(if(sharedViewModel?.oldTaskInfo!!.taskType.icon == 0) R.drawable.ic_ban else sharedViewModel.oldTaskInfo.taskType.icon)}
+    sharedViewModel?.taskSticker = sticker.value
 
     Row(
         modifier = Modifier
@@ -98,7 +101,6 @@ fun Title(
         }
 
         ChooseSticker(
-            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             sticker = sticker,

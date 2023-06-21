@@ -41,7 +41,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.hours
 
 @Suppress("UNCHECKED_CAST")
 @HiltViewModel
@@ -56,8 +55,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     var startAndEnd = mutableStateOf(Pair(0L, 0L))
     val listEventResult = mutableStateListOf<EventInfo>()
     val listTaskResult = mutableStateListOf<ToDoTask>()
-    private val listBackgroundColor =
-        listOf(0xFFF8F2F3, 0xFFFEE6DF, 0xFFFAA36A, 0xFF03DAC5, 0xFFBB86FC)
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
     lateinit var oldEventInfo: EventInfo
@@ -65,6 +62,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     var dateOfEvent = LocalDate.now().toEpochDay()
     var dateOfTask = LocalDate.now().toEpochDay()
     val listSubTasks = mutableStateListOf<SubTask>()
+    var eventTheme = 0UL
+    var taskSticker = 0
 
     // Check network connection
     private fun isNetworkAvailable(): Boolean {
@@ -299,7 +298,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     detail = titleAndDetail.value.second,
                     startTime = startAndEnd.value.first,
                     endTime = startAndEnd.value.second,
-                    color = oldEventInfo.color
+                    color = eventTheme.toString()
                 )
                 // Move to the position of the event we need and set the new value for it
                 database.child(
@@ -347,7 +346,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
             withContext(Dispatchers.IO) {
                 val newTask = ToDoTask(
                     taskType = TaskType(
-                        icon = oldTaskInfo.taskType.icon,
+                        icon = taskSticker,
                         description = titleAndDetail.value.second
                     ),
                     taskName = titleAndDetail.value.first,
@@ -478,7 +477,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         // Add new Event to the list
                         listEvents.add(
                             EventInfo(
-                                color = listBackgroundColor.random(),
+                                color = eventTheme.toString(),
                                 title = title,
                                 detail = detail,
                                 startTime = startTime,
@@ -526,7 +525,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     // Move to the position we need
                     val mDatabaseReference = database.child(
                         getCurrentUser()?.uid.toString()
-                    ).child(dateOfEvent.toString()).child("ListTask")
+                    ).child(dateOfTask.toString()).child("ListTask")
                     mDatabaseReference.get().addOnCompleteListener {
                         if (it.result != null) {
                             // Get all of elements at this Firebase's position and add them to a list
@@ -542,7 +541,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                                 isDone = false,
                                 time = startAndEnd.value.first,
                                 taskType = TaskType(
-                                    R.drawable.ic_running_man,
+                                    taskSticker,
                                     titleAndDetail.value.second
                                 ),
                                 listSubTasks = listSubTasks as List<SubTask>
@@ -649,8 +648,11 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         previousChildName: String?
                     ) {
                         val toDoTask = snapshot.getValue<ToDoTask>()
-                        // Add the value we got from Firebase into the listTaskResult
-                        listTaskResult.add(toDoTask!!)
+                        val index = listTaskResult.indexOf(toDoTask)
+                        if(index < 0) {
+                            // Add the value we got from Firebase into the listTaskResult
+                            listTaskResult.add(toDoTask!!)
+                        }
                     }
 
                     // This function triggered whenever a child of the path is changed
@@ -679,6 +681,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     override fun onCancelled(error: DatabaseError) {}
                 }
                 // Apply ChildEventListener to the path we want
+                Log.e("TODO", dateOfTask.toString())
                 database.child(
                     getCurrentUser()?.uid.toString()
                 ).child(dateOfTask.toString()).child("ListTask")

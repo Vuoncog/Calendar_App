@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 
  data class EventInfo(
-     val color: Long = 0xFFFAA36A,
+     val color: String,
      val title: String,
      val startTime: Long,
      val endTime: Long,
@@ -12,5 +12,5 @@ import androidx.annotation.DrawableRes
      @DrawableRes val sticker: Int? = null
  )
  {
-    constructor() : this(0xFFFAA36A,"",0L,0L)
+    constructor() : this("","",0L,0L)
  }

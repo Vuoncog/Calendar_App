@@ -33,11 +33,9 @@ fun ManagementContent(
     sharedViewModel: SharedViewModel,
     navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit
 ) {
-    /*LaunchedEffect(
-        key1 = true,
-        block = {
-            sharedViewModel.getToDoTask()
-        })*/
+    LaunchedEffect(key1 = true, block = {
+        sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
+    })
     val coroutinesScope = rememberCoroutineScope()
     var _listTask by remember { mutableStateOf(sharedViewModel.listTaskResult as List<ToDoTask>) }
     val changeTaskState: (ToDoTask, ToDoTask) -> Unit = { removeTask, addTask ->

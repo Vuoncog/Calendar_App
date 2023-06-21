@@ -12,15 +12,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.SystemColorSet
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorCircle
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun Theme(
-    systemColorSet: SystemColorSet = SystemColorSet.ORANGE
+    systemColorSet: SystemColorSet = SystemColorSet.ORANGE,
+    sharedViewModel: SharedViewModel? = null
 ) {
     var systemSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
+    LaunchedEffect(key1 = true, block = {
+        sharedViewModel?.eventTheme = if(sharedViewModel?.oldEventInfo!!.color == "") systemSet.secondaryColor.value else sharedViewModel.oldEventInfo.color.toULong()
+    })
 
     val recommendColorSet = listOf(
         SystemColorSet.ORANGE,
@@ -68,6 +73,7 @@ fun Theme(
                     systemColorSet = systemSet,
                     onColorChange = {
                         systemSet = it
+                        sharedViewModel?.eventTheme = it.secondaryColor.value
                     },
                     circleSize = 16.dp
                 )

@@ -36,11 +36,9 @@ fun CalendarContent(
     sharedViewModel: SharedViewModel? = null,
     navController: NavHostController? = null
 ) {
-    /*LaunchedEffect(
-        key1 = true,
-        block = {
-            sharedViewModel?.getEventInfo()
-        })*/
+    LaunchedEffect(key1 = true, block = {
+        sharedViewModel?.dateOfEvent = LocalDate.now().toEpochDay()
+    })
     val listEvent by remember { mutableStateOf(sharedViewModel!!.listEventResult as List<EventInfo>) }
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()

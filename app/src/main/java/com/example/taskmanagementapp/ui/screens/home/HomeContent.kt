@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -22,6 +23,7 @@ import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral3
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import java.time.LocalDate
 import java.util.*
 
 @Composable
@@ -33,6 +35,10 @@ fun HomeContent(
     systemColorSet: SystemColorSet = SystemColorSet.ORANGE,
     sharedViewModel: SharedViewModel
 ) {
+    LaunchedEffect(key1 = true, block = {
+        sharedViewModel.dateOfEvent = LocalDate.now().toEpochDay()
+        sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
+    })
     Scaffold(topBar = { HomeAppBar(sharedViewModel = sharedViewModel) }
     ) {
         Column(

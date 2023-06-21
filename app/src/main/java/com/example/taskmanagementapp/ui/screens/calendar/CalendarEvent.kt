@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.ui.screens.calendar
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,7 +57,7 @@ fun CalendarEvent(
         ) {
             var sumOffset = listOffset[0]
             var paddingSpace = 0
-            for (index in 0 until listEvent.size) {
+            for (index in listEvent.indices) {
                 sumOffset += listOffset[index]
                 var startTime = sharedViewModel.getHourAndMinute(listEvent[index].startTime)
                 val endTime  = sharedViewModel.getHourAndMinute(listEvent[index].endTime)
@@ -104,7 +103,7 @@ fun EventCard(
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(eventInfo.color)
+            containerColor = Color(eventInfo.color.toULong())
         ),
         modifier = Modifier
             .offset(y = -(offset))

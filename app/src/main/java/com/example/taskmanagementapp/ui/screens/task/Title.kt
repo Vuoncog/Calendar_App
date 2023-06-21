@@ -23,6 +23,7 @@ import com.example.taskmanagementapp.ui.theme.*
 fun Title(
     systemColor: Color = SystemColor,
     subSystemColor: Color,
+    isEvent: Boolean,
     titleAndDetail: Pair<String, String>? = null
 ): Pair<String, String> {
     var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first else "") }
@@ -97,6 +98,7 @@ fun Title(
         }
 
         ChooseSticker(
+            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             sticker = sticker,
@@ -113,6 +115,7 @@ fun Title(
 fun ChooseSticker(
     systemColor: Color,
     subSystemColor: Color,
+    isEvent: Boolean,
     @DrawableRes sticker: MutableState<Int>,
     onIconClicked: (Int) -> Unit
 ) {
@@ -121,10 +124,12 @@ fun ChooseSticker(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Sticker(
+            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             sticker = sticker,
-            onIconClicked = onIconClicked)
+            onIconClicked = onIconClicked
+        )
         Text(
             text = "Sticker",
             style = VisbyTypography.overline,
@@ -136,5 +141,8 @@ fun ChooseSticker(
 @Preview
 @Composable
 fun TitlePreview() {
-    Title(subSystemColor = BackgroundColorTask)
+    Title(
+        subSystemColor = BackgroundColorTask,
+        isEvent = true
+    )
 }

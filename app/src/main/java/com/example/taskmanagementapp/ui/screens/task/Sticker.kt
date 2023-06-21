@@ -1,6 +1,7 @@
 package com.example.taskmanagementapp.ui.screens.task
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.taskmanagementapp.constant.listBreakfast
+import com.example.taskmanagementapp.constant.listSticker
 import com.example.taskmanagementapp.constant.listTaskType
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.CloseIcon
 import com.example.taskmanagementapp.ui.theme.*
@@ -35,24 +38,38 @@ import com.example.taskmanagementapp.ui.theme.*
 fun Sticker(
     systemColor: Color = SystemColor,
     subSystemColor: Color,
+    isEvent: Boolean,
     onIconClicked: (Int) -> Unit,
     @DrawableRes sticker: MutableState<Int>
 ) {
     val showDialog = remember { mutableStateOf(false) }
 
-    Icon(
-        imageVector = ImageVector.vectorResource(id = sticker.value),
-        contentDescription = "Add",
-        tint = systemColor,
-        modifier = Modifier
-            .size(24.dp)
-            .clickable {
-                showDialog.value = !showDialog.value
-            }
-    )
+    if (isEvent) {
+        Image(
+            imageVector = ImageVector.vectorResource(id = sticker.value),
+            contentDescription = "Add",
+            modifier = Modifier
+                .size(24.dp)
+                .clickable {
+                    showDialog.value = !showDialog.value
+                }
+        )
+    } else {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = sticker.value),
+            contentDescription = "Add",
+            tint = systemColor,
+            modifier = Modifier
+                .size(24.dp)
+                .clickable {
+                    showDialog.value = !showDialog.value
+                }
+        )
+    }
 
     if (showDialog.value) {
         CustomStickerDialog(
+            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             openDialogCustom = showDialog,
@@ -63,6 +80,7 @@ fun Sticker(
 
 @Composable
 fun CustomStickerDialog(
+    isEvent: Boolean,
     systemColor: Color,
     subSystemColor: Color,
     openDialogCustom: MutableState<Boolean>,
@@ -76,6 +94,7 @@ fun CustomStickerDialog(
             openDialogCustom.value = !openDialogCustom.value
         }) {
         CustomStickerDialogUI(
+            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             openDialogCustom = openDialogCustom,
@@ -87,6 +106,7 @@ fun CustomStickerDialog(
 
 @Composable
 fun CustomStickerDialogUI(
+    isEvent: Boolean,
     systemColor: Color,
     subSystemColor: Color,
     openDialogCustom: MutableState<Boolean>,
@@ -114,6 +134,7 @@ fun CustomStickerDialogUI(
         )
 
         TaskContent(
+            isEvent = isEvent,
             systemColor = systemColor,
             subSystemColor = subSystemColor,
             onIconClicked = onIconClicked,
@@ -152,15 +173,95 @@ fun StickerTitle(
 
 @Composable
 fun TaskContent(
+    isEvent: Boolean,
     systemColor: Color,
     subSystemColor: Color,
     onIconClicked: (Int) -> Unit,
     openDialogCustom: MutableState<Boolean>,
 ) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        if (isEvent) {
+            ListEventSticker(
+                listIcon = listSticker,
+                onIconClicked = onIconClicked,
+                openDialogCustom = openDialogCustom
+            )
+        } else {
+            ListToDoIcon(
+                listIcon = listTaskType,
+                listName = "General",
+                systemColor = systemColor,
+                subSystemColor = subSystemColor,
+                onIconClicked = onIconClicked,
+                openDialogCustom = openDialogCustom
+            )
+            ListToDoIcon(
+                listIcon = listBreakfast,
+                listName = "Breakfast",
+                systemColor = systemColor,
+                subSystemColor = subSystemColor,
+                onIconClicked = onIconClicked,
+                openDialogCustom = openDialogCustom
+            )
+        }
+    }
+
+}
+
+@Composable
+fun ListEventSticker(
+    listIcon: List<Int>,
+    onIconClicked: (Int) -> Unit,
+    openDialogCustom: MutableState<Boolean>,
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 5),
+        modifier = Modifier
+            .padding(bottom = 8.dp)
     ) {
-        items(listTaskType) {
+        items(listIcon) {
+            Box {
+                Image(
+                    imageVector = ImageVector.vectorResource(id = it),
+                    contentDescription = "Event Sticker",
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(bottom = 12.dp)
+                        .size(48.dp)
+                        .clickable {
+                            onIconClicked(it)
+                            openDialogCustom.value = !openDialogCustom.value
+                        }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ListToDoIcon(
+    listIcon: List<Int>,
+    listName: String,
+    systemColor: Color,
+    subSystemColor: Color,
+    onIconClicked: (Int) -> Unit,
+    openDialogCustom: MutableState<Boolean>,
+) {
+
+    Text(
+        text = listName,
+        style = VisbyTypography.subtitle1,
+        color = Neutral2
+    )
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(count = 5),
+        modifier = Modifier
+            .padding(bottom = 8.dp)
+    ) {
+        items(listIcon) {
             Box() {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = it),
@@ -187,8 +288,21 @@ fun TaskContent(
 
 @Preview
 @Composable
+fun IconPreview() {
+    CustomStickerDialogUI(
+        isEvent = false,
+        subSystemColor = BackgroundColorTask,
+        openDialogCustom = mutableStateOf(false),
+        onIconClicked = { /*TODO*/ },
+        systemColor = Primary4
+    )
+}
+
+@Preview
+@Composable
 fun StickerPreview() {
     CustomStickerDialogUI(
+        isEvent = true,
         subSystemColor = BackgroundColorTask,
         openDialogCustom = mutableStateOf(false),
         onIconClicked = { /*TODO*/ },

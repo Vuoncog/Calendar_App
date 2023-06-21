@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.IconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -154,7 +155,15 @@ fun SubtaskHeader(
             modifier = Modifier.weight(1f)
         )
 
-        Switch(checked = isCheck, onCheckedChange = {
+        Switch(checked = isCheck,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Neutral8,
+                checkedTrackColor = systemColor,
+                uncheckedThumbColor = Neutral5,
+                uncheckedTrackColor = Neutral8,
+                uncheckedBorderColor = Neutral5,
+            ),
+            onCheckedChange = {
             onSwitchClicked(it)
         })
     }

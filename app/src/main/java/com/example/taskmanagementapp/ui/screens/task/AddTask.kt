@@ -33,6 +33,7 @@ fun AddTask(
         modifier = Modifier.background(color = Color.White)
     ) {
         sharedViewModel.titleAndDetail.value = Title(
+            isEvent = !isToDoTask,
             systemColor = systemColorSet.primaryColor,
             subSystemColor = systemColorSet.secondaryColor,
             titleAndDetail = if (eventInfo != null) Pair(

@@ -57,7 +57,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     val listTaskResult = mutableStateListOf<ToDoTask>()
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
-    lateinit var oldEventInfo: EventInfo
+    var oldEventInfo = EventInfo()
     var oldTaskInfo = ToDoTask()
     var dateOfEvent = LocalDate.now().toEpochDay()
     var dateOfTask = LocalDate.now().toEpochDay()
@@ -601,7 +601,9 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     ) {
                         val eventInfo = snapshot.getValue<EventInfo>()
                         val index = listEventResult.indexOf(oldEventInfo)
-                        listEventResult[index] = eventInfo!!
+                        if(index >= 0){
+                            listEventResult[index] = eventInfo!!
+                        }
                     }
 
                     // This function triggered whenever a child of the path is removed

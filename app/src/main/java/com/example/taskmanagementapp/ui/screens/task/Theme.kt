@@ -24,7 +24,7 @@ fun Theme(
 ) {
     var systemSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
     LaunchedEffect(key1 = true, block = {
-        sharedViewModel?.eventTheme = if(sharedViewModel?.oldEventInfo!!.color == "") systemSet.secondaryColor.value else sharedViewModel.oldEventInfo.color.toULong()
+        sharedViewModel?.eventTheme = if(sharedViewModel?.oldEventInfo?.color!! == "") systemSet.secondaryColor.value else sharedViewModel.oldEventInfo.color.toULong()
     })
 
     val recommendColorSet = listOf(

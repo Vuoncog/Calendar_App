@@ -1,7 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.management
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
@@ -38,13 +37,7 @@ fun ManagementContent(
     })
     val coroutinesScope = rememberCoroutineScope()
     var _listTask by remember { mutableStateOf(sharedViewModel.listTaskResult as List<ToDoTask>)}
-    if(sharedViewModel.listTaskResult.isEmpty())
-    {
-        _listTask = emptyList()
-    }
-    else{
-        _listTask = sharedViewModel.listTaskResult
-    }
+    _listTask = if(sharedViewModel.listTaskResult.isEmpty()) { emptyList() } else{ sharedViewModel.listTaskResult }
     val changeTaskState: (ToDoTask, ToDoTask) -> Unit = { removeTask, addTask ->
         _listTask = (_listTask - removeTask)
         _listTask = (_listTask + addTask)

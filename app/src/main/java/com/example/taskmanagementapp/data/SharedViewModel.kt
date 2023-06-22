@@ -460,8 +460,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     val endTime = startAndEnd.value.second
                     val listEvents = mutableListOf<EventInfo>()
 
-                    // Do the next step
-                    onFinished()
                     // Move to the position we need
                     val mDatabaseReference = database.child(
                         getCurrentUser()?.uid.toString()
@@ -500,6 +498,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         }
                         Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
                             .show()
+                        // Do the next step
+                        onFinished()
                     }
                 }
             }
@@ -590,7 +590,12 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     ) {
                         val eventInfo = snapshot.getValue<EventInfo>()
                         // Add the value we got from Firebase into the listEventResult
-                        listEventResult.add(eventInfo!!)
+                        val index = listEventResult.indexOf(eventInfo)
+                        if(index < 0) {
+                            listEventResult.add(eventInfo!!)
+                            Log.e("EVENT", eventInfo.toString())
+                            Log.e("ADD", "1")
+                        }
                     }
 
 

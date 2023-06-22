@@ -52,7 +52,7 @@ fun NavGraphBuilder.calendarNavigation(
 
         composable(
             route = "${SubScreen.EventDetail.route}/{event}",
-            arguments = listOf(navArgument("event") { type = NavType.StringType})
+            arguments = listOf(navArgument("event") { type = NavType.StringType} )
         ){
             isShowBottomBarItems(false)
             AddTask(sharedViewModel = sharedViewModel, systemColorSet = systemColorSet, eventInfo = it.arguments?.getString("event"))

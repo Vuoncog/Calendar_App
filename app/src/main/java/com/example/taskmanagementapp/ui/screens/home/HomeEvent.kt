@@ -22,7 +22,7 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
-import com.mrerror.singleRowCalendar.DateUtils
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
@@ -34,16 +34,7 @@ fun HomeEvent(
     subSystemColor: Color,
     sticker: Int,
 ) {
-    fun weekday(date: Date): String = DateUtils.getDay3LettersName(date)
-    fun dayName(date: Date): String = DateUtils.getDayNumber(date)
-    fun monthName(date: Date): String = DateUtils.getMonthName(date)
-    fun year(date: Date): String = DateUtils.getYear(date)
-    fun hour(date: Date): String = date.hours.toString()
-    fun minute(date: Date): String = date.minutes.toString()
-    fun dateFormatter(date: Date): String =
-        "${weekday(date)}, ${dayName(date)} ${monthName(date)}, ${year(date)}"
-
-    fun timeFormatter(date: Date): String = "${hour(date)}:${minute(date)}"
+    val formatter = SimpleDateFormat("h:mm aa", Locale.ENGLISH)
     val currentTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().epochSecond
     //if(event.startTime > currentTime){
     val eventDate = Date(event.startTime * 1000)
@@ -81,7 +72,7 @@ fun HomeEvent(
             ) {
                 MiniDetail(
                     icon = R.drawable.ic_clock,
-                    title = "${dateFormatter(eventDate)} - ${timeFormatter(eventDate)}",
+                    title = formatter.format(eventDate),
                     systemColor = systemColor
                 )
                 MiniDetail(

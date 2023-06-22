@@ -1,6 +1,7 @@
 package com.example.taskmanagementapp.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,8 +24,7 @@ fun MainScreen(
 ) {
     val calendar = Calendar.getInstance(Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-    var currentDate by rememberSaveable { mutableStateOf(calendar.time) }
-
+    var currentDate by rememberSaveable { mutableStateOf(calendar.time)}
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
     var showBottomBar by remember { mutableStateOf(true) }

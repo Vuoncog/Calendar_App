@@ -38,6 +38,8 @@ fun HomeContent(
     LaunchedEffect(key1 = true, block = {
         sharedViewModel.dateOfEvent = LocalDate.now().toEpochDay()
         sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
+        sharedViewModel.getEventInfo()
+        sharedViewModel.getToDoTask()
     })
     Scaffold(topBar = { HomeAppBar(sharedViewModel = sharedViewModel) }
     ) {

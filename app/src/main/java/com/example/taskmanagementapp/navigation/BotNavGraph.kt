@@ -29,11 +29,6 @@ fun BottomNavGraph(
     val resetCalendar = Calendar.getInstance()
     resetCalendar.time = selectedDate
 
-    LaunchedEffect(key1 = true, block = {
-        sharedViewModel.getEventInfo()
-        sharedViewModel.getToDoTask()
-    })
-
     NavHost(
         navController = navController,
         route = Graph.MAIN,

@@ -34,11 +34,14 @@ fun CalendarContent(
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
     sharedViewModel: SharedViewModel? = null,
-    navController: NavHostController? = null
+    navController: NavHostController? = null,
+    onResetDay : (date : Date) -> Unit
 ) {
-    LaunchedEffect(key1 = true, block = {
+    LaunchedEffect(true){
+        onResetDay(Calendar.getInstance().time)
         sharedViewModel?.dateOfEvent = LocalDate.now().toEpochDay()
-    })
+        sharedViewModel?.getEventInfo()
+    }
     var listEvent by remember { mutableStateOf(sharedViewModel!!.listEventResult as List<EventInfo>) }
     listEvent = if(sharedViewModel?.listEventResult!!.isEmpty()) { emptyList() } else{ sharedViewModel.listEventResult}
     val listOffset = mutableListOf<Float>()
@@ -154,6 +157,7 @@ fun CalendarPreview() {
         selectedDate = date,
         onSelectDay = {},
         navigateToAddTask = {},
-        systemColor = SystemColor
+        systemColor = SystemColor,
+        onResetDay = {}
     )
 }

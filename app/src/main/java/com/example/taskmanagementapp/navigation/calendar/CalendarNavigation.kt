@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.navigation.calendar
 
-import android.util.Log
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.example.taskmanagementapp.constant.Graph
@@ -20,7 +19,8 @@ fun NavGraphBuilder.calendarNavigation(
     calendar: Calendar,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
-    isShowBottomBarItems: (Boolean) -> Unit
+    isShowBottomBarItems: (Boolean) -> Unit,
+    onResetDay : (date : Date) -> Unit
 ) {
     navigation(
         startDestination = GraphRoute.Calendar.route,
@@ -38,7 +38,8 @@ fun NavGraphBuilder.calendarNavigation(
                     navController.navigate(SubScreen.AddEvent.route)
                 },
                 sharedViewModel = sharedViewModel,
-                navController = navController
+                navController = navController,
+                onResetDay = onResetDay
             )
         }
 

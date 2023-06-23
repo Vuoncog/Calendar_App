@@ -33,7 +33,7 @@ fun BottomBar(
         GraphRoute.Calendar,
         GraphRoute.Management,
         GraphRoute.Profile,
-        )
+    )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -52,7 +52,7 @@ fun BottomBar(
                 navController = navController,
                 systemColor = systemColor,
                 currentDestination = currentDestination,
-                resetDay = resetDay
+                resetDay = resetDay,
             )
         }
     }
@@ -64,7 +64,7 @@ fun RowScope.BottomItem(
     navController: NavHostController,
     systemColor: Color,
     currentDestination: NavDestination?,
-    resetDay: (Date) -> Unit
+    resetDay: (Date) -> Unit,
 ) {
     val isSelected = currentDestination?.hierarchy?.any {
         it.route == screen.route

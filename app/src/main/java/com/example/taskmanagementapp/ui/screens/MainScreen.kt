@@ -1,7 +1,6 @@
 package com.example.taskmanagementapp.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,6 +27,12 @@ fun MainScreen(
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
     var showBottomBar by remember { mutableStateOf(true) }
+    val resetDay : (date: Date) -> Unit = {
+        calendar.time = it
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        currentDate = calendar.time
+        todayDate = it
+    }
 
     Scaffold(
         backgroundColor = Color.White,
@@ -52,12 +57,7 @@ fun MainScreen(
                 BottomBar(
                     navController = navController,
                     systemColor = systemColorSet.primaryColor,
-                    resetDay = { day ->
-                        calendar.time = day
-                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                        currentDate = calendar.time
-                        todayDate = day
-                    }
+                    resetDay = resetDay
                 )
             }
         },
@@ -76,7 +76,8 @@ fun MainScreen(
                 showBottomBar = it
             },
             systemColorSet = systemColorSet,
-            onColorChange = systemColorSetChange
+            onColorChange = systemColorSetChange,
+            onResetDay = resetDay
         )
     }
 }

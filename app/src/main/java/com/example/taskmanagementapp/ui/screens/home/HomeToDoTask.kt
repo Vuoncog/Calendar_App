@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.ui.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -36,7 +35,7 @@ fun TodoTask(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "${completedNum} task completed".uppercase(),
+                text = "$completedNum task completed".uppercase(),
                 style = VisbyTypography.subtitle2,
                 color = Neutral5,
                 modifier = Modifier.weight(1f)
@@ -58,7 +57,7 @@ fun TodoTask(
             )
         ) {
             list.forEach { task ->
-                HomeTodoTaskItem(toDoTask = task)
+                HomeTodoTaskItem(toDoTask = task, systemColor = systemColor)
             }
         }
     }

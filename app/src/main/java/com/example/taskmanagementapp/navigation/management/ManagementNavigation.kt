@@ -1,4 +1,4 @@
-package com.example.taskmanagementapp.navigation
+package com.example.taskmanagementapp.navigation.management
 
 import androidx.navigation.*
 import androidx.navigation.compose.composable
@@ -17,7 +17,8 @@ fun NavGraphBuilder.managementNavigation(
     calendar: Calendar,
     selectedDate: Date,
     onSelectDay: (Date) -> Unit,
-    isShowBottomBarItems: (Boolean) -> Unit
+    isShowBottomBarItems: (Boolean) -> Unit,
+    onResetDay : (date : Date) -> Unit
 ) {
     navigation(
         startDestination = GraphRoute.Management.route,
@@ -40,7 +41,8 @@ fun NavGraphBuilder.managementNavigation(
                 navigateToAddTask = {
                     navController.navigate(route = SubScreen.AddTodoTask.route)
                 },
-                navigateToUpdateTask = navigateToUpdateTask
+                navigateToUpdateTask = navigateToUpdateTask,
+                onResetDay = onResetDay
             )
         }
 

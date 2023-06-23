@@ -30,8 +30,14 @@ fun ManagementContent(
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
     sharedViewModel: SharedViewModel,
-    navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit
+    navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit,
+    onResetDay : (date : Date) -> Unit
 ) {
+    LaunchedEffect(true){
+        onResetDay(Calendar.getInstance().time)
+        sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
+        sharedViewModel.getToDoTask()
+    }
     val coroutinesScope = rememberCoroutineScope()
     var _listTask by remember { mutableStateOf(sharedViewModel.listTaskResult as List<ToDoTask>)}
     _listTask = if(sharedViewModel.listTaskResult.isEmpty()) { emptyList() } else{ sharedViewModel.listTaskResult }
@@ -122,6 +128,7 @@ fun ManagementPreView() {
         navigateToAddTask = {},
         sharedViewModel = sharedViewModel!!,
         systemColorSet = SystemColorSet.ORANGE,
-        navigateToUpdateTask = {}
+        navigateToUpdateTask = {},
+        onResetDay = {}
     )
 }

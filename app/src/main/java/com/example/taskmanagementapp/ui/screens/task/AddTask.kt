@@ -85,7 +85,7 @@ fun AddTask(
             color = NeutralBorder
         )
         if (!isToDoTask) {
-            Theme(sharedViewModel = sharedViewModel)
+            Theme(sharedViewModel = sharedViewModel, systemColorSet = systemColorSet.primaryColor)
             Divider(
                 thickness = 1.dp,
                 color = NeutralBorder

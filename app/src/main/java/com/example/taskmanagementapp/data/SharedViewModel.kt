@@ -688,7 +688,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     override fun onCancelled(error: DatabaseError) {}
                 }
                 // Apply ChildEventListener to the path we want
-                Log.e("TODO", dateOfTask.toString())
                 database.child(
                     getCurrentUser()?.uid.toString()
                 ).child(dateOfTask.toString()).child("ListTask")

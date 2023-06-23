@@ -83,8 +83,8 @@ fun AddTaskAppBar(
     TopAppBar(title = {
         Text(
             text = if (isEvent) {
-                if (isUpdateEvent) "Update Event" else "Add Event"
-            } else {if(isUpdateTask) "Update Task" else "Add Todo Task"},
+                if (isUpdateEvent) sharedViewModel.oldEventInfo.title else "Add Event"
+            } else {if(isUpdateTask) sharedViewModel.oldTaskInfo.taskName else "Add Todo Task"},
             fontFamily = VisbyFontFamily,
             fontSize = MaterialTheme.typography.h6.fontSize,
             fontWeight = FontWeight.Medium,
@@ -130,10 +130,11 @@ fun AddTaskAppBar(
                     }
                 }
             }
-        })
+        },
+        systemColor = systemColor)
     },
         navigationIcon = {
-            AddTaskBackIcon(onBackClicked = onBackClicked)
+            AddTaskBackIcon(onBackClicked = onBackClicked, systemColor = systemColor)
         }
     )
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral5
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
@@ -19,6 +20,7 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun TodoTask(
     list: List<ToDoTask>,
     systemColor: Color,
+    subSystemColor: Color,
 ) {
     var completedNum by remember { mutableStateOf(0) }
     LaunchedEffect(key1 = true, block = {
@@ -57,7 +59,11 @@ fun TodoTask(
             )
         ) {
             list.forEach { task ->
-                HomeTodoTaskItem(toDoTask = task, systemColor = systemColor)
+                HomeTodoTaskItem(
+                    toDoTask = task,
+                    systemColor = systemColor,
+                    subSystemColor = subSystemColor,
+                )
             }
         }
     }

@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -24,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,7 +29,8 @@ import java.util.*
 @Composable
 fun HomeTodoTaskItem(
     systemColor: Color = SystemColor,
-    toDoTask: ToDoTask
+    subSystemColor: Color,
+    toDoTask: ToDoTask,
 ) {
     val localDensity = LocalDensity.current
     var todoTaskWidthDp by remember {
@@ -64,9 +63,13 @@ fun HomeTodoTaskItem(
         ) {
             Icon(
                 modifier = Modifier
+                    .background(
+                        color = subSystemColor
+                    )
                     .clip(
                         RoundedCornerShape(8.dp)
                     )
+                    .size(32.dp)
                     .then(
                         if (toDoTask.getDone()) isDoneModifier(color = Color.White)
                         else inProgressModifier(
@@ -99,8 +102,8 @@ fun HomeTodoTaskItem(
         HomeTodoTaskDialog(
             openDialogCustom = showDialog,
             systemColor = systemColor,
-            taskName = toDoTask.taskName,
-            listSubTask = toDoTask.listSubTasks
+            toDoTask = toDoTask,
+            listSubTask = toDoTask.listSubTasks,
         )
     }
 }
@@ -118,14 +121,3 @@ fun inProgressModifier(color: Color, radius: Dp) = Modifier
         shape = RoundedCornerShape(radius)
     )
 
-@Preview
-@Composable
-fun ToDoTaskPreview() {
-    HomeTodoTaskItem(toDoTask = ToDoTask(), systemColor = SystemColor)
-}
-
-@Preview
-@Composable
-fun ToDoTaskDonePreview() {
-    HomeTodoTaskItem(toDoTask = ToDoTask(), systemColor = SystemColor)
-}

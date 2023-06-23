@@ -17,6 +17,7 @@ import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.EventInfo
 import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral3
 import com.example.taskmanagementapp.ui.theme.SystemColor
@@ -26,7 +27,8 @@ import com.example.taskmanagementapp.ui.theme.VisbyTypography
 fun HomeExistTask(
     listTask: List<ToDoTask>,
     listEvent : List<EventInfo>,
-    systemColorSet: SystemColorSet
+    systemColorSet: SystemColorSet,
+    sharedViewModel: SharedViewModel
 ) {
     Column(
         modifier = Modifier
@@ -55,7 +57,8 @@ fun HomeExistTask(
 
         TodoTask(
             list = listTask,
-            systemColor = systemColorSet.primaryColor
+            systemColor = systemColorSet.primaryColor,
+            subSystemColor = systemColorSet.secondaryColor,
         )
 
         Column(

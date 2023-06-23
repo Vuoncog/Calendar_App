@@ -64,7 +64,8 @@ fun HomeContent(
                 )
                 TodoTask(
                     list = listAllTask,
-                    systemColor = systemColorSet.primaryColor
+                    systemColor = systemColorSet.primaryColor,
+                    subSystemColor = systemColorSet.secondaryColor,
                 )
             }
 

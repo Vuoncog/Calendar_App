@@ -33,7 +33,7 @@ fun ProfileContentUI(
         ProfileSettingItem.NotificationAndAlerts,
         ProfileSettingItem.Color,
         ProfileSettingItem.Settings,
-        ProfileSettingItem.MoreInformation,
+//        ProfileSettingItem.MoreInformation,
         ProfileSettingItem.Logout,
     )
 

@@ -10,12 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -25,24 +20,28 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.taskmanagementapp.R
 import com.example.taskmanagementapp.constant.SubTask
+import com.example.taskmanagementapp.constant.ToDoTask
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.CloseIcon
 import com.example.taskmanagementapp.ui.theme.Neutral1
 import com.example.taskmanagementapp.ui.theme.Neutral2
 import com.example.taskmanagementapp.ui.theme.Primary4
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun HomeTodoTaskDialog(
     openDialogCustom: MutableState<Boolean>,
     systemColor: Color,
-    taskName: String,
-    listSubTask: List<SubTask>
+    toDoTask: ToDoTask,
+    listSubTask: List<SubTask>,
 ) {
     Dialog(
         properties = DialogProperties(
@@ -54,8 +53,8 @@ fun HomeTodoTaskDialog(
         HomeTodoTaskDialogUI(
             systemColor = systemColor,
             openDialogCustom = openDialogCustom,
-            taskName = taskName,
-            listSubTask = listSubTask
+            toDoTask = toDoTask,
+            listSubTask = listSubTask,
         )
     }
 }
@@ -64,11 +63,14 @@ fun HomeTodoTaskDialog(
 fun HomeTodoTaskDialogUI(
     systemColor: Color,
     openDialogCustom: MutableState<Boolean>,
-    taskName: String,
-    listSubTask: List<SubTask>
+    toDoTask: ToDoTask,
+    listSubTask: List<SubTask>,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
+            .padding(horizontal = 32.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(color = Color.White)
             .padding(
@@ -82,19 +84,20 @@ fun HomeTodoTaskDialogUI(
             onCloseClicked = {
                 openDialogCustom.value = !openDialogCustom.value
             },
-            content = taskName
+            content = toDoTask.taskName
         )
 
+        val formatter = SimpleDateFormat("h:mm aa", Locale.ENGLISH)
         HomeTodoTaskDialogInfo(
             systemColor = systemColor,
             icon = R.drawable.ic_clock_circle,
-            content = "Time"
+            content = formatter.format(Date(toDoTask.time*1000))
         )
 
         HomeTodoTaskDialogInfo(
             systemColor = systemColor,
             icon = R.drawable.ic_detail,
-            content = "Subscription"
+            content = toDoTask.taskType.description
         )
 
         Column(
@@ -125,9 +128,9 @@ fun HomeTodoTaskDialogTitle(
     onCloseClicked: () -> Unit,
     content: String
 ) {
-    CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+    CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -135,7 +138,7 @@ fun HomeTodoTaskDialogTitle(
                 style = VisbyTypography.subtitle1,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
-                    .padding(start = 32.dp)
+                    .padding(start = 24.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 color = Neutral2
@@ -157,9 +160,10 @@ fun HomeTodoTaskDialogSubtask(
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(32.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = CenterVertically,
         modifier = Modifier.padding(
-            start = 24.dp
+            start = 48.dp,
+            top = 4.dp,
         )
     ) {
         Card(
@@ -200,7 +204,7 @@ fun HomeTodoTaskDialogInfo(
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = CenterVertically
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = icon),

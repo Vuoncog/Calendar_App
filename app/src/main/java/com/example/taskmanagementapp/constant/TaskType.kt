@@ -3,7 +3,7 @@ package com.example.taskmanagementapp.constant
 import androidx.annotation.DrawableRes
 
 data class TaskType(
-    @DrawableRes val icon: Int = 0,
+    @DrawableRes val icon: Int,
     val description: String,
 ) {
     /*object Running: TaskType(

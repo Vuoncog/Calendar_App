@@ -64,7 +64,8 @@ fun HomeEvent(
                 text = event.title,
                 style = VisbyTypography.h6,
                 maxLines = 2,
-                color = Neutral2
+                color = Neutral2,
+                fontWeight = FontWeight.SemiBold
             )
 
             Column(
@@ -122,7 +123,6 @@ fun MiniDetail(
             text = title,
             style = VisbyTypography.subtitle2,
             color = Neutral2,
-            fontWeight = FontWeight.SemiBold
         )
     }
 }

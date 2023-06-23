@@ -106,7 +106,8 @@ fun Title(
             sticker = sticker,
             onIconClicked = {
                 sticker.value = it
-            }
+            },
+            isEvent = isEvent
         )
 
     }

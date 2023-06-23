@@ -37,7 +37,7 @@ fun LoginContent(
     var password by remember { mutableStateOf("") }
     Image(
         modifier = Modifier.fillMaxSize(),
-        painter = painterResource(id = R.drawable.login_background),
+        painter = painterResource(id = R.drawable.background),
         contentDescription = "Login Background",
         contentScale = ContentScale.FillHeight
     )

@@ -3,6 +3,7 @@ package com.example.taskmanagementapp.ui.screens.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ fun HomeTodoTaskItem(
     var todoTaskWidthDp by remember {
         mutableStateOf(0.dp)
     }
+    val showDialog = remember { mutableStateOf(false) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -49,6 +51,9 @@ fun HomeTodoTaskItem(
                 )
             )
             .padding(8.dp)
+            .clickable {
+                showDialog.value = true
+            }
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -87,6 +92,15 @@ fun HomeTodoTaskItem(
             text = formatter.format(taskTime).uppercase(),
             style = VisbyTypography.overline,
             color = Neutral6
+        )
+    }
+
+    if (showDialog.value) {
+        HomeTodoTaskDialog(
+            openDialogCustom = showDialog,
+            systemColor = systemColor,
+            taskName = toDoTask.taskName,
+            listSubTask = toDoTask.listSubTasks
         )
     }
 }

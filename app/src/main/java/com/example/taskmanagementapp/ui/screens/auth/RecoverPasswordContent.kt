@@ -12,7 +12,7 @@ import com.example.taskmanagementapp.R
 fun RecoverPasswordContent() {
     Image(
         modifier = Modifier.fillMaxSize(),
-        painter = painterResource(id = R.drawable.login_background),
+        painter = painterResource(id = R.drawable.background),
         contentDescription = "Background",
         contentScale = ContentScale.FillHeight
     )

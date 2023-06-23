@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,16 +16,17 @@ import com.example.taskmanagementapp.constant.SystemColorSet
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.screens.profile.bottomsheet.ColorCircle
 import com.example.taskmanagementapp.ui.theme.Neutral1
+import com.example.taskmanagementapp.ui.theme.SystemColor
 import com.example.taskmanagementapp.ui.theme.VisbyTypography
 
 @Composable
 fun Theme(
-    systemColorSet: SystemColorSet = SystemColorSet.ORANGE,
+    systemColorSet: Color = SystemColor,
     sharedViewModel: SharedViewModel? = null
 ) {
     var systemSet by remember { mutableStateOf(SystemColorSet.ORANGE) }
     LaunchedEffect(key1 = true, block = {
-        sharedViewModel?.eventTheme = if(sharedViewModel?.oldEventInfo!!.color == "") systemSet.secondaryColor.value else sharedViewModel.oldEventInfo.color.toULong()
+        sharedViewModel?.eventTheme = if(sharedViewModel?.oldEventInfo?.color!! == "") systemSet.secondaryColor.value else sharedViewModel.oldEventInfo.color.toULong()
     })
 
     val recommendColorSet = listOf(
@@ -48,7 +50,7 @@ fun Theme(
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_paint_board),
                 contentDescription = "Paint",
-                tint = systemColorSet.primaryColor
+                tint = systemColorSet
             )
 
             Text(
@@ -86,6 +88,6 @@ fun Theme(
 @Composable
 fun ThemePreview() {
     Theme(
-        systemColorSet = SystemColorSet.ORANGE
+        systemColorSet = SystemColor
     )
 }

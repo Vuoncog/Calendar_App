@@ -23,11 +23,16 @@ fun MainScreen(
 ) {
     val calendar = Calendar.getInstance(Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-    var currentDate by rememberSaveable { mutableStateOf(calendar.time) }
-
+    var currentDate by rememberSaveable { mutableStateOf(calendar.time)}
     val navController = rememberNavController()
     var todayDate by remember { mutableStateOf(Calendar.getInstance(Locale.getDefault()).time) }
     var showBottomBar by remember { mutableStateOf(true) }
+    val resetDay : (date: Date) -> Unit = {
+        calendar.time = it
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        currentDate = calendar.time
+        todayDate = it
+    }
 
     Scaffold(
         backgroundColor = Color.White,
@@ -52,12 +57,7 @@ fun MainScreen(
                 BottomBar(
                     navController = navController,
                     systemColor = systemColorSet.primaryColor,
-                    resetDay = { day ->
-                        calendar.time = day
-                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                        currentDate = calendar.time
-                        todayDate = day
-                    }
+                    resetDay = resetDay
                 )
             }
         },
@@ -76,7 +76,8 @@ fun MainScreen(
                 showBottomBar = it
             },
             systemColorSet = systemColorSet,
-            onColorChange = systemColorSetChange
+            onColorChange = systemColorSetChange,
+            onResetDay = resetDay
         )
     }
 }

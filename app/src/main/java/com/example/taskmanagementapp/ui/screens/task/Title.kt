@@ -28,8 +28,8 @@ fun Title(
     titleAndDetail: Pair<String, String>? = null,
     sharedViewModel: SharedViewModel? = null
 ): Pair<String, String> {
-    var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first else "") }
-    var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second else "") }
+    var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first.replace("+"," ") else "") }
+    var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second.replace("+"," ") else "") }
     val sticker = remember { mutableStateOf(if(sharedViewModel?.oldTaskInfo!!.taskType.icon == 0) R.drawable.ic_ban else sharedViewModel.oldTaskInfo.taskType.icon)}
     sharedViewModel?.taskSticker = sticker.value
 

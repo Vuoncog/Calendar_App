@@ -1,7 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.management
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
@@ -31,20 +30,17 @@ fun ManagementContent(
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
     sharedViewModel: SharedViewModel,
-    navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit
+    navigateToUpdateTask : (toDoTask : ToDoTask) -> Unit,
+    onResetDay : (date : Date) -> Unit
 ) {
-    LaunchedEffect(key1 = true, block = {
+    LaunchedEffect(true){
+        onResetDay(Calendar.getInstance().time)
         sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
-    })
+        sharedViewModel.getToDoTask()
+    }
     val coroutinesScope = rememberCoroutineScope()
     var _listTask by remember { mutableStateOf(sharedViewModel.listTaskResult as List<ToDoTask>)}
-    if(sharedViewModel.listTaskResult.isEmpty())
-    {
-        _listTask = emptyList()
-    }
-    else{
-        _listTask = sharedViewModel.listTaskResult
-    }
+    _listTask = if(sharedViewModel.listTaskResult.isEmpty()) { emptyList() } else{ sharedViewModel.listTaskResult }
     val changeTaskState: (ToDoTask, ToDoTask) -> Unit = { removeTask, addTask ->
         _listTask = (_listTask - removeTask)
         _listTask = (_listTask + addTask)
@@ -132,6 +128,7 @@ fun ManagementPreView() {
         navigateToAddTask = {},
         sharedViewModel = sharedViewModel!!,
         systemColorSet = SystemColorSet.ORANGE,
-        navigateToUpdateTask = {}
+        navigateToUpdateTask = {},
+        onResetDay = {}
     )
 }

@@ -34,19 +34,23 @@ fun CalendarContent(
     onSelectDay: (Date) -> Unit,
     navigateToAddTask: () -> Unit,
     sharedViewModel: SharedViewModel? = null,
-    navController: NavHostController? = null
+    navController: NavHostController? = null,
+    onResetDay : (date : Date) -> Unit
 ) {
-    LaunchedEffect(key1 = true, block = {
+    LaunchedEffect(true){
+        onResetDay(Calendar.getInstance().time)
         sharedViewModel?.dateOfEvent = LocalDate.now().toEpochDay()
-    })
-    val listEvent by remember { mutableStateOf(sharedViewModel!!.listEventResult as List<EventInfo>) }
+        sharedViewModel?.getEventInfo()
+    }
+    var listEvent by remember { mutableStateOf(sharedViewModel!!.listEventResult as List<EventInfo>) }
+    listEvent = if(sharedViewModel?.listEventResult!!.isEmpty()) { emptyList() } else{ sharedViewModel.listEventResult}
     val listOffset = mutableListOf<Float>()
     val listSpace = mutableListOf<Float>()
     listOffset.add(0f)
     listSpace.add(0f)
     for (index in listEvent.indices) {
         var startTime =
-            sharedViewModel!!.getHourAndMinute(listEvent[index].startTime)
+            sharedViewModel.getHourAndMinute(listEvent[index].startTime)
         val endTime =
             sharedViewModel.getHourAndMinute(listEvent[index].endTime)
         if (startTime > endTime) startTime -= 24
@@ -85,7 +89,7 @@ fun CalendarContent(
             calendar = calendar,
             selectedDate = selectedDate,
             onSelectDay = onSelectDay,
-            sharedViewModel = sharedViewModel!!,
+            sharedViewModel = sharedViewModel,
             isCalendarContent = true
         )
 
@@ -122,7 +126,7 @@ fun CalendarContent(
         state = scrollState,
         height = timeGridHeightDp,
         offset = columnHeightDp,
-        sharedViewModel = sharedViewModel!!,
+        sharedViewModel = sharedViewModel,
         navController = navController!!
     )
     Box(
@@ -153,6 +157,7 @@ fun CalendarPreview() {
         selectedDate = date,
         onSelectDay = {},
         navigateToAddTask = {},
-        systemColor = SystemColor
+        systemColor = SystemColor,
+        onResetDay = {}
     )
 }

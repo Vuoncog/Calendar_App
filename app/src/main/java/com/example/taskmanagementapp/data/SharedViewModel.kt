@@ -57,7 +57,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     val listTaskResult = mutableStateListOf<ToDoTask>()
     val database =
         Firebase.database("https://todoapp-368e2-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
-    lateinit var oldEventInfo: EventInfo
+    var oldEventInfo = EventInfo()
     var oldTaskInfo = ToDoTask()
     var dateOfEvent = LocalDate.now().toEpochDay()
     var dateOfTask = LocalDate.now().toEpochDay()
@@ -460,8 +460,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     val endTime = startAndEnd.value.second
                     val listEvents = mutableListOf<EventInfo>()
 
-                    // Do the next step
-                    onFinished()
                     // Move to the position we need
                     val mDatabaseReference = database.child(
                         getCurrentUser()?.uid.toString()
@@ -500,6 +498,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         }
                         Toast.makeText(mainActivity, "Add Event Successfully!", Toast.LENGTH_SHORT)
                             .show()
+                        // Do the next step
+                        onFinished()
                     }
                 }
             }
@@ -590,7 +590,12 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     ) {
                         val eventInfo = snapshot.getValue<EventInfo>()
                         // Add the value we got from Firebase into the listEventResult
-                        listEventResult.add(eventInfo!!)
+                        val index = listEventResult.indexOf(eventInfo)
+                        if(index < 0) {
+                            listEventResult.add(eventInfo!!)
+                            Log.e("EVENT", eventInfo.toString())
+                            Log.e("ADD", "1")
+                        }
                     }
 
 
@@ -601,7 +606,9 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     ) {
                         val eventInfo = snapshot.getValue<EventInfo>()
                         val index = listEventResult.indexOf(oldEventInfo)
-                        listEventResult[index] = eventInfo!!
+                        if(index >= 0){
+                            listEventResult[index] = eventInfo!!
+                        }
                     }
 
                     // This function triggered whenever a child of the path is removed
@@ -681,7 +688,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     override fun onCancelled(error: DatabaseError) {}
                 }
                 // Apply ChildEventListener to the path we want
-                Log.e("TODO", dateOfTask.toString())
                 database.child(
                     getCurrentUser()?.uid.toString()
                 ).child(dateOfTask.toString()).child("ListTask")

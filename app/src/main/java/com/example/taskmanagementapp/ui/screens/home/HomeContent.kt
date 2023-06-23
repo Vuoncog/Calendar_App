@@ -3,6 +3,7 @@
 package com.example.taskmanagementapp.ui.screens.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -38,6 +39,9 @@ fun HomeContent(
     LaunchedEffect(key1 = true, block = {
         sharedViewModel.dateOfEvent = LocalDate.now().toEpochDay()
         sharedViewModel.dateOfTask = LocalDate.now().toEpochDay()
+        sharedViewModel.getEventInfo()
+        sharedViewModel.getToDoTask()
+        Log.e("SCREEN", "HOME")
     })
     Scaffold(topBar = { HomeAppBar(sharedViewModel = sharedViewModel) }
     ) {
@@ -89,7 +93,7 @@ fun HomeContent(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         modifier = Modifier
                             .verticalScroll(state = rememberScrollState())
-                            .padding(bottom = 50.dp),
+                            .padding(bottom = 50.dp)
                     )
                     {
                         listAllEvent.forEach { event ->

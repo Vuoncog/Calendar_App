@@ -11,7 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -138,7 +140,7 @@ fun EventCard(
             ) {
                 if (timeRange > 1.5f) {
                     Image(
-                        painter = painterResource(id = R.drawable.hop),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.bunny_emoji_cool),
                         contentDescription = "Hop Image",
                         modifier = Modifier
                             .size(80.dp)

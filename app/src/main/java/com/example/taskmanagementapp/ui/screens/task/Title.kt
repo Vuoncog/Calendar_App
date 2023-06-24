@@ -103,11 +103,11 @@ fun Title(
         ChooseSticker(
             systemColor = systemColor,
             subSystemColor = subSystemColor,
+            isEvent = isEvent,
             sticker = sticker,
             onIconClicked = {
                 sticker.value = it
             },
-            isEvent = isEvent
         )
 
     }

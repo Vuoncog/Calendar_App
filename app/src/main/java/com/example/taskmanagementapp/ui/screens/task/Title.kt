@@ -28,11 +28,25 @@ fun Title(
     titleAndDetail: Pair<String, String>? = null,
     sharedViewModel: SharedViewModel? = null
 ): Pair<String, String> {
-    var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first.replace("+"," ") else "") }
-    var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second.replace("+"," ") else "") }
-    val sticker = remember { mutableStateOf(if(sharedViewModel?.oldTaskInfo!!.taskType.icon == 0) R.drawable.ic_ban else sharedViewModel.oldTaskInfo.taskType.icon)}
-    sharedViewModel?.taskSticker = sticker.value
-
+    var title by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.first else "") }
+    var detail by remember { mutableStateOf(if (titleAndDetail != null) titleAndDetail.second else "") }
+    val sticker = remember { mutableStateOf(R.drawable.ic_ban)}
+    if(isEvent)
+    {
+        LaunchedEffect(key1 = true, block = {
+            if(sharedViewModel?.oldEventInfo!!.sticker != 0)
+                sticker.value =sharedViewModel.oldEventInfo.sticker
+        })
+        if(sticker.value != R.drawable.ic_ban)
+            sharedViewModel?.eventSticker = sticker.value
+    }
+    else{
+        LaunchedEffect(key1 = true, block = {
+            if(sharedViewModel?.oldTaskInfo!!.taskType.icon != 0)
+                sticker.value = sharedViewModel.oldTaskInfo.taskType.icon
+        })
+        sharedViewModel?.taskSticker = sticker.value
+    }
     Row(
         modifier = Modifier
             .padding(

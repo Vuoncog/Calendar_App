@@ -42,6 +42,7 @@ fun AddTask(
     eventInfo?.let { sharedViewModel.oldEventInfo = Gson().fromJson(it, EventInfo::class.java) }
     if (eventInfo == null) {
         sharedViewModel.oldEventInfo = EventInfo()
+        sharedViewModel.eventSticker = 0
     }
     if (taskInfo == null) {
         sharedViewModel.oldTaskInfo = ToDoTask()

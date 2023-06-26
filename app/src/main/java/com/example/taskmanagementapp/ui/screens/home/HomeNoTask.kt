@@ -241,6 +241,6 @@ fun NoEventCard(
 fun HomeNoTaskPreview() {
     HomeNoTask(
         currentDate = Calendar.getInstance().time,
-        sticker = R.drawable.boar_emoji_sad
+        sticker = R.drawable.bunny_emoji_sad
     )
 }

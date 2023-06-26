@@ -64,6 +64,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     val listSubTasks = mutableStateListOf<SubTask>()
     var eventTheme = 0UL
     var taskSticker = 0
+    var eventSticker = 0
 
     // Check network connection
     private fun isNetworkAvailable(): Boolean {
@@ -298,7 +299,8 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                     detail = titleAndDetail.value.second,
                     startTime = startAndEnd.value.first,
                     endTime = startAndEnd.value.second,
-                    color = eventTheme.toString()
+                    color = eventTheme.toString(),
+                    sticker = eventSticker
                 )
                 // Move to the position of the event we need and set the new value for it
                 database.child(
@@ -480,6 +482,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                                 detail = detail,
                                 startTime = startTime,
                                 endTime = endTime,
+                                sticker = eventSticker
                             )
                         )
                         // Push new list to Firebase

@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
             sharedViewModel.handleSignInResult(result.data)
         }
 
-    var systemColorSet = mutableStateOf(SystemColorSet.ORANGE)
+    var systemColorSet = mutableStateOf(SystemColorSet.GREEN)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

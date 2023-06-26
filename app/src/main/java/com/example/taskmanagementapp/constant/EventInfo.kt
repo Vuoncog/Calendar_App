@@ -9,8 +9,8 @@ import androidx.annotation.DrawableRes
      val startTime: Long,
      val endTime: Long,
      val detail: String? = null,
-     @DrawableRes val sticker: Int? = null
+     @DrawableRes val sticker: Int = 0
  )
  {
-    constructor() : this("","",0L,0L)
+    constructor() : this("","",0L,0L,"",0)
  }

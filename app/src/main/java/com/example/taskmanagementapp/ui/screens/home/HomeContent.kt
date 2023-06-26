@@ -55,7 +55,7 @@ fun HomeContent(
                 NoToDoTask(
                     systemColor = systemColorSet.primaryColor,
                     subSystemColor = systemColorSet.secondaryColor,
-                    sticker = systemColorSet.listStickerSet[11]
+                    sticker = R.drawable.bunny_emoji_sad
                 )
             } else {
                 ExistTaskText(
@@ -87,7 +87,7 @@ fun HomeContent(
                         currentDate = currentDate,
                         systemColor = systemColorSet.primaryColor,
                         subSystemColor = systemColorSet.secondaryColor,
-                        sticker = systemColorSet.listStickerSet[5]
+                        sticker = R.drawable.bunny_emoji_sad
                     )
                 } else {
                     Column(

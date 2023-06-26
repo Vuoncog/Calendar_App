@@ -140,7 +140,7 @@ fun EventCard(
             ) {
                 if (timeRange > 1.5f) {
                     Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.bunny_emoji_cool),
+                        imageVector = ImageVector.vectorResource(id = if(eventInfo.sticker != 0) eventInfo.sticker else R.drawable.bunny_emoji_cool),
                         contentDescription = "Hop Image",
                         modifier = Modifier
                             .size(80.dp)

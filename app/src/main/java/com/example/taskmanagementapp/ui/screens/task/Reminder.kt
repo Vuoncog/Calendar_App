@@ -1,5 +1,6 @@
 package com.example.taskmanagementapp.ui.screens.task
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
@@ -15,14 +16,18 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.taskmanagementapp.R
+import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.*
 
 @Composable
 fun Reminder(
-    systemColor: Color = SystemColor
+    systemColor: Color = SystemColor,
+    sharedViewModel: SharedViewModel? = null
 ) {
     val showDialog = remember { mutableStateOf(false) }
     val reminderMinute = remember { mutableStateOf(5) }
+    sharedViewModel?.minusTime = reminderMinute.value
+    Log.e("MINUS", sharedViewModel?.minusTime.toString())
     Column(
         modifier = Modifier.padding(
             top = 8.dp,

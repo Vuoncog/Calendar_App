@@ -47,6 +47,7 @@ fun scheduleNotification(
     eventTime: LocalDateTime,
     title: String,
     detail: String,
+    minusTime : Int
 ) {
     // Tạo intent để gửi thông báo
     val intent = Intent(context, NotificationBroadcastReceiver::class.java)
@@ -67,7 +68,7 @@ fun scheduleNotification(
     eventStartTime.set(Calendar.SECOND, 0)
 
     // Trừ đi 10 phút
-    eventStartTime.add(Calendar.MINUTE, -5)
+    eventStartTime.add(Calendar.MINUTE, -minusTime)
 
     // Lấy thời gian hiện tại
     val currentTime = Calendar.getInstance()

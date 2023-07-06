@@ -65,6 +65,7 @@ class SharedViewModel @Inject constructor() : ViewModel() {
     var eventTheme = 0UL
     var taskSticker = 0
     var eventSticker = 0
+    var minusTime = 0
 
     // Check network connection
     private fun isNetworkAvailable(): Boolean {
@@ -596,8 +597,6 @@ class SharedViewModel @Inject constructor() : ViewModel() {
                         val index = listEventResult.indexOf(eventInfo)
                         if(index < 0) {
                             listEventResult.add(eventInfo!!)
-                            Log.e("EVENT", eventInfo.toString())
-                            Log.e("ADD", "1")
                         }
                     }
 

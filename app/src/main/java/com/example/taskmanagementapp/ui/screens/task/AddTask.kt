@@ -1,6 +1,5 @@
 package com.example.taskmanagementapp.ui.screens.task
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Divider
@@ -14,8 +13,6 @@ import com.example.taskmanagementapp.constant.ToDoTask
 import com.example.taskmanagementapp.data.SharedViewModel
 import com.example.taskmanagementapp.ui.theme.NeutralBorder
 import com.google.gson.Gson
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
@@ -32,8 +29,7 @@ fun AddTask(
             Date(sharedViewModel.startAndEnd.value.first * 1000).toInstant().atZone(
                 ZoneId.systemDefault()
             ).toLocalDate().toEpochDay()
-    }
-    else{
+    } else {
         sharedViewModel.dateOfEvent =
             Date(sharedViewModel.startAndEnd.value.first * 1000).toInstant().atZone(
                 ZoneId.systemDefault()
@@ -81,7 +77,10 @@ fun AddTask(
             thickness = 1.dp,
             color = NeutralBorder
         )
-        Reminder(systemColor = systemColorSet.primaryColor)
+        Reminder(
+            systemColor = systemColorSet.primaryColor,
+            sharedViewModel = sharedViewModel
+        )
         Divider(
             thickness = 1.dp,
             color = NeutralBorder

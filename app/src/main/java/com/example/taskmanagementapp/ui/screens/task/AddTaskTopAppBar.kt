@@ -109,13 +109,6 @@ fun AddTaskAppBar(
                 if (isEvent) {
                     coroutinesScope.launch {
                         sharedViewModel.addEventInfo(onFinished)
-
-                        scheduleNotification(
-                            context = context,
-                            eventTime = triggerTime,
-                            title = sharedViewModel.titleAndDetail.value.first,
-                            detail = sharedViewModel.titleAndDetail.value.second,
-                        )
                     }
                 } else {
                     if(isUpdateTask){
@@ -130,6 +123,13 @@ fun AddTaskAppBar(
                     }
                 }
             }
+            scheduleNotification(
+                context = context,
+                eventTime = triggerTime,
+                title = sharedViewModel.titleAndDetail.value.first,
+                detail = sharedViewModel.titleAndDetail.value.second,
+                minusTime = sharedViewModel.minusTime
+            )
         },
         systemColor = systemColor)
     },

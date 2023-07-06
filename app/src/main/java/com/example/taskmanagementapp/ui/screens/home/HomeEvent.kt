@@ -34,7 +34,7 @@ fun HomeEvent(
     subSystemColor: Color,
     sticker: Int,
 ) {
-    val formatter = SimpleDateFormat("h:mm aa", Locale.ENGLISH)
+    val formatter = SimpleDateFormat("HH:mm", Locale.ENGLISH)
     val currentTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().epochSecond
     //if(event.startTime > currentTime){
     val eventDate = Date(event.startTime * 1000)

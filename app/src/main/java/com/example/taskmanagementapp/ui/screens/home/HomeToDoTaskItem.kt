@@ -90,7 +90,7 @@ fun HomeTodoTaskItem(
             )
         }
         val taskTime = Date(toDoTask.time * 1000)
-        val formatter = SimpleDateFormat("h:mm aa", Locale.ENGLISH)
+        val formatter = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         Text(
             text = formatter.format(taskTime).uppercase(),
             style = VisbyTypography.overline,

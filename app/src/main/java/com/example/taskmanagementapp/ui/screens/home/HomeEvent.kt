@@ -93,7 +93,7 @@ fun HomeEvent(
                 modifier = Modifier
                     .size(80.dp)
                     .offset(x = (-3).dp, y = 0.dp),
-                imageVector = ImageVector.vectorResource(id = sticker),
+                imageVector = ImageVector.vectorResource(id = event.sticker),
                 contentDescription = "Sticker",
             )
         }

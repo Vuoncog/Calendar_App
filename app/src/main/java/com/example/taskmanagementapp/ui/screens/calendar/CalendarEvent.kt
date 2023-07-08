@@ -144,12 +144,7 @@ fun EventCard(
                         contentDescription = "Hop Image",
                         modifier = Modifier
                             .size(80.dp)
-                            .align(Alignment.TopEnd)
-                            .rotate(-12.59f)
-                            .offset(
-                                x = 12.dp,
-//                                y = 12.dp
-                            )
+                            .align(Alignment.BottomEnd)
                     )
                 }
             }

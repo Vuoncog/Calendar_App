@@ -7,8 +7,6 @@
 
 - [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/MinhPhucTr) https://github.com/MinhPhucTr
 
-- [![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/volevu17) https://github.com/volevu17
-
 ## Frameworks and Tools:
 
 ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)

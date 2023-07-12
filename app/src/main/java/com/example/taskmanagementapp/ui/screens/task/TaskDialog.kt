@@ -126,7 +126,8 @@ fun CustomDialogUI(
                 modifier = Modifier.weight(1f),
                 onClicked = {
                     openDialogCustom.value = !openDialogCustom.value
-                }
+                },
+                systemColor = systemColor
             )
 
             DialogButton(
@@ -135,7 +136,8 @@ fun CustomDialogUI(
                 onClicked = {
                     openDialogCustom.value = !openDialogCustom.value
                     onClicked()
-                }
+                },
+                systemColor = systemColor
             )
         }
     }
@@ -146,6 +148,7 @@ fun DialogButton(
     isConfirm: Boolean = true,
     modifier: Modifier,
     onClicked: () -> Unit,
+    systemColor: Color
 ) {
     Button(
         modifier = Modifier
@@ -155,18 +158,18 @@ fun DialogButton(
         onClick = {
             onClicked()
         },
-        border = if (!isConfirm) BorderStroke(1.dp, SystemColor) else null,
+        border = if (!isConfirm) BorderStroke(1.dp, systemColor) else null,
         colors =
         if (isConfirm) ButtonDefaults.buttonColors(
-            backgroundColor = SystemColor,
+            backgroundColor = systemColor,
             contentColor = Color.White,
-            disabledBackgroundColor = SystemColor.copy(alpha = 0.4f),
+            disabledBackgroundColor = systemColor.copy(alpha = 0.4f),
             disabledContentColor = Color.White,
         )
         else ButtonDefaults.outlinedButtonColors(
             contentColor = Neutral2,
             backgroundColor = Color.Transparent,
-            disabledContentColor = SystemColor.copy(alpha = 0.4f)
+            disabledContentColor = systemColor.copy(alpha = 0.4f)
         ),
         elevation = ButtonDefaults.elevation(
             defaultElevation = 0.dp,

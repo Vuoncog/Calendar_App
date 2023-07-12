@@ -141,7 +141,7 @@ fun AddTaskAppBar(
 
 @Composable
 fun AddTaskBackIcon(
-    systemColor: Color = SystemColor,
+    systemColor: Color,
     onBackClicked: () -> Unit,
     size: Dp = 32.dp
 ) {
